@@ -1,7 +1,14 @@
 import ScrollReveal from "./ScrollReveal";
 import NewsletterForm from "./NewsletterForm";
 
-// const channels = [
+interface Channel {
+  name: string;
+  href: string;
+  className: string;
+  icon: React.ReactNode;
+}
+
+const channels: Channel[] = [
   // {
   //   name: "Telegram",
   //   href: "https://t.me/ainta_community",
@@ -33,7 +40,7 @@ import NewsletterForm from "./NewsletterForm";
   //     </svg>
   //   ),
   // },
-// ];
+];
 
 export default function JoinSection() {
   return (

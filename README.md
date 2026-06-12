@@ -35,10 +35,50 @@ lib/
   resources.ts      ← data estática de categorías de recursos
 ```
 
+## Newsletter (suscripciones → Notion DB)
+
+El form de la landing postea a `POST /api/subscribe` → valida → upsert en una database de Notion.
+
+### Setup (one-time)
+
+1. Crear integración: <https://www.notion.so/profile/integrations> → "AINTA Subscribers" → copiar **Internal Integration Token**.
+2. Crear una page "AINTA — Subscribers" con database full-page.
+3. Schema exacto (case-sensitive):
+   - `Email` — **Email**
+   - `Name` — **Rich text**
+   - `Date` — **Date**
+   - `Source` — **Select** (crear valor `landing`)
+4. Compartir la database con la integración: `…` → "Connections" → agregar.
+5. Copiar **database ID** de la URL (`notion.so/<workspace>/<DATABASE_ID>?v=...` — 32 hex chars).
+6. Copiar `.env.example` → `.env.local` y completar.
+
+```bash
+NOTION_TOKEN=secret_xxx
+NOTION_SUBSCRIBERS_DB_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+### Comportamiento
+
+- **Email inválido / faltante** → 400, no Notion call.
+- **Honeypot `website` field** lleno → 400, no Notion call.
+- **Email ya existe** → 200 `{ok:true, duplicate:true}`, no crea duplicado.
+- **Email nuevo** → crea row con `Date = now`, `Source = landing`.
+- **Notion timeout (5s)** → 504.
+- **Notion error / token inválido** → 500, error loggeado server-side, sin filtrar el token al cliente.
+
+### Test rápido
+
+```bash
+pnpm dev
+curl -X POST localhost:3000/api/subscribe \
+  -H 'content-type: application/json' \
+  -d '{"email":"test@ainta.community","name":"Test","website":""}'
+# → {"ok":true}
+```
+
 ## Pendiente (v1)
 
 - [ ] Reemplazar links placeholder de Telegram/Discord
-- [ ] Wireup newsletter → Resend / Buttondown
 - [ ] Cargar fotos de miembros fundadores
 - [ ] Eventos reales cargados (mín. 2)
 - [ ] Recursos curados (mín. 10)

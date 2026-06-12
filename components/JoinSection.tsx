@@ -83,7 +83,7 @@ export default function JoinSection() {
             className="flex flex-wrap justify-center"
             style={{ gap: "12px" }}
           >
-            {channels.map((c) => (
+            {/* {channels.map((c) => (
               <a
                 key={c.name}
                 href={c.href}
@@ -106,7 +106,7 @@ export default function JoinSection() {
                 {c.icon}
                 {c.name}
               </a>
-            ))}
+            ))} */}
           </div>
 
           <NewsletterForm />

@@ -1,7 +1,7 @@
 import ScrollReveal from "./ScrollReveal";
 import NewsletterForm from "./NewsletterForm";
 
-const channels = [
+// const channels = [
   // {
   //   name: "Telegram",
   //   href: "https://t.me/ainta_community",
@@ -33,7 +33,7 @@ const channels = [
   //     </svg>
   //   ),
   // },
-];
+// ];
 
 export default function JoinSection() {
   return (

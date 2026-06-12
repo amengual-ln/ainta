@@ -83,7 +83,6 @@ export default function JoinSection() {
             }}
           >
             Es gratis, es abierto, y está hecho por estudiantes para estudiantes.
-            Elegí el canal que más te gusta.
           </p>
 
           <div

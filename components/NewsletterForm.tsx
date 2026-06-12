@@ -71,7 +71,7 @@ export default function NewsletterForm() {
       setMessage(
         data.duplicate
           ? "Ya estabas en la lista. ¡Gracias!"
-          : "Listo. Te llega el próximo resumen."
+          : "Listo! Bienvenido a la comunidad."
       );
       setEmail("");
       setName("");
@@ -185,9 +185,6 @@ export default function NewsletterForm() {
           {message}
         </p>
       )}
-      <p className="text-[11px] text-muted mt-2 text-center">
-        Sin spam. Solo lo importante de la comunidad.
-      </p>
     </form>
   );
 }

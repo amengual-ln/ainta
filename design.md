@@ -131,13 +131,40 @@ Cada bloque del hero entra con `fadeUp` con delay incremental:
 Cada char del h1 se renderiza con 2 capas stacked (glitch, smooth), ambas en **Geist Sans**. Cero cambio de font.
 
 - **Wrap-level**: cada char arranca con `opacity: 0` + `translateY(20px)` y hace rise + fade-in en 1000ms (mismo `translateY` que los demás textos del hero, pero con duración extendida para que el morph interno sea visible).
-- **Layer-level**: la capa `.char-glitch` (aberración cromática 1px en cian/emerald + 1px de offset) se desvanece, la capa `.char-smooth` aparece. Cross-fade simultáneo, 1000ms.
+- **Layer-level**: la capa `.char-glitch` (aberración cromática 4-shadow + shake horizontal) se desvanece con steps bruscos, la capa `.char-smooth` aparece. Cross-fade simultáneo, 1000ms.
 
 Line delays: 350ms (L1), 550ms (L2), 750ms (L3). Char stagger: 30ms.
 
-**Glitch visual**: `text-shadow: 1px 0 #7DD3FC, -1px 0 #5DC9A8` + `transform: translateX(1px)`. Sutil — chromatic aberration sobre Geist Sans, no cambio de font.
+**Glitch visual** (4-shadow chromatic aberration, mismo para hero y títulos):
+```css
+text-shadow:
+  3px 0 #7DD3FC,     /* sky-300 derecha (cyan) */
+  1.5px 0 #5DC9A8,   /* emerald derecha (sub) */
+  -1.5px 0 #F472B6,  /* pink-400 izquierda (sub) */
+  -3px 0 #C4B5FD;    /* violet-300 izquierda (lilac) */
+```
+- Lado derecho: cyan + emerald (frío).
+- Lado izquierdo: pink + lilac (cálido, contraparte).
+- Sub-shadow a 1.5px para una separación cromática más visible.
+
+**Shake horizontal** (binario, no jelly):
+- `@keyframes glitchShakeSettle` con 5 keyframes (0%, 25%, 50%, 75%, 100%).
+- `animation-timing-function: step-end` — cada keyframe se mantiene hasta la próxima, sin interpolación suave. Da el feel "digital/binario" en vez de "wobbly."
+- 4 saltos discretos: -3px → +3px → -3px → +3px → 0.
+- Amplitud constante (±3px), opacidad decayendo 1 → 0.
+- Cada char se mantiene 250ms en cada posición antes del salto.
 
 **Reduced motion**: la capa glitch se oculta, smooth queda visible. Wrap animation desactivada.
+
+### Títulos de sección (vía `CharTitle`)
+
+`components/CharTitle.tsx` es un wrapper client-side para los h2 de Pillars, Events, Resources y JoinSection. Misma animación que el hero h1 (rise + glitch settle) pero:
+
+- **Trigger por viewport**: la animación está pausada (`animation-play-state: paused` via `.deferred *`) hasta que el h2 entra al viewport. El componente usa `IntersectionObserver` (threshold 0.1) y al primer trigger se reemplaza la clase `deferred` por `is-revealed`, lo que des-paurea la animación.
+- **Alternancia de variante**: cada char recibe `data-seq` pseudo-aleatorio (`(i * 7 + 13) % 2`). Mitad usan el glitch frío (cyan/emerald), mitad el cálido (pink/lilac).
+- **Sin line delay**: una sola línea por título, char stagger 25ms.
+
+**Reduced motion**: mismo override del hero (glitch oculto, smooth visible, wrap animation desactivada).
 
 ### Logo dot
 ```css

@@ -128,7 +128,12 @@
 }
 
 /* ── Trigger para CharTitle: pausa hasta entrar al viewport ── */
-.deferred * {
+/* Specificity (0,2,0) > (0,1,0) de .char-wrap / .char-glitch / .char-smooth,
+   así que esta regla gana sobre el shorthand `animation:` de abajo (que
+   resetea animation-play-state al default `running`). */
+.deferred .char-wrap,
+.deferred .char-glitch,
+.deferred .char-smooth {
   animation-play-state: paused;
 }
 
@@ -171,9 +176,25 @@
   font-family: var(--font-geist-sans), sans-serif;
   font-weight: 700;
   color: var(--white);
-  text-shadow: 1px 0 #7DD3FC, -1px 0 #5DC9A8;
-  transform: translateX(1px);
+  /* Chromatic aberration 4-shadow: cyan/emerald a la derecha, pink/lilac a la izquierda. */
+  text-shadow:
+    3px 0 #7DD3FC,     /* sky-300 derecha (cyan) */
+    1.5px 0 #5DC9A8,   /* emerald derecha (sub) */
+    -1.5px 0 #F472B6,  /* pink-400 izquierda (sub) */
+    -3px 0 #C4B5FD;    /* violet-300 izquierda (lilac) */
   pointer-events: none;
+  /* Shake horizontal + fade-out combinados, en pasos binarios (step-end). */
+  animation: glitchShakeSettle 1000ms step-end calc(var(--line-delay) + var(--char-delay, 0ms)) forwards;
+}
+
+@keyframes glitchShakeSettle {
+  /* 4 saltos discretos de ±3px, opacity decayendo. step-end hace que cada
+     keyframe se "mantenga" hasta la próxima, sin interpolación jelly. */
+  0%   { opacity: 1;   transform: translateX(-3px); }
+  25%  { opacity: 1;   transform: translateX(3px); }
+  50%  { opacity: 0.4; transform: translateX(-3px); }
+  75%  { opacity: 0.1; transform: translateX(3px); }
+  100% { opacity: 0;   transform: translateX(0); }
 }
 
 .char-smooth {
@@ -194,9 +215,6 @@
   100% { opacity: 1; }
 }
 
-.char-wrap .char-glitch {
-  animation: glitchSettle 1000ms cubic-bezier(0.4, 0, 0.6, 1) calc(var(--line-delay) + var(--char-delay, 0ms)) forwards;
-}
 .char-wrap .char-smooth {
   animation: smoothAppear 1000ms cubic-bezier(0.4, 0, 0.6, 1) calc(var(--line-delay) + var(--char-delay, 0ms)) forwards;
 }

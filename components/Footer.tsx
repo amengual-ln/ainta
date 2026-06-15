@@ -1,4 +1,5 @@
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer
       className="relative z-10 flex flex-wrap items-center justify-between gap-4"
@@ -15,8 +16,15 @@ export default function Footer() {
         <span className="logo-dot" />
         AINTA
       </a>
-      <span className="text-[13px] text-muted">
-        Hecho por estudiantes, para estudiantes · 2026
+      <span
+        style={{
+          fontSize: "13px",
+          color: "var(--muted)",
+          fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
+          letterSpacing: "0.02em",
+        }}
+      >
+        Hecho por estudiantes, para estudiantes · {year}
       </span>
     </footer>
   );

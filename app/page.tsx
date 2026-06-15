@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Pillars from "@/components/Pillars";
 import Events from "@/components/Events";
@@ -9,7 +8,6 @@ import Footer from "@/components/Footer";
 export default function HomePage() {
   return (
     <>
-      <Nav />
       <main className="relative z-10">
         <div className="mx-auto px-6" style={{ maxWidth: "1080px" }}>
           <Hero />

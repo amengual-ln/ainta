@@ -1,4 +1,5 @@
 import ScrollReveal from "./ScrollReveal";
+import CharTitle from "./CharTitle";
 import { resourceCategories } from "@/lib/resources";
 
 export default function Resources() {
@@ -9,19 +10,7 @@ export default function Resources() {
       style={{ padding: "80px 0 120px" }}
     >
       <ScrollReveal className="mb-12" threshold={0.1}>
-        <div
-          className="font-body mb-4"
-          style={{
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: "var(--indigo-soft)",
-          }}
-        >
-          Biblioteca
-        </div>
-        <h2
+        <CharTitle
           className="font-display text-white"
           style={{
             fontSize: "clamp(28px, 3.5vw, 44px)",
@@ -31,7 +20,7 @@ export default function Resources() {
           }}
         >
           Recursos curados por la comunidad
-        </h2>
+        </CharTitle>
       </ScrollReveal>
 
       <ScrollReveal as="div" threshold={0.08}>
@@ -51,53 +40,45 @@ export default function Resources() {
               style={{
                 background: "var(--card-bg)",
                 backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
                 padding: "32px",
                 display: "block",
+                minHeight: "200px",
               }}
             >
               <div
-                className="font-body mb-3"
                 style={{
+                  fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
                   fontSize: "11px",
                   fontWeight: 500,
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: "var(--indigo-soft)",
+                  color: "var(--accent-soft)",
+                  marginBottom: "12px",
                 }}
               >
                 {cat.category}
               </div>
               <div
-                className="font-display text-white mb-2.5"
+                className="font-display text-white"
                 style={{
                   fontSize: "18px",
                   fontWeight: 600,
                   letterSpacing: "-0.02em",
+                  marginBottom: "10px",
                 }}
               >
                 {cat.title}
               </div>
               <p
-                className="font-body text-muted"
-                style={{ fontSize: "14px", lineHeight: 1.6 }}
+                style={{
+                  fontSize: "14px",
+                  lineHeight: 1.6,
+                  color: "var(--muted)",
+                }}
               >
                 {cat.description}
               </p>
-              <div
-                className="font-body flex items-center gap-1.5"
-                style={{ marginTop: "20px", fontSize: "12px", color: "var(--muted)" }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: "4px",
-                    height: "4px",
-                    borderRadius: "50%",
-                    background: "var(--indigo-soft)",
-                  }}
-                />
-                {cat.count}
-              </div>
             </a>
           ))}
         </div>

@@ -1,18 +1,77 @@
+const H1_LINES: string[] = ["Aprendemos IA", "en serio", "y sin humo"];
+
+const LINE_DELAYS = [350, 550, 750] as const;
+const CHAR_STAGGER_MS = 30;
+
+function splitChars(line: string): string[] {
+  const out: string[] = [];
+  for (const ch of line) {
+    out.push(ch === " " ? "\u00A0" : ch);
+  }
+  return out;
+}
+
+const LINES = H1_LINES.map((line, li) => ({
+  text: line,
+  delay: LINE_DELAYS[li],
+  chars: splitChars(line).map((ch, ci) => ({
+    ch,
+    charDelay: ci * CHAR_STAGGER_MS,
+  })),
+}));
+
+function renderLine(lineIdx: number, gradientOn?: boolean) {
+  const line = LINES[lineIdx];
+  return (
+    <span
+      key={lineIdx}
+      className="h1-reveal block"
+      style={{ ["--line-delay" as string]: `${line.delay}ms` }}
+    >
+      {line.chars.map((c, ci) => {
+        const visibleChar = c.ch === "\u00A0" ? "\u00A0" : c.ch;
+        return (
+          <span
+            key={ci}
+            className="char-wrap"
+            style={{ ["--char-delay" as string]: `${c.charDelay}ms` }}
+            aria-hidden={c.ch === "\u00A0" ? undefined : undefined}
+          >
+            <span className="char-layer char-glitch" aria-hidden="true">
+              {visibleChar}
+            </span>
+            <span
+              className={
+                gradientOn
+                  ? "char-layer char-smooth h1-gradient"
+                  : "char-layer char-smooth"
+              }
+            >
+              {visibleChar}
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 export default function Hero() {
   return (
     <section
-      className="relative z-10 flex items-center"
-      style={{ minHeight: "100vh", padding: "120px 0 80px" }}
+      className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-12"
+      style={{ minHeight: "100dvh", paddingTop: "80px", paddingBottom: "80px" }}
     >
-      <div className="max-w-[780px]">
+      <div className="lg:col-span-7">
         <div
-          className="fade-up eyebrow-anim inline-flex items-center gap-2 mb-8 font-body"
+          className="fade-up eyebrow-anim inline-flex items-center gap-2 mb-8"
           style={{
             fontSize: "12px",
+            fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
             fontWeight: 500,
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "var(--indigo-soft)",
+            color: "var(--accent-soft)",
           }}
         >
           <span className="eyebrow-line" />
@@ -20,7 +79,7 @@ export default function Hero() {
         </div>
 
         <h1
-          className="fade-up hero-title-anim font-display text-white mb-7"
+          className="font-display text-white mb-7"
           style={{
             fontSize: "clamp(42px, 6vw, 80px)",
             fontWeight: 700,
@@ -28,24 +87,13 @@ export default function Hero() {
             letterSpacing: "-0.04em",
           }}
         >
-          Aprendemos IA
-          <br />
-          <span
-            style={{
-              background: "linear-gradient(135deg, var(--indigo) 0%, #a78bfa 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            en serio
-          </span>
-          <br />
-          y sin humo
+          {renderLine(0, false)}
+          {renderLine(1, true)}
+          {renderLine(2, false)}
         </h1>
 
         <p
-          className="fade-up hero-sub-anim font-body mb-12"
+          className="fade-up hero-sub-anim mb-12"
           style={{
             fontSize: "18px",
             fontWeight: 300,
@@ -54,19 +102,33 @@ export default function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Una comunidad de estudiantes y graduados de carreras de IA. Organizamos
-          eventos, compartimos recursos realmente útiles y <strong>nos enseñamos entre nosotros lo que las aulas no llegaron a darnos.</strong>
+          Estudiantes y graduados de IA. Talleres, recursos curados y red de
+          pares — sin humo y sin fronteras.
         </p>
 
         <div className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
           <a href="#unirse" className="btn-primary">
-            Unirme a la comunidad
+            Unirme
           </a>
           <a href="#eventos" className="btn-ghost">
             Ver próximos eventos
           </a>
         </div>
       </div>
+
+      <aside
+        className="fade-up hero-aside-anim hidden lg:flex lg:col-span-5 items-end justify-end"
+        style={{ minHeight: "400px" }}
+        aria-hidden="true"
+      >
+        {/*
+          TODO[hero-side-asset]: motion abstracto en loop (dirección A2
+          — kinetic typography con Geist Pixel → Geist Sans). Cuando se
+          implemente, este slot reemplaza el comentario con el componente.
+          Por ahora queda vacío (no rellenar con div-fake).
+          Spec objetivo: ~480x520, abstracción visual sin fake-screenshots.
+        */}
+      </aside>
     </section>
   );
 }

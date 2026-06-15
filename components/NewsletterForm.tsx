@@ -98,7 +98,7 @@ export default function NewsletterForm() {
       <div
         className="flex flex-col"
         style={{
-          border: "1px solid var(--border)",
+          border: "1px solid var(--border-strong)",
           borderRadius: "12px",
           background: "rgba(8,11,16,0.5)",
           overflow: "hidden",

@@ -1,8 +1,9 @@
 import ScrollReveal from "./ScrollReveal";
+import CharTitle from "./CharTitle";
 import { events } from "@/lib/events";
 
 const tagClass: Record<string, string> = {
-  taller: "workshop",
+  taller: "taller",
   charla: "charla",
   externo: "externo",
   hackathon: "externo",
@@ -28,45 +29,24 @@ export default function Events() {
         className="flex flex-wrap items-end justify-between mb-12 gap-5"
         threshold={0.1}
       >
-        <div>
-          <div
-            className="font-body mb-4"
-            style={{
-              fontSize: "11px",
-              fontWeight: 500,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "var(--indigo-soft)",
-            }}
-          >
-            Agenda
-          </div>
-          <h2
-            className="font-display text-white"
-            style={{
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 600,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-            }}
-          >
-            Próximos eventos
-          </h2>
-        </div>
+        <CharTitle
+          className="font-display text-white"
+          style={{
+            fontSize: "clamp(28px, 3.5vw, 44px)",
+            fontWeight: 600,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.15,
+          }}
+        >
+          Próximos eventos
+        </CharTitle>
         <a href="/eventos" className="btn-ghost btn-sm">
           Ver todos →
         </a>
       </ScrollReveal>
 
       <ScrollReveal as="div" threshold={0.08}>
-        <div
-          className="flex flex-col overflow-hidden"
-          style={{
-            gap: "2px",
-            border: "1px solid var(--border)",
-            borderRadius: "16px",
-          }}
-        >
+        <div className="event-list">
           {upcoming.map((ev, i) => (
             <a
               key={`${ev.day}-${ev.month}-${i}`}
@@ -78,8 +58,7 @@ export default function Events() {
                 alignItems: "center",
                 gap: "24px",
                 padding: "24px 32px",
-                background: "var(--card-bg)",
-                backdropFilter: "blur(12px)",
+                background: "rgba(13, 17, 23, 0.4)",
               }}
             >
               <div className="text-center">
@@ -95,13 +74,13 @@ export default function Events() {
                   {ev.day}
                 </div>
                 <div
-                  className="font-body"
                   style={{
+                    fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
                     fontSize: "11px",
                     fontWeight: 500,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
-                    color: "var(--indigo-soft)",
+                    color: "var(--accent-soft)",
                     marginTop: "2px",
                   }}
                 >
@@ -119,22 +98,9 @@ export default function Events() {
                 >
                   {ev.title}
                 </div>
-                <div className="text-[13px] text-muted">{ev.meta}</div>
+                <div style={{ fontSize: "13px", color: "var(--muted)" }}>{ev.meta}</div>
               </div>
-              <span
-                className={`event-tag ${tagClass[ev.type] ?? ""}`}
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  padding: "5px 12px",
-                  borderRadius: "20px",
-                  border: "1px solid var(--border)",
-                  color: "var(--muted)",
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <span className={`event-tag ${tagClass[ev.type] ?? ""}`}>
                 {tagLabel[ev.type] ?? ev.type}
               </span>
             </a>

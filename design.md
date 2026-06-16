@@ -67,8 +67,8 @@ color: var(--muted);
 
 ### Orbs de fondo (3, diversificados)
 - Orb 1: `var(--accent-dim)` (emerald, dominante, top-left).
-- Orb 2: `rgba(125,211,252,0.06)` (sky-300 muy tenue, bottom-right).
-- Orb 3: `rgba(255,255,255,0.025)` (casi imperceptible, mid-left).
+- Orb 2: `rgba(125,211,252,0.09)` (sky-300 tenue, bottom-right).
+- Orb 3: `rgba(255,255,255,0.05)` (blanco sutil, mid-left).
 
 No usar tres orbs del mismo color — es un tell AI-purple.
 
@@ -111,10 +111,12 @@ Pixel (display only): GeistPixelSquare  (geist/font/pixel) — efecto h1
 Tres divs con `position: fixed`, `border-radius: 50%`, `filter: blur(80px)`. Cada uno con su propia animación de float independiente — duraciones distintas para que nunca se sincronicen.
 
 ```css
-.bg-orb-1 { animation: orbFloat1 20s ease-in-out infinite alternate; }
-.bg-orb-2 { animation: orbFloat2 26s ease-in-out infinite alternate; }
-.bg-orb-3 { animation: orbFloat3 22s ease-in-out infinite alternate; }
+.bg-orb-1 { animation: orbFloat1 26s ease-in-out infinite alternate; }
+.bg-orb-2 { animation: orbFloat2 32s ease-in-out infinite alternate; }
+.bg-orb-3 { animation: orbFloat3 28s ease-in-out infinite alternate; }
 ```
+
+Movimiento: traslación amplia (~100-160px en pico), escala sutil (0.92-1.10). Cadencia lenta y asíncrona entre los tres, "lunar".
 
 ### Hero — entrada en cascada
 Cada bloque del hero entra con `fadeUp` con delay incremental:

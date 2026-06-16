@@ -32,7 +32,7 @@ export default function JoinSection() {
               marginBottom: "16px",
             }}
           >
-            Unirme a AINTA
+            Sumate a AINTA
           </CharTitle>
           <p
             style={{
@@ -44,7 +44,7 @@ export default function JoinSection() {
               margin: "0 auto 40px",
             }}
           >
-            Es gratis, es abierto, y está hecho por estudiantes para estudiantes.
+            Es gratis, abierto, y está hecho por estudiantes para estudiantes.
           </p>
 
           <NewsletterForm />

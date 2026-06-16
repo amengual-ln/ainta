@@ -1,4 +1,4 @@
-const H1_LINES: string[] = ["Aprendemos IA", "en serio", "y sin humo"];
+const H1_LINES: string[] = ["AINTA", "", ""];
 
 const LINE_DELAYS = [350, 550, 750] as const;
 const CHAR_STAGGER_MS = 30;
@@ -75,7 +75,7 @@ export default function Hero() {
           }}
         >
           <span className="eyebrow-line" />
-          Comunidad de estudiantes de IA
+          COMUNIDAD DE ESTUDIANTES Y GRADUADOS DE CARRERAS DE IA
         </div>
 
         <h1
@@ -102,16 +102,15 @@ export default function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Estudiantes y graduados de IA. Talleres, recursos curados y red de
-          pares — sin humo y sin fronteras.
+          Eventos, talleres, recursos y networking
         </p>
 
         <div className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
           <a href="#unirse" className="btn-primary">
-            Unirme
+            Sumate
           </a>
           <a href="#eventos" className="btn-ghost">
-            Ver próximos eventos
+            Mirá los próximos eventos
           </a>
         </div>
       </div>

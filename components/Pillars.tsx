@@ -6,17 +6,17 @@ const pillars = [
   {
     icon: "GraduationCap" as const,
     name: "Aprendizaje real",
-    desc: "Talleres y clases sobre lo que importa: Python desde cero, fundamentos de ML, gestión de proyectos, deployment. Lo que las aulas no llegaron a darnos, lo cubrimos entre todos.",
+    desc: "Talleres y clases sobre lo que importa: fundamentos de IA y programación, gestión de proyectos, deployment. Lo que las aulas no llegaron a darnos, lo cubrimos entre todos.",
   },
   {
     icon: "CalendarBlank" as const,
     name: "Radar del ecosistema",
-    desc: "Curación de hackathons, charlas, conferencias y oportunidades externas. Para que no te pierdas nada relevante del mundo de la IA.",
+    desc: "Eventos, charlas, conferencias y oportunidades externas. Para que no te pierdas nada relevante del mundo de la IA.",
   },
   {
     icon: "UsersThree" as const,
     name: "Red de pares",
-    desc: "Conectate con otros estudiantes y graduados. Armá grupos de estudio, encontrá compañeros de proyecto, creá con otros.",
+    desc: "Conectate con otros estudiantes, graduados y referentes del area. Armá grupos de estudio, encontrá compañeros de proyecto, oportunidades, creá con otros.",
   },
 ];
 
@@ -40,12 +40,6 @@ export default function Pillars() {
         >
           Tres ejes que nos mueven
         </CharTitle>
-        <p
-          style={{ fontSize: "16px", maxWidth: "480px", lineHeight: 1.7, color: "var(--muted)" }}
-        >
-          No somos un foro. Somos un espacio donde se aprende haciendo, se
-          comparte sin filtro y se construye en comunidad.
-        </p>
       </ScrollReveal>
 
       <ScrollReveal as="div" threshold={0.08}>

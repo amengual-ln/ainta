@@ -9,19 +9,19 @@ export const resourceCategories: ResourceCategory[] = [
     category: "Fundamentos",
     title: "Programación para IA",
     description:
-      "Diagramas, estructuras de datos, algoritmos y todo lo que debería haberse enseñado en primer año.",
+      "Diagramas, estructuras de datos, algoritmos y todo lo que deberíamos saber desde las bases.",
   },
   {
     category: "Tools IA",
     title: "IA como tu compañera",
     description:
-      "Prompts, workflows y herramientas para potenciar tu aprendizaje y tu laburo del día a día.",
+      "Workflows y herramientas para potenciar tu aprendizaje y tu laburo del día a día.",
   },
   {
     category: "Proyectos",
     title: "Gestión y mejora continua",
     description:
-      "Scrum, dailies, code review y deploy sin sorpresas en producción.",
+      "Agile, git, code reviews, de cero a deploy sin sorpresas en producción.",
   },
   {
     category: "Comunidad",

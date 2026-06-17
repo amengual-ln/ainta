@@ -102,7 +102,8 @@ export default function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Eventos, talleres, recursos y networking
+          Un espacio donde se aprende haciendo, se
+          comparte sin filtro y se construye en comunidad.
         </p>
 
         <div className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">

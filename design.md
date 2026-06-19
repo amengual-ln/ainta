@@ -168,6 +168,27 @@ text-shadow:
 
 **Reduced motion**: mismo override del hero (glitch oculto, smooth visible, wrap animation desactivada).
 
+### Decode ambient (post-entrance)
+
+Una tercera capa invisible por char en el h1 del Hero y en los h2 vía `CharTitle`. Misma pinta que `.char-glitch` (aberración cromática 4-shadow + shake horizontal), pero corre en loop independiente. Dos variantes:
+
+- **Hero (`.char-decode`)**: ciclo 20s, ventana de shake 0-1% = 200ms (`@keyframes glitchPeriodic`).
+- **Secciones (`.char-decode--sparse`)**: ciclo 40s, ventana de shake 0-0.5% = 200ms (`@keyframes glitchPeriodicSparse`). Mismo shake que hero, ciclo 2x más largo para que los títulos de sección no se sientan activos.
+
+Ambas usan `step-end` (sin interpolación jelly) y stagger aleatorio por char vía `Math.random()` en `useEffect`. El rango de delay es `base 3s + random(0, cycle - 3s)` — la primera shake se distribuye a lo largo de casi todo el ciclo. Distribución genuinamente random para que el efecto se sienta disperso, no como un barrido.
+
+**Densidad efectiva** (chars × 200ms / cycle):
+- Hero (5 chars / 20s): ~0.05 char temblando a la vez. ~95% del tiempo, 0 shakes. ~5%, 1 char.
+- Sección 12 chars (200ms / 40s): ~0.06 char temblando a la vez. ~94% del tiempo, 0 shakes. ~6%, 1 char.
+
+**Comportamiento clave**: solo la capa decode aparece/desaparece, el `smooth` ya está visible. No hay fade-in de smooth — es un overlay de glitch periódico, no una re-entrada.
+
+**Hidratación**: el layer decode no se renderiza hasta que el `useEffect` setea los staggers aleatorios. Esto evita un flash de todos los chars temblando al hidratar.
+
+**Pausa por viewport**: en `CharTitle`, las capas decode y decode--sparse heredan el pause de `.deferred *` para no temblar antes de que el h2 sea visible. El `animation-delay` se cuenta desde que el elemento sale del estado deferred (entra al viewport).
+
+**Reduced motion**: `.char-decode, .char-decode--sparse { display: none !important; }` junto al override de `.char-glitch`.
+
 ### Logo dot
 ```css
 @keyframes pulse {

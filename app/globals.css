@@ -133,7 +133,9 @@
    resetea animation-play-state al default `running`). */
 .deferred .char-wrap,
 .deferred .char-glitch,
-.deferred .char-smooth {
+.deferred .char-smooth,
+.deferred .char-decode,
+.deferred .char-decode--sparse {
   animation-play-state: paused;
 }
 
@@ -185,6 +187,56 @@
   pointer-events: none;
   /* Shake horizontal + fade-out combinados, en pasos binarios (step-end). */
   animation: glitchShakeSettle 1000ms step-end calc(var(--line-delay) + var(--char-delay, 0ms)) forwards;
+}
+
+/* ── Decode ambient (post-entrance) ──
+   Capa periódica: misma pinta que .char-glitch (aberración + shake) pero
+   en loop de 20s con ventana de shake de 200ms (1% del ciclo). Stagger
+   aleatorio por char vía --decode-stagger (Math.random en cliente) para
+   que sea genuinamente random, no un barrido. */
+.char-decode {
+  position: absolute;
+  inset: 0;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  text-shadow:
+    3px 0 #7DD3FC,
+    1.5px 0 #5DC9A8,
+    -1.5px 0 #F472B6,
+    -3px 0 #C4B5FD;
+  pointer-events: none;
+  opacity: 0;
+  animation: glitchPeriodic 20s step-end infinite;
+  animation-delay: var(--decode-stagger, 0s);
+}
+
+@keyframes glitchPeriodic {
+  0%      { opacity: 1;   transform: translateX(-3px); }
+  0.25%   { opacity: 1;   transform: translateX(3px); }
+  0.5%    { opacity: 1;   transform: translateX(-3px); }
+  0.75%   { opacity: 1;   transform: translateX(3px); }
+  0.85%   { opacity: 0.4; transform: translateX(0); }
+  0.95%   { opacity: 0.1; transform: translateX(0); }
+  1%, 100%{ opacity: 0;   transform: translateX(0); }
+}
+
+/* Variante sparse para títulos de sección: ciclo 40s, ventana de shake
+   0-0.5% = 200ms (mismo shake que hero, 2x menos frecuente).
+   Densidad resultante: 0.06 chars simultáneos en títulos de 12 chars. */
+.char-decode--sparse {
+  animation: glitchPeriodicSparse 40s step-end infinite;
+  animation-delay: var(--decode-stagger, 0s);
+}
+
+@keyframes glitchPeriodicSparse {
+  0%      { opacity: 1;   transform: translateX(-3px); }
+  0.125%  { opacity: 1;   transform: translateX(3px); }
+  0.25%   { opacity: 1;   transform: translateX(-3px); }
+  0.375%  { opacity: 1;   transform: translateX(3px); }
+  0.425%  { opacity: 0.4; transform: translateX(0); }
+  0.475%  { opacity: 0.1; transform: translateX(0); }
+  1%, 100%  { opacity: 0;   transform: translateX(0); }
 }
 
 @keyframes glitchShakeSettle {
@@ -379,6 +431,7 @@
   .reveal { opacity: 1; transform: none; }
   .char-wrap { opacity: 1 !important; transform: none !important; animation: none !important; }
   .char-glitch { display: none !important; }
+  .char-decode, .char-decode--sparse { display: none !important; }
   .char-smooth { opacity: 1 !important; }
   .logo-dot { animation: none; }
   .bg-orb { animation: none !important; }

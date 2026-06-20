@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Spärck — Brand Guidelines</title>
+<style>
+  @font-face {
+    font-family: "Geist Sans";
+    src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2") format("woff2-variations"),
+         url("../node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("../node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2") format("woff2-variations"),
+         url("../node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Geist Pixel Square";
+    src: url("../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Square.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #080B10;
+    --bg2: #0D1117;
+    --card-bg: #10151C;
+    --white: #F0F0F5;
+    --muted: #8B8FA8;
+    --border: rgba(139, 143, 168, 0.14);
+    --border-strong: rgba(139, 143, 168, 0.28);
+    --accent: #34A88B;
+    --accent-soft: #5DC9A8;
+    --accent-dim: rgba(52, 168, 139, 0.14);
+    --accent-dimmer: rgba(52, 168, 139, 0.06);
+    --sky: #7DD3FC;
+    --pink: #F472B6;
+    --lilac: #C4B5FD;
+    --cta-ink: #062419;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--white);
+    font-family: "Geist Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 18mm 18mm 22mm 18mm;
+    page-break-after: always;
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .running {
+    position: absolute;
+    top: 10mm;
+    left: 18mm;
+    right: 18mm;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .running .dot { color: var(--accent-soft); }
+
+  .footer-mark {
+    position: absolute;
+    bottom: 10mm;
+    left: 18mm;
+    right: 18mm;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* COVER */
+  .cover {
+    width: 210mm;
+    height: 297mm;
+    padding: 0;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 18% 0%, rgba(52,168,139,0.12), transparent 55%),
+      radial-gradient(ellipse at 92% 100%, rgba(125,211,252,0.07), transparent 60%),
+      var(--bg);
+  }
+  .cover-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(139,143,168,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139,143,168,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 80%);
+  }
+  .cover-inner {
+    position: relative;
+    height: 100%;
+    padding: 22mm 22mm 22mm 22mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cover-top .pill {
+    border: 1px solid var(--border-strong);
+    padding: 5px 10px;
+    border-radius: 999px;
+  }
+
+  .cover-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4mm;
+  }
+  .logo-dot {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent-soft);
+  }
+  .cover-wordmark {
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .cover-headline {
+    margin-top: 10mm;
+  }
+  .cover-headline .eyebrow {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 10mm;
+  }
+  .cover-headline h1 {
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-size: 64px;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+    font-weight: 700;
+    margin: 0;
+    color: var(--white);
+  }
+  .cover-headline h1 .accent { color: var(--accent-soft); }
+  .cover-headline .sub {
+    margin-top: 10mm;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 140mm;
+  }
+
+  .cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12mm;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6mm 14mm;
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cover-meta .k { color: rgba(139,143,168,0.55); display: block; margin-bottom: 4px; }
+  .cover-meta .v { color: var(--white); font-family: "Geist Sans", system-ui, sans-serif; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 12.5px; }
+  .cover-tagline {
+    text-align: right;
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--accent-soft);
+    max-width: 70mm;
+  }
+
+  /* SECTION HEADERS */
+  .eyebrow {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--accent-soft);
+    display: inline-block;
+  }
+
+  .section-title {
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: var(--white);
+    margin: 0 0 5mm 0;
+  }
+  .section-sub {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 155mm;
+    margin: 0 0 9mm 0;
+    font-weight: 300;
+  }
+
+  /* ESENCIA */
+  .essence-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    margin-top: 6mm;
+    page-break-inside: avoid;
+  }
+  .essence-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 6mm 6mm 7mm 6mm;
+    background: var(--card-bg);
+  }
+  .essence-card h3 {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin: 0 0 4mm 0;
+  }
+  .essence-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .essence-card ul li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--white);
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 2.5mm;
+  }
+  .essence-card ul li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 7px;
+    width: 6px; height: 1px;
+    background: currentColor;
+  }
+  .essence-card .no { color: var(--pink); }
+  .essence-card .yes { color: var(--accent-soft); }
+  .essence-card .no::before { background: var(--pink); }
+  .essence-card .yes::before { background: var(--accent-soft); }
+
+  .essence-pull {
+    margin-top: 8mm;
+    padding: 6mm 7mm;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    border-radius: 4px 14px 14px 4px;
+    background: var(--accent-dimmer);
+    page-break-inside: avoid;
+  }
+  .essence-pull .quote {
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-size: 19px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .essence-pull .cite {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-top: 3mm;
+  }
+
+  /* COLOR PALETTE */
+  .palette-section { margin-top: 4mm; }
+  .palette-block { margin-bottom: 7mm; page-break-inside: avoid; }
+  .palette-block h3 {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 3mm 0;
+  }
+  .swatches {
+    display: grid;
+    gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+  }
+  .swatches.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .swatches.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .swatches.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .swatch {
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  .swatch .chip {
+    height: 36mm;
+  }
+  .swatch .meta {
+    padding: 3mm 4mm 4mm 4mm;
+    border-top: 1px solid var(--border);
+  }
+  .swatch .name {
+    font-family: "Geist Sans", system-ui, sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .swatch .token {
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .swatch .hex {
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .note {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 3mm;
+    padding-left: 12px;
+    border-left: 1px solid var(--border-strong);
+  }
+
+  /* TYPOGRAPHY */
+  .type-block {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 5mm 6mm 6mm 6mm;
+    margin-bottom: 4mm;
+    background: var(--card-bg);
+    page-break-inside: avoid;
+  }
+  .type-block .role {
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 3mm;
+  }
+  .type-specimen {
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    font-weight: 600;
+    margin: 0;
+  }
+  .type-specimen.gs-display { font-size: 56px; font-weight: 700; }
+  .type-specimen.gs-section { font-size: 38px; font-weight: 600; letter-spacing: -0.035em; }
+  .type-specimen.gs-body {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+  .type-specimen.gs-light {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.55;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .type-specimen.gm-eyebrow {
+    font-family: "Geist Mono", monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    line-height: 1.4;
+  }
+  .type-specimen.gm-meta {
+    font-family: "Geist Mono", monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .type-specimen.gp-square {
+    font-family: "Geist Pixel Square", monospace;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--white);
+  }
+  .type-specimen.gp-square.dim { color: var(--accent-soft); }
+
+  .type-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3mm;
+    margin-top: 4mm;
+    padding-top: 3.5mm;
+    border-top: 1px solid var(--border);
+  }
+  .type-meta .item .k {
+    font-family: "Geist Mono", monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .type-meta .item .v {
+    font-family: "Geist Sans", sans-serif;
+    font-size: 12px;
+    color: var(--white);
+  }
+
+  .scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4mm;
+    font-family: "Geist Sans", sans-serif;
+  }
+  .scale-table thead th {
+    font-family: "Geist Mono", monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 3mm 3mm 2mm 3mm;
+    border-bottom: 1px solid var(--border);
+  }
+  .scale-table tbody td {
+    padding: 3mm;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--white);
+    vertical-align: top;
+  }
+  .scale-table tbody tr:last-child td { border-bottom: none; }
+  .scale-table .role { font-weight: 500; }
+  .scale-table .size { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--muted); }
+  .scale-table .weight { font-family: "Geist Mono", monospace; font-size: 11px; }
+  .scale-table .track { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--muted); }
+
+  /* LOGO & WORDMARK */
+  .logo-stage {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 9mm 8mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4mm;
+    background: var(--bg);
+    page-break-inside: avoid;
+  }
+  .logo-stage .mark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-stage .mark .logo-dot { width: 16px; height: 16px; }
+  .logo-stage .mark .word {
+    font-family: "Geist Sans", sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--white);
+  }
+
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+    margin-top: 4mm;
+    page-break-inside: avoid;
+  }
+  .logo-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6mm;
+    min-height: 30mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .logo-card .lbl {
+    position: absolute;
+    top: 4mm;
+    left: 5mm;
+    font-family: "Geist Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .logo-card.dark { background: var(--bg); }
+  .logo-card.soft { background: var(--accent-dim); }
+  .logo-card.bright { background: var(--accent); }
+  .logo-card .small {
+    display: flex; align-items: center; gap: 7px;
+    font-family: "Geist Sans", sans-serif;
+    font-size: 16px; font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .logo-card .small .logo-dot { width: 9px; height: 9px; }
+  .logo-card.dark .small { color: var(--white); }
+  .logo-card.dark .small .logo-dot { background: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-soft); }
+  .logo-card.soft .small { color: var(--white); }
+  .logo-card.soft .small .logo-dot { background: var(--accent); }
+  .logo-card.bright .small { color: #062419; }
+  .logo-card.bright .small .logo-dot { background: #062419; box-shadow: inset 0 0 0 1px #062419; }
+
+  .logo-rules {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4mm;
+    margin-top: 6mm;
+    page-break-inside: avoid;
+  }
+  .logo-rules .rule {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4mm 5mm;
+  }
+  .logo-rules .rule h4 {
+    font-family: "Geist Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 2.5mm 0;
+  }
+  .logo-rules .rule p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--white);
+    margin: 0;
+  }
+
+  /* VOICE */
+  .voice-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm;
+    margin-top: 4mm;
+    page-break-inside: avoid;
+  }
+  .voice-col {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 5mm 6mm 6mm 6mm;
+    background: var(--card-bg);
+  }
+  .voice-col h3 {
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin: 0 0 4mm 0;
+  }
+  .voice-line {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--white);
+    margin: 0 0 3mm 0;
+  }
+  .voice-line em {
+    font-style: normal;
+    color: var(--accent-soft);
+    font-weight: 500;
+  }
+
+  .voice-do {
+    margin-top: 5mm;
+  }
+  .voice-row {
+    display: grid;
+    grid-template-columns: 24mm 1fr;
+    gap: 5mm;
+    padding: 3mm 0;
+    border-top: 1px solid var(--border);
+    page-break-inside: avoid;
+  }
+  .voice-row:last-child { border-bottom: 1px solid var(--border); }
+  .voice-row .v {
+    font-family: "Geist Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 1mm;
+  }
+  .voice-row .d {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--white);
+  }
+  .voice-row .d .good { color: var(--accent-soft); }
+  .voice-row .d .bad { color: var(--pink); }
+
+  /* QUICK REFERENCE */
+  .qr-page {
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(52,168,139,0.10), transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(125,211,252,0.05), transparent 60%),
+      var(--bg);
+  }
+  .qr-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card-bg);
+    padding: 5mm 6mm 6mm 6mm;
+    margin-bottom: 4mm;
+    page-break-inside: avoid;
+  }
+  .qr-card h3 {
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin: 0 0 3mm 0;
+  }
+  .qr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm 6mm;
+  }
+  .qr-item .k {
+    font-family: "Geist Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1px;
+  }
+  .qr-item .v {
+    font-family: "Geist Sans", sans-serif;
+    font-size: 12px;
+    color: var(--white);
+    word-break: break-word;
+  }
+  .qr-item .v.token { font-family: "Geist Mono", monospace; font-size: 11px; }
+
+  .qr-row {
+    display: flex;
+    gap: 2mm;
+    margin-top: 3mm;
+  }
+  .qr-chip {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .qr-chip .chip-fill { height: 14mm; }
+  .qr-chip .chip-meta {
+    padding: 2mm 3mm;
+    font-family: "Geist Mono", monospace;
+    font-size: 10px;
+    color: var(--white);
+    border-top: 1px solid var(--border);
+  }
+  .qr-chip .chip-meta .h { color: var(--muted); display: block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1px; }
+
+  .qr-cta {
+    margin-top: 5mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6mm;
+    padding: 0 1mm;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    background: var(--accent);
+    color: #062419;
+    padding: 9px 20px;
+    border-radius: 10px;
+    font-family: "Geist Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-family: "Geist Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .qr-cta .meta {
+    text-align: right;
+    font-family: "Geist Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .qr-cta .meta .v { color: var(--white); font-family: "Geist Sans", sans-serif; text-transform: none; letter-spacing: 0; font-size: 12.5px; display: block; margin-top: 1px; }
+
+</style>
+</head>
+<body>
+
+<!-- ============== COVER ============== -->
+<section class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-top">
+      <span>Comunidad · Estudiantes de IA</span>
+      <span class="pill">Brand guidelines · v1.0</span>
+    </div>
+
+    <div>
+      <div class="cover-mark">
+        <span class="logo-dot"></span>
+        <span class="cover-wordmark">Spärck</span>
+      </div>
+
+      <div class="cover-headline">
+        <div class="eyebrow">Sistema de marca · 2026</div>
+        <h1>Spärck<br/><span class="accent">Brand&nbsp;Guidelines.</span></h1>
+        <p class="sub">Una guía rápida del sistema visual y verbal de Spärck: paleta de color, tipografías, voz y reglas de uso. Pensada para que cualquiera —diseñador, dev, partner— pueda producir material consistente sin pedir permiso.</p>
+      </div>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="cover-meta">
+        <div><span class="k">Marca</span><span class="v">Spärck</span></div>
+        <div><span class="k">Tagline</span><span class="v">Aprender IA entre quienes la viven de verdad</span></div>
+        <div><span class="k">Acento</span><span class="v">Emerald B2 · #34A88B</span></div>
+        <div><span class="k">Tipografía</span><span class="v">Geist Sans / Mono / Pixel</span></div>
+      </div>
+      <div class="cover-tagline">En honor a Karen Spärck Jones.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 1. ESENCIA ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>01 · Esencia</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">01 · Esencia</div>
+    <h2 class="section-title">Quiénes somos, y sobre todo, quiénes no.</h2>
+    <p class="section-sub">Spärck es una comunidad abierta de estudiantes y graduados de carreras de Inteligencia Artificial. Horizontal, sin jerarquías, sin humo. Estos son los límites no negociables del tono y la marca.</p>
+  </div>
+
+  <div class="essence-grid">
+    <div class="essence-card">
+      <h3>Lo que NO es</h3>
+      <ul>
+        <li class="no">Una institución académica</li>
+        <li class="no">Un foro de discusión genérico</li>
+        <li class="no">Un servicio de empleo</li>
+        <li class="no">Una empresa</li>
+        <li class="no">Una marca con influencers ni gurús</li>
+      </ul>
+    </div>
+    <div class="essence-card">
+      <h3>Lo que SÍ es</h3>
+      <ul>
+        <li class="yes">Colectivo horizontal de estudiantes</li>
+        <li class="yes">Radar de eventos y oportunidades</li>
+        <li class="yes">Biblioteca de recursos curados</li>
+        <li class="yes">Red de pares para grupos de estudio</li>
+        <li class="yes">Hecho por estudiantes, para estudiantes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="essence-pull">
+    <div class="quote">"Aprender IA entre quienes la viven de verdad."</div>
+    <div class="cite">Tagline · Spärck</div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 2. COLOR ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>02 · Color</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">02 · Color</div>
+    <h2 class="section-title">Una sola voz cromática.</h2>
+    <p class="section-sub">Una única familia de acento. Cero gradientes AI-purple. La identidad descansa en el contraste entre un verde curado, un cielo frío y un fondo casi negro azulado. Cuando dudes: menos.</p>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-block">
+      <h3>Acento · Emerald B2</h3>
+      <div class="swatches cols-3">
+        <div class="swatch">
+          <div class="chip" style="background:var(--accent)"></div>
+          <div class="meta">
+            <div class="name">accent</div>
+            <div class="token">--accent</div>
+            <div class="hex">#34A88B</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--accent-soft)"></div>
+          <div class="meta">
+            <div class="name">accent-soft</div>
+            <div class="token">--accent-soft</div>
+            <div class="hex">#5DC9A8</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--accent-dim); border:1px solid var(--accent)"></div>
+          <div class="meta">
+            <div class="name">accent-dim</div>
+            <div class="token">--accent-dim</div>
+            <div class="hex">rgba(52,168,139,0.14)</div>
+          </div>
+        </div>
+      </div>
+      <div class="note">B2 desatura un 8% y mueve el hue 5° hacia cian respecto al emerald Tailwind (#10B981). Más mineral y orgánico, menos "success-color corporativo".</div>
+    </div>
+
+    <div class="palette-block">
+      <h3>Neutros</h3>
+      <div class="swatches cols-4">
+        <div class="swatch">
+          <div class="chip" style="background:var(--bg)"></div>
+          <div class="meta">
+            <div class="name">bg</div>
+            <div class="token">--bg</div>
+            <div class="hex">#080B10</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--bg2)"></div>
+          <div class="meta">
+            <div class="name">bg2</div>
+            <div class="token">--bg2</div>
+            <div class="hex">#0D1117</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--white)"></div>
+          <div class="meta">
+            <div class="name">white</div>
+            <div class="token">--white</div>
+            <div class="hex">#F0F0F5</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--muted)"></div>
+          <div class="meta">
+            <div class="name">muted</div>
+            <div class="token">--muted</div>
+            <div class="hex">#8B8FA8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-block">
+      <h3>Complementarios</h3>
+      <div class="swatches cols-3">
+        <div class="swatch">
+          <div class="chip" style="background:var(--sky)"></div>
+          <div class="meta">
+            <div class="name">sky-300</div>
+            <div class="token">tags · Charla</div>
+            <div class="hex">#7DD3FC</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:var(--accent-dimmer); border:1px solid var(--border-strong)"></div>
+          <div class="meta">
+            <div class="name">accent-dimmer</div>
+            <div class="token">hover sutil</div>
+            <div class="hex">rgba(52,168,139,0.06)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#062419; border:1px solid var(--border)"></div>
+          <div class="meta">
+            <div class="name">cta-ink</div>
+            <div class="token">texto sobre accent · AAA</div>
+            <div class="hex">#062419</div>
+          </div>
+        </div>
+      </div>
+      <div class="note">Texto del CTA: #062419 sobre --accent = ~7:1, pasa WCAG AAA. No usar blanco (3.5:1, falla AA-body).</div>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 3. TYPOGRAPHY ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>03 · Tipografía</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">03 · Tipografía</div>
+    <h2 class="section-title">Geist, en tres voces.</h2>
+    <p class="section-sub">La familia Geist hace todo el trabajo: Sans para display y cuerpo, Mono para metadatos y eyebrows, Pixel-Square como guiño tipográfico reservado al hero.</p>
+  </div>
+
+  <div class="type-block">
+    <div class="role">Display · Geist Sans · 700</div>
+    <p class="type-specimen gs-display">Spärck</p>
+    <div class="type-meta">
+      <div class="item"><div class="k">Familia</div><div class="v">Geist Sans</div></div>
+      <div class="item"><div class="k">Peso</div><div class="v">700</div></div>
+      <div class="item"><div class="k">Tamaño</div><div class="v">clamp(42, 6vw, 80)</div></div>
+      <div class="item"><div class="k">Tracking</div><div class="v">-0.04em</div></div>
+    </div>
+  </div>
+
+  <div class="type-block">
+    <div class="role">Section title · Geist Sans · 600</div>
+    <p class="type-specimen gs-section">Próximos eventos</p>
+    <div class="type-meta">
+      <div class="item"><div class="k">Familia</div><div class="v">Geist Sans</div></div>
+      <div class="item"><div class="k">Peso</div><div class="v">600</div></div>
+      <div class="item"><div class="k">Tamaño</div><div class="v">clamp(28, 3.5vw, 44)</div></div>
+      <div class="item"><div class="k">Tracking</div><div class="v">-0.03em</div></div>
+    </div>
+  </div>
+
+  <div class="type-block">
+    <div class="role">Body · Geist Sans · 400</div>
+    <p class="type-specimen gs-body">Un espacio donde se aprende haciendo, se comparte sin filtro y se construye en comunidad.</p>
+    <div class="type-meta">
+      <div class="item"><div class="k">Familia</div><div class="v">Geist Sans</div></div>
+      <div class="item"><div class="k">Peso</div><div class="v">400</div></div>
+      <div class="item"><div class="k">Tamaño</div><div class="v">16px</div></div>
+      <div class="item"><div class="k">Leading</div><div class="v">1.6–1.7</div></div>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 3b. TYPOGRAPHY (mono + pixel + scale) ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>03 · Tipografía (cont.)</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">03 · Tipografía · cont.</div>
+    <h2 class="section-title">Las otras dos voces, y la escala completa.</h2>
+    <p class="section-sub">Mono nunca aparece en body — solo en eyebrows, metadata y footer. Pixel-Square es ornamento reservado al h1 del hero: una sola instancia por página, sin abusar.</p>
+  </div>
+
+  <div class="type-block">
+    <div class="role">Eyebrow · Geist Mono · 500 · uppercase</div>
+    <p class="type-specimen gm-eyebrow">Próximos eventos · 2026</p>
+    <div class="type-meta">
+      <div class="item"><div class="k">Familia</div><div class="v">Geist Mono</div></div>
+      <div class="item"><div class="k">Peso</div><div class="v">500</div></div>
+      <div class="item"><div class="k">Tamaño</div><div class="v">10.5–12px</div></div>
+      <div class="item"><div class="k">Tracking</div><div class="v">0.10–0.14em</div></div>
+    </div>
+  </div>
+
+  <div class="type-block">
+    <div class="role">Display accent · GeistPixelSquare · 500</div>
+    <p class="type-specimen gp-square">Spärck<span class="type-specimen gp-square dim">_</span></p>
+    <div class="type-meta">
+      <div class="item"><div class="k">Familia</div><div class="v">GeistPixelSquare</div></div>
+      <div class="item"><div class="k">Peso</div><div class="v">500</div></div>
+      <div class="item"><div class="k">Uso</div><div class="v">hero · 1 instancia</div></div>
+      <div class="item"><div class="k">Restricción</div><div class="v">nunca en body</div></div>
+    </div>
+  </div>
+
+  <div class="palette-block" style="margin-top:5mm;">
+    <h3>Escala completa</h3>
+    <table class="scale-table">
+      <thead>
+        <tr>
+          <th>Rol</th>
+          <th>Familia</th>
+          <th>Tamaño</th>
+          <th>Peso</th>
+          <th>Tracking</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="role">Hero title</td><td>Geist Sans</td><td class="size">clamp(42, 6vw, 80)</td><td class="weight">700</td><td class="track">-0.04em</td></tr>
+        <tr><td class="role">Section title</td><td>Geist Sans</td><td class="size">clamp(28, 3.5vw, 44)</td><td class="weight">600</td><td class="track">-0.03em</td></tr>
+        <tr><td class="role">Card title</td><td>Geist Sans</td><td class="size">17–30px</td><td class="weight">600</td><td class="track">-0.02 / -0.025</td></tr>
+        <tr><td class="role">Logo</td><td>Geist Sans</td><td class="size">15–18px</td><td class="weight">600</td><td class="track">-0.02em</td></tr>
+        <tr><td class="role">Nav CTA</td><td>Geist Sans</td><td class="size">13px</td><td class="weight">500</td><td class="track">0.01em</td></tr>
+        <tr><td class="role">Body</td><td>Geist Sans</td><td class="size">16px</td><td class="weight">400</td><td class="track">0</td></tr>
+        <tr><td class="role">Hero subtitle</td><td>Geist Sans</td><td class="size">18px</td><td class="weight">300</td><td class="track">0</td></tr>
+        <tr><td class="role">Eyebrow / tag</td><td>Geist Mono</td><td class="size">10.5–12px</td><td class="weight">500</td><td class="track">0.10–0.14em</td></tr>
+        <tr><td class="role">Metadata</td><td>Geist Sans</td><td class="size">13–14px</td><td class="weight">400</td><td class="track">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 4. LOGO & WORDMARK ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>04 · Logo & wordmark</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">04 · Logo & wordmark</div>
+    <h2 class="section-title">El punto + la palabra.</h2>
+    <p class="section-sub">El logo es deliberadamente mínimo: un punto emerald con anillo interior + la palabra Spärck en Geist Sans 600. Sin gradients, sin sombras exteriores, sin glow.</p>
+  </div>
+
+  <div class="logo-stage">
+    <div class="mark">
+      <span class="logo-dot"></span>
+      <span class="word">Spärck</span>
+    </div>
+  </div>
+
+  <div class="logo-grid">
+    <div class="logo-card dark">
+      <div class="lbl">Sobre bg oscuro</div>
+      <div class="small">
+        <span class="logo-dot"></span>Spärck
+      </div>
+    </div>
+    <div class="logo-card soft">
+      <div class="lbl">Sobre accent-dim</div>
+      <div class="small">
+        <span class="logo-dot"></span>Spärck
+      </div>
+    </div>
+    <div class="logo-card bright">
+      <div class="lbl">Sobre accent sólido</div>
+      <div class="small">
+        <span class="logo-dot"></span>Spärck
+      </div>
+    </div>
+  </div>
+
+  <div class="logo-rules">
+    <div class="rule">
+      <h4>Sí</h4>
+      <p>Usar el logo-dot en emerald sólido con box-shadow interior en accent-soft. Mantener proporción punto:palabra ≈ 1:1.2.</p>
+    </div>
+    <div class="rule">
+      <h4>No</h4>
+      <p>Cambiar la tipografía del wordmark. Agregar drop-shadow o glow exterior al dot. Estirar la palabra. Cambiar el ä por a, A o ae.</p>
+    </div>
+    <div class="rule">
+      <h4>Variante "Sparck"</h4>
+      <p>Reservada para dominios, handles, package names y demás usos técnicos donde el diacrítico sea inviable. Nunca en piezas visuales.</p>
+    </div>
+    <div class="rule">
+      <h4>Tamaño mínimo</h4>
+      <p>24px de alto en digital. En impresión, ≥ 8mm. Bajo ese tamaño usar solo el dot como avatar.</p>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 5. VOICE & TONE ============== -->
+<section class="page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>05 · Voz & tono</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">05 · Voz & tono</div>
+    <h2 class="section-title">Como pares, no como marca.</h2>
+    <p class="section-sub">El tono es el de un estudiante explicándole algo a otro estudiante. Claro, directo, sin condescendencia ni marketing-speak. Spärck no vende — comparte.</p>
+  </div>
+
+  <div class="voice-cols">
+    <div class="voice-col">
+      <h3>Somos</h3>
+      <p class="voice-line"><em>Directos.</em> Decimos lo que sí y lo que no, sin rodeos.</p>
+      <p class="voice-line"><em>Horizontales.</em> Hablamos de tú, no de "usted".</p>
+      <p class="voice-line"><em>Curados.</em> Mejor poco y bueno que mucho y genérico.</p>
+      <p class="voice-line"><em>Honestos.</em> Si algo no funciona, lo decimos.</p>
+    </div>
+    <div class="voice-col">
+      <h3>No somos</h3>
+      <p class="voice-line">Ni solemnes ni solemne-irónicos.</p>
+      <p class="voice-line">Ni gurús ni predicadores.</p>
+      <p class="voice-line">Ni AI-bro ("10x engineer", "move fast").</p>
+      <p class="voice-line">Ni corporativos ("soluciones", "stakeholders", "sinergia").</p>
+    </div>
+  </div>
+
+  <div class="voice-do">
+    <div class="voice-row">
+      <div class="v">Sí</div>
+      <div class="d"><span class="good">"Sumate a Spärck."</span> — directo, en segunda persona, sin "únete a nuestra comunidad".</div>
+    </div>
+    <div class="voice-row">
+      <div class="v">No</div>
+      <div class="d"><span class="bad">"¡Sé parte de nuestra increíble comunidad de IA!"</span> — inflado, genérico.</div>
+    </div>
+    <div class="voice-row">
+      <div class="v">Sí</div>
+      <div class="d"><span class="good">"Aprender IA entre quienes la viven de verdad."</span> — habla de práctica, no de promesa.</div>
+    </div>
+    <div class="voice-row">
+      <div class="v">No</div>
+      <div class="d"><span class="bad">"El futuro de la inteligencia artificial empieza aquí."</span> — hype vacío.</div>
+    </div>
+    <div class="voice-row">
+      <div class="v">Sí</div>
+      <div class="d"><span class="good">"Talleres propios, recursos curados, red de pares."</span> — sin adornos, lo que hay.</div>
+    </div>
+    <div class="voice-row">
+      <div class="v">No</div>
+      <div class="d"><span class="bad">"Contenido premium, networking de alto nivel, oportunidades exclusivas."</span> — lengua de LinkedIn.</div>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0</span>
+  </div>
+</section>
+
+<!-- ============== 6. QUICK REFERENCE ============== -->
+<section class="page qr-page">
+  <div class="running">
+    <span><span class="dot">●</span> Spärck · Brand Guidelines</span>
+    <span>06 · Quick reference</span>
+  </div>
+
+  <div style="margin-top:14mm;">
+    <div class="eyebrow">06 · Quick reference</div>
+    <h2 class="section-title">Una página, todo lo esencial.</h2>
+    <p class="section-sub">Para abrir cuando dudás. Si la respuesta no está acá, abrí las páginas anteriores.</p>
+  </div>
+
+  <div class="qr-card">
+    <h3>Identidad</h3>
+    <div class="qr-grid">
+      <div class="qr-item"><div class="k">Marca visual</div><div class="v">Spärck</div></div>
+      <div class="qr-item"><div class="k">Marca técnica</div><div class="v">sparck</div></div>
+      <div class="qr-item"><div class="k">Dominio</div><div class="v token">sparck.com.ar</div></div>
+      <div class="qr-item"><div class="k">Tagline</div><div class="v">Aprender IA entre quienes la viven de verdad</div></div>
+      <div class="qr-item"><div class="k">Acento</div><div class="v token">#34A88B · emerald B2</div></div>
+      <div class="qr-item"><div class="k">Fondo</div><div class="v token">#080B10</div></div>
+      <div class="qr-item"><div class="k">Display</div><div class="v">Geist Sans · 700</div></div>
+      <div class="qr-item"><div class="k">Eyebrow</div><div class="v">Geist Mono · 500 · uppercase</div></div>
+    </div>
+  </div>
+
+  <div class="qr-card">
+    <h3>Paleta en uso</h3>
+    <div class="qr-row">
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--accent)"></div>
+        <div class="chip-meta"><span class="h">accent</span>#34A88B</div>
+      </div>
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--accent-soft)"></div>
+        <div class="chip-meta"><span class="h">accent-soft</span>#5DC9A8</div>
+      </div>
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--sky)"></div>
+        <div class="chip-meta"><span class="h">sky-300</span>#7DD3FC</div>
+      </div>
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--white)"></div>
+        <div class="chip-meta"><span class="h">white</span>#F0F0F5</div>
+      </div>
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--muted)"></div>
+        <div class="chip-meta"><span class="h">muted</span>#8B8FA8</div>
+      </div>
+      <div class="qr-chip">
+        <div class="chip-fill" style="background:var(--bg2)"></div>
+        <div class="chip-meta"><span class="h">bg2</span>#0D1117</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qr-card">
+    <h3>Componentes clave</h3>
+    <div class="qr-grid">
+      <div class="qr-item"><div class="k">Botón primario</div><div class="v">bg --accent · texto #062419 · radius 10</div></div>
+      <div class="qr-item"><div class="k">Botón ghost</div><div class="v">border 1px --border · texto --muted · radius 10</div></div>
+      <div class="qr-item"><div class="k">Card</div><div class="v">bg #10151C · radius 16 · padding 7-8mm</div></div>
+      <div class="qr-item"><div class="k">Container</div><div class="v">max-width 1080 · padding 24 · gap 2</div></div>
+    </div>
+  </div>
+
+  <div class="qr-cta">
+    <div style="display:flex; gap:3mm;">
+      <span class="btn-primary">Sumate</span>
+      <span class="btn-ghost">Mirá los próximos eventos</span>
+    </div>
+    <div class="meta">
+      Contacto
+      <span class="v">hola@sparck.com.ar</span>
+    </div>
+  </div>
+
+  <div class="footer-mark">
+    <span>sparck.com.ar</span>
+    <span>v1.0 · Spärck Brand Guidelines</span>
+  </div>
+</section>
+
+</body>
+</html>

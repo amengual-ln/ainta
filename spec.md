@@ -1,8 +1,8 @@
-# AINTA — Product Spec
+# Spärck — Product Spec
 
 ## Visión general
 
-AINTA es una comunidad abierta de estudiantes y graduados de carreras de Inteligencia Artificial. Nace como respuesta a un problema concreto: la baja calidad pedagógica de muchas carreras de IA, donde los contenidos fundamentales (programación, gestión de proyectos, bases teóricas reales) no se enseñan bien o directamente no se enseñan.
+Spärck es una comunidad abierta de estudiantes y graduados de carreras de Inteligencia Artificial. Nace como respuesta a un problema concreto: la baja calidad pedagógica de muchas carreras de IA, donde los contenidos fundamentales (programación, gestión de proyectos, bases teóricas reales) no se enseñan bien o directamente no se enseñan.
 
 El sitio web es el hub central de la comunidad: punto de entrada, directorio de eventos y recursos, y puerta a los canales de comunicación (Telegram, Discord, newsletter).
 
@@ -10,7 +10,7 @@ El sitio web es el hub central de la comunidad: punto de entrada, directorio de 
 
 ## Nombre y posicionamiento
 
-**Nombre:** AINTA  
+**Nombre:** Spärck  
 **Tagline:** *Aprender IA entre quienes la viven de verdad*  
 **Descripción corta:** Comunidad abierta de estudiantes y graduados de IA — sin fronteras geográficas, sin jerarquías, sin humo.
 
@@ -42,7 +42,7 @@ El sitio web es el hub central de la comunidad: punto de entrada, directorio de 
 
 ### `/` — Landing page
 
-1. **Nav** — Logo AINTA + links de sección + CTA "Unirse →". Transparente, integrado al hero sin borde ni fondo.
+1. **Nav** — Logo Spärck + links de sección + CTA "Unirse →". Transparente, integrado al hero sin borde ni fondo.
 
 2. **Hero** — Eyebrow label, título grande, descripción, dos CTAs (primario: unirse / secundario: ver eventos), fila de stats (miembros, talleres, recursos).
 
@@ -59,7 +59,7 @@ El sitio web es el hub central de la comunidad: punto de entrada, directorio de 
    - Gestión y deployment
    - Grabaciones de talleres
 
-6. **Sumate a AINTA** — Card de cierre con tres botones de canal: Telegram, Discord, Newsletter.
+6. **Sumate a Spärck** — Card de cierre con tres botones de canal: Telegram, Discord, Newsletter.
 
 7. **Footer** — Logo + copyright.
 
@@ -91,7 +91,7 @@ El sitio web es el hub central de la comunidad: punto de entrada, directorio de 
 - [ ] Formulario de suscripción a newsletter (Resend / Mailchimp / Buttondown)
 - [ ] SEO básico (meta tags, OG tags, favicon)
 - [ ] Responsive mobile
-- [ ] Deploy en Vercel (dominio: `ainta.community` o similar)
+- [ ] Deploy en Vercel (dominio: `sparck.com.ar`)
 
 ## Funcionalidades v2
 
@@ -124,7 +124,7 @@ El sitio web es el hub central de la comunidad: punto de entrada, directorio de 
 
 ### Infraestructura
 - **Deploy:** Vercel (free tier suficiente para v1)
-- **Dominio:** a definir (`ainta.community`, `somos-ainta.com`, etc.)
+- **Dominio:** `sparck.com.ar`
 - **Newsletter:** Resend (gratuito hasta 3k emails/mes) o Buttondown
 - **Analytics:** Vercel Analytics o Plausible (privacy-first)
 

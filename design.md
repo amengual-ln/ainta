@@ -1,4 +1,4 @@
-# AINTA — Design System
+# Spärck — Design System
 
 ## Filosofía de diseño
 
@@ -28,7 +28,7 @@ Referencias de tono visual: Dacade, Orbitia, SAIA. No replicar — absorber el e
 }
 ```
 
-**Por qué B2 y no el emerald Tailwind (`#10B981`)**: B2 desatura un 8% y mueve el hue 5° hacia cian. Queda más mineral/organic y menos "success-color corporativo." Diferencia a AINTA de la masa de landings tech-IA.
+**Por qué B2 y no el emerald Tailwind (`#10B981`)**: B2 desatura un 8% y mueve el hue 5° hacia cian. Queda más mineral/organic y menos "success-color corporativo." Diferencia a Spärck de la masa de landings tech-IA.
 
 **Complementarios (uso limitado)**:
 - Sky-300 (`#7DD3FC`) para tags de Charla en eventos, gradient stop en h1.
@@ -315,7 +315,7 @@ Todos los containers siguen esta escala. No inventar radios nuevos sin actualiza
 
 Una sola palabra para el intent de contacto, usada en:
 - Hero CTA (única instancia)
-- JoinSection heading ("Unirme a AINTA")
+- JoinSection heading ("Sumate a Spärck")
 
 Sin "Unirse" / "Unite" / "Sumate" / "Contact" como variantes. Mantener consistencia.
 

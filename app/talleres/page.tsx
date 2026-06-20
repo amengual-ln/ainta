@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Talleres",
-  description: "Talleres propios de la comunidad AINTA: próximos y pasados.",
+  description: "Talleres propios de la comunidad Spärck: próximos y pasados.",
 };
 
 export default function TalleresPage() {

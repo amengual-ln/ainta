@@ -14,7 +14,7 @@ export default function Footer() {
         style={{ fontSize: "15px", fontWeight: 600, letterSpacing: "-0.02em" }}
       >
         <span className="logo-dot" />
-        AINTA
+        Spärck
       </a>
       <span
         style={{

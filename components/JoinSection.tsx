@@ -32,7 +32,7 @@ export default function JoinSection() {
               marginBottom: "16px",
             }}
           >
-            Sumate a AINTA
+            Sumate a Spärck
           </CharTitle>
           <p
             style={{

@@ -23,13 +23,13 @@ const geistPixelSquare = localFont({
   display: "swap",
 });
 
-const siteUrl = "https://ainta.community";
+const siteUrl = "https://sparck.com.ar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "AINTA — Comunidad de Estudiantes de IA",
-    template: "%s · AINTA",
+    default: "Spärck — Comunidad de Estudiantes de IA",
+    template: "%s · Spärck",
   },
   description:
     "Comunidad abierta de estudiantes y graduados de IA — sin fronteras geográficas, sin jerarquías, sin humo. Talleres, recursos y red de pares.",
@@ -40,22 +40,22 @@ export const metadata: Metadata = {
     "Estudiantes",
     "Comunidad",
     "Talleres",
-    "AINTA",
+    "Spärck",
   ],
-  authors: [{ name: "AINTA" }],
-  creator: "AINTA",
+  authors: [{ name: "Spärck" }],
+  creator: "Spärck",
   openGraph: {
     type: "website",
     locale: "es_ES",
     url: siteUrl,
-    siteName: "AINTA",
-    title: "AINTA — Aprender IA entre quienes la viven de verdad",
+    siteName: "Spärck",
+    title: "Spärck — Aprender IA entre quienes la viven de verdad",
     description:
       "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y red de pares.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AINTA — Comunidad de Estudiantes de IA",
+    title: "Spärck — Comunidad de Estudiantes de IA",
     description:
       "Aprender IA entre quienes la viven de verdad. Sumate a la comunidad.",
   },

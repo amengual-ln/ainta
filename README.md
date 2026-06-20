@@ -1,8 +1,8 @@
-# AINTA — Web
+# Spärck — Web
 
-Landing + hub de la comunidad AINTA (estudiantes y graduados de IA).
+Landing + hub de la comunidad Spärck (estudiantes y graduados de IA).
 
-Spec: `../spec.md` · Design system: `../design.md` · HTML reference: `../asociacion-ia.html`
+Spec: `../spec.md` · Design system: `../design.md`
 
 ## Stack
 
@@ -41,8 +41,8 @@ El form de la landing postea a `POST /api/subscribe` → valida → upsert en un
 
 ### Setup (one-time)
 
-1. Crear integración: <https://www.notion.so/profile/integrations> → "AINTA Subscribers" → copiar **Internal Integration Token**.
-2. Crear una page "AINTA — Subscribers" con database full-page.
+1. Crear integración: <https://www.notion.so/profile/integrations> → "Spärck Subscribers" → copiar **Internal Integration Token**.
+2. Crear una page "Spärck — Subscribers" con database full-page.
 3. Schema exacto (case-sensitive):
    - `Email` — **Email**
    - `Name` — **Rich text**
@@ -72,7 +72,7 @@ NOTION_SUBSCRIBERS_DB_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 pnpm dev
 curl -X POST localhost:3000/api/subscribe \
   -H 'content-type: application/json' \
-  -d '{"email":"test@ainta.community","name":"Test","website":""}'
+  -d '{"email":"test@sparck.com.ar","name":"Test","website":""}'
 # → {"ok":true}
 ```
 

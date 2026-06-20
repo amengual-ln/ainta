@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const H1_LINES: string[] = ["AINTA", "", ""];
+const H1_LINES: string[] = ["Spärck", "", ""];
 
 const LINE_DELAYS = [350, 550, 750] as const;
 const CHAR_STAGGER_MS = 30;

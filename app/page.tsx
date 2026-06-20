@@ -5,6 +5,8 @@ import Resources from "@/components/Resources";
 import JoinSection from "@/components/JoinSection";
 import Footer from "@/components/Footer";
 
+export const revalidate = 3600;
+
 export default function HomePage() {
   return (
     <>

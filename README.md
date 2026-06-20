@@ -31,7 +31,10 @@ components/
   Nav, Hero, Pillars, Events, Resources, JoinSection, Footer
   BgOrbs, ScrollReveal, NewsletterForm
 lib/
-  events.ts         ← data estática de eventos (v2 → CMS)
+  sources/          ← fetchers de eventos (Luma, Eventbrite, Meetup, Notion)
+  meetup-groups.ts  ← slugs de grupos Meetup curados
+  normalize.ts      ← shape unificado de eventos crudos
+  sparck-events.ts  ← eventos propios de Spärck (vacío por ahora)
   resources.ts      ← data estática de categorías de recursos
 ```
 
@@ -76,11 +79,89 @@ curl -X POST localhost:3000/api/subscribe \
 # → {"ok":true}
 ```
 
+## Eventos (Notion + cron-job.org)
+
+La landing y el discover pipeline usan **una sola database** en Notion.
+Un cron diario scrapea 3 fuentes externas y crea filas con `Status = Nuevo`; el curador
+revisa la tabla y cambia `Status` a `curado` para mostrar el evento en la web.
+
+### Flujo
+
+```
+cron-job.org (09:00 ART) ──→ POST /api/events/discover
+                              │
+                              ├─ Luma (scrape __NEXT_DATA__)
+                              ├─ Eventbrite (scrape __SERVER_DATA__)
+                              └─ Meetup RSS + JSON-LD por evento
+                                       │
+                                       ▼
+                              Notion · Events
+                              (Status = Nuevo, Encontrado por = "Auto · {source}")
+                                       │
+                              Curador revisa y cambia Status → curado
+                                       │
+                                       ▼
+                              components/Events.tsx (async, revalidate=3600)
+                              lee la misma DB filtrando Status = curado
+                              y Fecha >= hoy, muestra 2 Spärck + 4 externos
+```
+
+### Schema de la database (única)
+
+| Property | Type | Notes |
+|---|---|---|
+| `Título` | Title | requerido |
+| `Fecha` | Date | requerido, filtra `>= hoy` en la web |
+| `Modalidad` | Select | `Presencial` / `Online` / `Híbrido` |
+| `Lugar` | Rich text | |
+| `Link` | URL | requerido, dedupe key |
+| `Fuente` | Select | `Luma` / `Eventbrite` / `Meetup` / `Spärck` |
+| `Costo` | Select | `Gratis` / `Pago` |
+| `Tags` | Multi-select | `Taller` / `Workshop` / `Charla` / `Meetup` / `Networking` / `Hackathon` |
+| `Encontrado por` | Rich text | ej: `Auto · Luma` |
+| `Status` | Status | `Nuevo` → `curado` |
+| `Notas` | Rich text | opcional |
+
+### Setup (one-time)
+
+1. Crear **una sola database** en Notion con el schema de arriba.
+2. En el select `Fuente` agregar el valor `Spärck` (para eventos propios).
+3. En `Status` (tipo Status) crear los 2 valores: `Nuevo`, `curado`.
+4. Compartir la database con la integración.
+5. Copiar `.env.example` → `.env.local` y completar las 4 vars.
+
+```bash
+NOTION_TOKEN=secret_xxx
+NOTION_SUBSCRIBERS_DB_ID=...
+NOTION_DISCOVERED_EVENTS_DB_ID=...
+EVENTBRITE_API_TOKEN=...
+```
+
+### Cron-job.org
+
+- Method: `POST`
+- URL: `https://<domain>/api/events/discover`
+- Schedule: diario 09:00 hora Buenos Aires
+- Body: (vacío)
+- Auth: (ninguna)
+
+### Test rápido
+
+```bash
+pnpm dev
+curl -X POST localhost:3000/api/events/discover
+# → { ok, sources: { luma, eventbrite, meetup }, scraped, deduped, created, discarded, errors }
+```
+
+Para mostrar un evento en la web: en Notion cambiar la fila a `Status = curado`.
+Aparece en la landing en el próximo revalidate (≤ 1h). Para eventos propios de Spärck:
+crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setear
+`Status = curado`.
+
 ## Pendiente (v1)
 
 - [ ] Reemplazar links placeholder de Telegram/Discord
 - [ ] Cargar fotos de miembros fundadores
-- [ ] Eventos reales cargados (mín. 2)
 - [ ] Recursos curados (mín. 10)
 
 ## Pendiente (v2)

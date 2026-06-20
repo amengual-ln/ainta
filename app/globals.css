@@ -353,6 +353,40 @@
 .event-tag.charla  { border-color: rgba(125, 211, 252, 0.3); color: #7DD3FC; }
 .event-tag.externo { border-color: var(--border); color: var(--muted); }
 
+/* ── Inline title badges (notes + extra tags) ── */
+.event-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  vertical-align: middle;
+  flex-wrap: wrap;
+}
+.event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: rgba(13, 17, 23, 0.5);
+  white-space: nowrap;
+  cursor: default;
+}
+.event-badge.note {
+  border-color: rgba(240, 180, 90, 0.3);
+  color: rgba(240, 200, 130, 0.95);
+}
+.event-badge.tag {
+  border-color: rgba(125, 211, 252, 0.22);
+  color: #7DD3FC;
+}
+
 /* ── Resources bento ── */
 .bento {
   display: grid;

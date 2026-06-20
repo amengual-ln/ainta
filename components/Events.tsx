@@ -84,54 +84,16 @@ export default async function Events() {
                 href={ev.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="event-item hover-card no-accent"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "80px 1fr auto",
-                  alignItems: "center",
-                  gap: "24px",
-                  padding: "24px 32px",
-                  background: "rgba(13, 17, 23, 0.4)",
-                }}
+                className="event-row event-item hover-card no-accent"
               >
-                <div className="text-center">
-                  <div
-                    className="font-display text-white"
-                    style={{
-                      fontSize: "28px",
-                      fontWeight: 700,
-                      letterSpacing: "-0.04em",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {ev.day}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily:
-                        "var(--font-geist-mono), ui-monospace, monospace",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      color: "var(--accent-soft)",
-                      marginTop: "2px",
-                    }}
-                  >
-                    {ev.month}
-                  </div>
+                <div className="event-date">
+                  <div className="event-day">{ev.day}</div>
+                  <div className="event-month">{ev.month}</div>
                 </div>
-                <div>
-                  <div
-                    className="font-display text-white mb-1"
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 500,
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
+                <div className="event-body">
+                  <div className="event-title">
                     <span>{ev.title}</span>
-                    {(ev.notes || ev.extraTags.length > 0) && (
+                    {(ev.notes || ev.extraTags.length > 0 || ev.cost === "Pago") && (
                       <span className="event-badges">
                         {ev.notes && (
                           <span
@@ -158,6 +120,29 @@ export default async function Events() {
                             nota
                           </span>
                         )}
+                        {ev.cost === "Pago" && (
+                          <span
+                            className="event-badge cost"
+                            title="Evento pago"
+                            aria-label="Evento pago"
+                          >
+                            <svg
+                              width="10"
+                              height="10"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <line x1="12" y1="1" x2="12" y2="23" />
+                              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                            pago
+                          </span>
+                        )}
                         {ev.extraTags.map((t) => (
                           <span key={t} className="event-badge tag">
                             {t}
@@ -166,32 +151,15 @@ export default async function Events() {
                       </span>
                     )}
                   </div>
-                  <div
-                    style={{
-                      fontSize: "13px",
-                      color: "var(--muted)",
-                      display: "flex",
-                      gap: "8px",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <div className="event-title-meta">
+                    <span className="event-meta-date">
+                      {ev.day} {ev.month}
+                    </span>
                     <span>{ev.meta}</span>
                     {sourceLabel[ev.source] && (
                       <>
-                        <span aria-hidden style={{ opacity: 0.4 }}>
-                          ·
-                        </span>
-                        <span
-                          style={{
-                            fontFamily:
-                              "var(--font-geist-mono), ui-monospace, monospace",
-                            fontSize: "10px",
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            opacity: 0.7,
-                          }}
-                        >
+                        <span aria-hidden className="event-meta-dot">·</span>
+                        <span className="event-meta-source">
                           {sourceLabel[ev.source]}
                         </span>
                       </>

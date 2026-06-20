@@ -18,6 +18,7 @@ export interface EventItem {
   source: "luma" | "eventbrite" | "meetup" | "sparck";
   notes: string;
   extraTags: string[];
+  cost: "Gratis" | "Pago" | null;
 }
 
 export interface DiscoverDiscard {
@@ -186,6 +187,9 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
       const location = readRichText(r, "Lugar");
       const tags = readMultiSelect(r, "Tags");
       const notes = readRichText(r, "Notas");
+      const costRaw = readSelect(r, "Costo");
+      const cost: EventItem["cost"] =
+        costRaw === "Pago" || costRaw === "Gratis" ? costRaw : null;
       const extraTags = tags.filter((t) => !(t in SOURCE_TAG_MAP));
       const source: EventItem["source"] =
         fuente.toLowerCase() === "spärck" ||
@@ -210,6 +214,7 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
         source,
         notes,
         extraTags,
+        cost,
       });
     }
     return items;

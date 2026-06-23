@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const H1_LINES: string[] = ["Spärck", "", ""];
 
@@ -119,19 +120,35 @@ export default function Hero() {
           COMUNIDAD DE ESTUDIANTES Y GRADUADOS DE CARRERAS DE IA
         </div>
 
-        <h1
-          className="font-display text-white mb-7"
-          style={{
-            fontSize: "clamp(42px, 6vw, 80px)",
-            fontWeight: 700,
-            lineHeight: 1.05,
-            letterSpacing: "-0.04em",
-          }}
-        >
-          {renderLine(0, false, decodeStaggers, line0Offset)}
-          {renderLine(1, true, decodeStaggers, line1Offset)}
-          {renderLine(2, false, decodeStaggers, line2Offset)}
-        </h1>
+        <div className="hero-mark-wrap mb-7">
+          <Image
+            src="/favicon.png"
+            alt=""
+            aria-hidden="true"
+            width={80}
+            height={80}
+            className="hero-mark shrink-0 fade-up"
+            style={{
+              width: "clamp(64px, 12vw, 102px)",
+              height: "clamp(64px, 12vw, 102px)",
+              animationDelay: "0.35s",
+            }}
+          />
+          <h1
+            className="text-white"
+            style={{
+              fontFamily: "var(--font-open-sauce), sans-serif",
+              fontWeight: "var(--font-open-sauce-weight, 400)",
+              fontSize: "clamp(42px, 6vw, 72px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.04em",
+            }}
+          >
+            {renderLine(0, false, decodeStaggers, line0Offset)}
+            {renderLine(1, true, decodeStaggers, line1Offset)}
+            {renderLine(2, false, decodeStaggers, line2Offset)}
+          </h1>
+        </div>
 
         <p
           className="fade-up hero-sub-anim mb-12"

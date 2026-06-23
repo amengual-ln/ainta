@@ -21,6 +21,16 @@
   --border:        rgba(139, 143, 168, 0.12);    /* borde sutil genérico */
   --border-strong: rgba(139, 143, 168, 0.25);    /* borde para inputs (WCAG 1.4.11) */
   --card-bg:       rgba(13, 17, 23, 0.6);
+
+  /* Open Sauce Sans — weight activo del wordmark "Spärck" en el hero.
+     Cambiá las DOS líneas siguientes en sync para probar otro peso:
+       light    → var(--font-open-sauce-light)    + 300
+       regular  → var(--font-open-sauce-regular)  + 400   (default)
+       medium   → var(--font-open-sauce-medium)   + 500
+     Si font-weight no matchea el archivo cargado, el browser sintetiza
+     bold falso y queda horrible. */
+  --font-open-sauce: var(--font-open-sauce-regular);
+  --font-open-sauce-weight: 400;
 }
 
 @layer base {
@@ -97,18 +107,39 @@
   100% { transform: translate(110px, 35px) scale(1.04); }
 }
 
-/* ── Logo dot (sin glow exterior, solo inner border) ── */
-.logo-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent-soft);
-  animation: pulse 2s ease-in-out infinite;
+/* ── Hero wordmark + logomark lockup ── */
+/* El icono se alinea al centro vertical del h1 (las 2 líneas vacías debajo
+   de "Spärck" son block vacíos, height 0 → solo pesa la línea con texto). */
+.hero-mark-wrap {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 42px);
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.6; }
+.hero-mark {
+  flex-shrink: 0;
+  /* Ligero glow emerald para que el mark no compita con el wordmark pero
+     tampoco desaparezca sobre el bg-dark. Consistente con --accent-soft. */
+  filter: drop-shadow(0 0 18px rgba(93, 201, 168, 0.18));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mark {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* ── Footer logo ── */
+/* El PNG trae fondo dark-green (~#1F4534) que no queremos ver sobre el bg del
+   footer (#080B10). `mix-blend-mode: screen` hace que los pixeles oscuros
+   (cerca del negro) se vuelvan transparentes — el bg se funde con el del footer
+   y solo sobreviven el icon (teal) + el wordmark (white). */
+.footer-logo {
+  width: clamp(100px, 11vw, 144px);
+  height: auto;
+  mix-blend-mode: screen;
 }
 
 /* ── Hero entry cascade ── */
@@ -175,8 +206,8 @@
 .char-glitch {
   position: absolute;
   inset: 0;
-  font-family: var(--font-geist-sans), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-open-sauce), sans-serif;
+  font-weight: var(--font-open-sauce-weight, 400);
   color: var(--white);
   /* Chromatic aberration 4-shadow: cyan/emerald a la derecha, pink/lilac a la izquierda. */
   text-shadow:
@@ -197,8 +228,8 @@
 .char-decode {
   position: absolute;
   inset: 0;
-  font-family: var(--font-geist-sans), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-open-sauce), sans-serif;
+  font-weight: var(--font-open-sauce-weight, 400);
   color: var(--white);
   text-shadow:
     3px 0 #7DD3FC,
@@ -251,8 +282,8 @@
 
 .char-smooth {
   position: relative;
-  font-family: var(--font-geist-sans), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-open-sauce), sans-serif;
+  font-weight: var(--font-open-sauce-weight, 400);
   color: var(--white);
 }
 
@@ -559,7 +590,6 @@
   .char-glitch { display: none !important; }
   .char-decode, .char-decode--sparse { display: none !important; }
   .char-smooth { opacity: 1 !important; }
-  .logo-dot { animation: none; }
   .bg-orb { animation: none !important; }
 }
 

@@ -23,6 +23,25 @@ const geistPixelSquare = localFont({
   display: "swap",
 });
 
+/* Open Sauce Sans — wordmark "Spärck" del hero. Los 3 weights se cargan
+   en paralelo para poder probar Light/Regular/Medium cambiando solo las
+   dos variables en :root de globals.css (sin re-bundle ni reinstalar). */
+const openSauceLight = localFont({
+  src: "./fonts/OpenSauceSans-Light.ttf",
+  variable: "--font-open-sauce-light",
+  display: "swap",
+});
+const openSauceRegular = localFont({
+  src: "./fonts/OpenSauceSans-Regular.ttf",
+  variable: "--font-open-sauce-regular",
+  display: "swap",
+});
+const openSauceMedium = localFont({
+  src: "./fonts/OpenSauceSans-Medium.ttf",
+  variable: "--font-open-sauce-medium",
+  display: "swap",
+});
+
 const siteUrl = "https://sparck.com.ar";
 
 export const metadata: Metadata = {
@@ -49,15 +68,15 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: siteUrl,
     siteName: "Spärck",
-    title: "Spärck — Aprender IA entre quienes la viven de verdad",
+    title: "Spärck — Comunidad de Estudiantes de IA y ciencia de datos",
     description:
       "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y red de pares.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spärck — Comunidad de Estudiantes de IA",
+    title: "Spärck — Comunidad de Estudiantes de IA y ciencia de datos",
     description:
-      "Aprender IA entre quienes la viven de verdad. Sumate a la comunidad.",
+      "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y red de pares.",
   },
   robots: {
     index: true,
@@ -79,10 +98,10 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${geistPixelSquare.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${geistPixelSquare.variable} ${openSauceLight.variable} ${openSauceRegular.variable} ${openSauceMedium.variable}`}
     >
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body>

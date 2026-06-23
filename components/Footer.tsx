@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -8,13 +10,15 @@ export default function Footer() {
         borderTop: "1px solid var(--border)",
       }}
     >
-      <a
-        href="/"
-        className="font-display flex items-center gap-2 text-white"
-        style={{ fontSize: "15px", fontWeight: 600, letterSpacing: "-0.02em" }}
-      >
-        <span className="logo-dot" />
-        Spärck
+      <a href="/" aria-label="Spärck" className="shrink-0">
+        <Image
+          src="/logo-sparck-white.png"
+          alt=""
+          aria-hidden="true"
+          width={192}
+          height={108}
+          className="footer-logo"
+        />
       </a>
       <span
         style={{

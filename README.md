@@ -64,10 +64,27 @@ NOTION_SUBSCRIBERS_DB_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 - **Email inválido / faltante** → 400, no Notion call.
 - **Honeypot `website` field** lleno → 400, no Notion call.
-- **Email ya existe** → 200 `{ok:true, duplicate:true}`, no crea duplicado.
-- **Email nuevo** → crea row con `Date = now`, `Source = landing`.
+- **Email ya existe** → 200 `{ok:true, duplicate:true}`, no crea duplicado, no manda email.
+- **Email nuevo** → crea row con `Date = now`, `Source = landing`, manda welcome email vía Resend.
 - **Notion timeout (5s)** → 504.
 - **Notion error / token inválido** → 500, error loggeado server-side, sin filtrar el token al cliente.
+- **Resend falla** → la suscripción sigue exitosa (`{ok:true, emailQueued:false}`), se loggea server-side. Notion es la fuente de verdad.
+
+### Welcome email (Resend)
+
+Después de crear la fila en Notion, se envía un mail de bienvenida vía [Resend](https://resend.com).
+
+**Setup (one-time):**
+
+1. Crear cuenta en Resend → **API Keys** → crear key con permiso `Sending access` → copiar.
+2. **Domains** → agregar el dominio desde el que se va a enviar (ej: `sparck.com.ar`) y configurar los DNS records que pide Resend.
+3. Copiar `.env.example` → `.env.local` y completar:
+   ```bash
+   RESEND_API_KEY=re_xxxxxxxxx
+   RESEND_FROM=hola@sparck.com.ar   # debe estar en un dominio verificado en Resend
+   ```
+
+Si las env vars faltan, la suscripción sigue funcionando (Notion es la fuente de verdad); el cliente recibe `emailQueued: false` y muestra un mensaje más neutro.
 
 ### Test rápido
 
@@ -76,7 +93,7 @@ pnpm dev
 curl -X POST localhost:3000/api/subscribe \
   -H 'content-type: application/json' \
   -d '{"email":"test@sparck.com.ar","name":"Test","website":""}'
-# → {"ok":true}
+# → {"ok":true,"emailQueued":true}
 ```
 
 ## Eventos (Notion + cron-job.org)

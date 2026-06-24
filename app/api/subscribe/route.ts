@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
+import { sendWelcomeEmail } from "@/lib/resend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -98,7 +99,15 @@ export async function POST(req: NextRequest) {
       timeout,
     ]);
 
-    return NextResponse.json({ ok: true });
+    let emailQueued = false;
+    try {
+      const result = await sendWelcomeEmail(email, name);
+      emailQueued = result.ok;
+    } catch (err) {
+      console.error("[subscribe] resend threw unexpectedly:", err);
+    }
+
+    return NextResponse.json({ ok: true, emailQueued });
   } catch (err) {
     const e = err as { name?: string; code?: string; message?: string };
     if (e.name === "AbortError") {

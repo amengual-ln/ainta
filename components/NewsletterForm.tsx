@@ -7,6 +7,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 interface ApiOk {
   ok: true;
   duplicate?: boolean;
+  emailQueued?: boolean;
 }
 interface ApiErr {
   ok: false;
@@ -71,7 +72,9 @@ export default function NewsletterForm() {
       setMessage(
         data.duplicate
           ? "Ya estabas en la lista. ¡Gracias!"
-          : "Listo! Bienvenido a la comunidad."
+          : data.emailQueued === false
+          ? "Listo! Bienvenido a la comunidad. (El mail de bienvenida no se pudo enviar — te contactaremos igual.)"
+          : "Listo! Bienvenido a la comunidad. Revisá tu mail."
       );
       setEmail("");
       setName("");

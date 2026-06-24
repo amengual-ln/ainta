@@ -82,9 +82,12 @@ Después de crear la fila en Notion, se envía un mail de bienvenida vía [Resen
    ```bash
    RESEND_API_KEY=re_xxxxxxxxx
    RESEND_FROM=hola@sparck.com.ar   # debe estar en un dominio verificado en Resend
+   SITE_URL=https://sparck.com.ar   # se usa para el logo y el CTA del mail
    ```
 
 Si las env vars faltan, la suscripción sigue funcionando (Notion es la fuente de verdad); el cliente recibe `emailQueued: false` y muestra un mensaje más neutro.
+
+El template del mail (`lib/resend.ts`) está maquetado con `<table>` (sin flexbox/grid), todos los estilos inline, sin web fonts — usa el system stack. El logo es el `favicon.png` oficial (fondo transparente, blend limpio sobre el `#080B10` del mail). El copy y los colores siguen `design.md`: emerald curada `#34A88B`, eyebrow mono uppercase, card `#0D1117` con border `#1F2630` y radius 16px.
 
 ### Test rápido
 

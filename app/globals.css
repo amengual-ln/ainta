@@ -528,7 +528,54 @@
   min-height: 200px;
 }
 
-/* ── Buttons ── */
+/* ── Event description ── */
+.event-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 6px;
+  max-width: 640px;
+}
+
+/* ── Floating back button (subpages only) ── */
+.page-back {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.page-back:hover {
+  color: var(--white);
+  border-color: rgba(139, 143, 168, 0.3);
+  background: var(--accent-dimmer);
+}
+.page-back:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  .page-back {
+    top: 18px;
+    left: 18px;
+    width: 36px;
+    height: 36px;
+  }
+  .page-back svg {
+    width: 18px;
+    height: 18px;
+  }
+}
 .btn-primary {
   font-family: var(--font-geist-sans), sans-serif;
   font-size: 15px;

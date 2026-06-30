@@ -11,11 +11,13 @@ export interface EventItem {
   day: string;
   month: string;
   year: string;
+  time: string | null;
   title: string;
   meta: string;
   type: EventType;
   url: string;
   source: "luma" | "eventbrite" | "meetup" | "sparck";
+  summary: string;
   notes: string;
   extraTags: string[];
   cost: "Gratis" | "Pago" | null;
@@ -116,13 +118,20 @@ function monthShort(monthIdx: number): string {
   ];
 }
 
-function dateParts(iso: string): { day: string; month: string; year: string } | null {
+function dateParts(iso: string): { day: string; month: string; year: string; time: string | null } | null {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
+  const hours = d.getUTCHours();
+  const minutes = d.getUTCMinutes();
+  const time =
+    hours === 0 && minutes === 0
+      ? null
+      : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
   return {
     day: String(d.getUTCDate()).padStart(2, "0"),
     month: monthShort(d.getUTCMonth()),
     year: String(d.getUTCFullYear()),
+    time,
   };
 }
 
@@ -186,6 +195,7 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
       const modality = readSelect(r, "Modalidad");
       const location = readRichText(r, "Lugar");
       const tags = readMultiSelect(r, "Tags");
+      const summary = readRichText(r, "Summary");
       const notes = readRichText(r, "Notas");
       const costRaw = readSelect(r, "Costo");
       const cost: EventItem["cost"] =
@@ -207,11 +217,13 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
         day: parts.day,
         month: parts.month,
         year: parts.year,
+        time: parts.time,
         title,
         meta: buildMeta(modality, location),
         type: source === "sparck" ? "taller" : tagClassFor(tags),
         url,
         source,
+        summary,
         notes,
         extraTags,
         cost,

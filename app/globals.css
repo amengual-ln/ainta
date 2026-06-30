@@ -443,15 +443,17 @@
     grid-template-columns: 1fr auto;
     grid-template-areas:
       "title pill"
+      "desc  pill"
       "meta  pill";
     align-items: start;
-    gap: 8px 12px;
+    gap: 0 12px;
     padding: 18px 18px;
   }
   .event-date      { display: none; }
   .event-body      { display: contents; }
-  .event-title     { grid-area: title; }
-  .event-title-meta { grid-area: meta; }
+  .event-title     { grid-area: title; margin-bottom: 4px; }
+  .event-description { grid-area: desc; margin: 8px 0 10px; }
+  .event-title-meta { grid-area: meta; margin-top: 4px; }
   .event-tag       { grid-area: pill; align-self: start; }
   .event-meta-date { display: inline; }
 }
@@ -530,11 +532,27 @@
 
 /* ── Event description ── */
 .event-description {
+  grid-area: desc;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--muted);
-  margin-top: 6px;
+  color: #c8cce0;
+  margin-top: 8px;
+  margin-bottom: 10px;
   max-width: 640px;
+}
+.event-description strong {
+  font-weight: 600;
+  color: #e8eaf5;
+}
+.event-description em {
+  font-style: italic;
+  color: #d8dbe8;
+}
+.event-row:hover .event-description {
+  color: #d8dbe8;
+}
+.event-row:hover .event-description strong {
+  color: #f0f2ff;
 }
 
 /* ── Floating back button (subpages only) ── */

@@ -26,6 +26,39 @@ interface EventListProps {
   emptyMessage?: string;
 }
 
+function formatTime(isoTime: string | null): string | null {
+  if (!isoTime) return null;
+  const [hours, minutes] = isoTime.split(":").map(Number);
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+  const suffix = hours >= 12 ? "hs" : "hs";
+  const h24 = hours;
+  const m = String(minutes).padStart(2, "0");
+  return `${h24}:${m}${suffix}`;
+}
+
+function renderMarkdownish(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > last) {
+      parts.push(<span key={key++}>{text.slice(last, match.index)}</span>);
+    }
+    if (match[1]) {
+      parts.push(<strong key={key++}>{match[2]}</strong>);
+    } else {
+      parts.push(<em key={key++}>{match[4]}</em>);
+    }
+    last = regex.lastIndex;
+  }
+  if (last < text.length) {
+    parts.push(<span key={key++}>{text.slice(last)}</span>);
+  }
+  return parts;
+}
+
 export default function EventList({ events, emptyMessage = "Pronto habrá eventos." }: EventListProps) {
   if (events.length === 0) {
     return (
@@ -119,22 +152,18 @@ export default function EventList({ events, emptyMessage = "Pronto habrá evento
                 </span>
               )}
             </div>
-            {ev.notes && (
-              <div className="event-description">{ev.notes}</div>
+            {(ev.summary || ev.notes) && (
+              <div className="event-description">
+                {renderMarkdownish(ev.summary || ev.notes)}
+              </div>
             )}
             <div className="event-title-meta">
               <span className="event-meta-date">
                 {ev.day} {ev.month}
+                {ev.time && ` · ${formatTime(ev.time)}`}
               </span>
               <span>{ev.meta}</span>
-              {sourceLabel[ev.source] && (
-                <>
-                  <span aria-hidden className="event-meta-dot">·</span>
-                  <span className="event-meta-source">
-                    {sourceLabel[ev.source]}
-                  </span>
-                </>
-              )}
+              
             </div>
           </div>
           <span className={`event-tag ${tagClass[ev.type] ?? ""}`}>

@@ -63,15 +63,46 @@ export default function CharTitle({
     );
   }, [children]);
 
-  const chars = Array.from(children).map((ch, i) => ({
-    ch: ch === " " ? "\u00A0" : ch,
-    charDelay: i * charStagger,
-    decodeStagger: decodeStaggers[i] ?? null,
-  }));
-
   const combinedStyle: React.CSSProperties = {
     ...style,
     ["--line-delay" as string]: `${lineDelay}ms`,
+  };
+
+  const tokens = children.match(/\S+|\s/g) ?? [];
+  let charIndex = 0;
+
+  const renderWord = (word: string, key: number) => {
+    const chars = Array.from(word).map((ch, ci) => {
+      const idx = charIndex++;
+      const decodeStagger = decodeStaggers[idx] ?? null;
+      return (
+        <span
+          key={ci}
+          className="char-wrap"
+          style={{
+            ["--char-delay" as string]: `${idx * charStagger}ms`,
+            ...(decodeStagger != null
+              ? { ["--decode-stagger" as string]: `${decodeStagger}ms` }
+              : {}),
+          }}
+        >
+          <span className="char-layer char-glitch" aria-hidden="true">
+            {ch}
+          </span>
+          <span className="char-layer char-smooth">{ch}</span>
+          {decodeStagger != null && (
+            <span className="char-layer char-decode char-decode--sparse" aria-hidden="true">
+              {ch}
+            </span>
+          )}
+        </span>
+      );
+    });
+    return (
+      <span key={key} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+        {chars}
+      </span>
+    );
   };
 
   return (
@@ -80,28 +111,13 @@ export default function CharTitle({
       className={`${className} ${triggered ? "is-revealed" : "deferred"}`.trim()}
       style={combinedStyle}
     >
-      {chars.map((c, ci) => (
-        <span
-          key={ci}
-          className="char-wrap"
-          style={{
-            ["--char-delay" as string]: `${c.charDelay}ms`,
-            ...(c.decodeStagger != null
-              ? { ["--decode-stagger" as string]: `${c.decodeStagger}ms` }
-              : {}),
-          }}
-        >
-          <span className="char-layer char-glitch" aria-hidden="true">
-            {c.ch}
-          </span>
-          <span className="char-layer char-smooth">{c.ch}</span>
-          {c.decodeStagger != null && (
-            <span className="char-layer char-decode char-decode--sparse" aria-hidden="true">
-              {c.ch}
-            </span>
-          )}
-        </span>
-      ))}
+      {tokens.map((token, i) => {
+        if (token.match(/\s/)) {
+          charIndex += token.length;
+          return token;
+        }
+        return renderWord(token, i);
+      })}
     </Tag>
   );
 }

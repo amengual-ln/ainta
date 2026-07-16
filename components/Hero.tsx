@@ -38,7 +38,10 @@ function renderLine(
     <span
       key={lineIdx}
       className="h1-reveal block"
-      style={{ ["--line-delay" as string]: `${line.delay}ms` }}
+      style={{
+        ["--line-delay" as string]: `${line.delay}ms`,
+        whiteSpace: "nowrap",
+      }}
     >
       {line.chars.map((c, ci) => {
         const visibleChar = c.ch === "\u00A0" ? "\u00A0" : c.ch;

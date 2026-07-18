@@ -178,6 +178,77 @@ Aparece en la landing en el próximo revalidate (≤ 1h). Para eventos propios d
 crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setear
 `Status = curado`.
 
+## Noticias (Notion + cron-job.org)
+
+Mismo patrón que Eventos: **una sola database** en Notion. Un cron diario
+scrapea 3 fuentes de IA y crea filas con `Status = Nuevo`; el curador revisa
+la tabla y cambia `Status` a `Publicado` para mostrar la noticia en la web.
+
+### Flujo
+
+```
+cron-job.org (diario) ──→ POST /api/news/discover
+                              │
+                              ├─ arXiv (papers cs.AI/cs.LG/cs.CL, API Atom)
+                              ├─ Hacker News (Algolia search API, filtro AI)
+                              └─ Blogs (RSS: OpenAI, Google AI, MIT Tech Review)
+                                       │
+                                       ▼
+                              Notion · News
+                              (Status = Nuevo)
+                                       │
+                              Curador revisa y cambia Status → Publicado
+                                       │
+                                       ▼
+                              components/News.tsx (home, top 5)
+                              app/noticias/page.tsx (listado completo)
+                              lee la misma DB filtrando Status = Publicado
+```
+
+### Schema de la database (única)
+
+| Property | Type | Notes |
+|---|---|---|
+| `Título` | Title | requerido |
+| `URL` | URL | requerido, dedupe key |
+| `Summary` | Rich text | resumen/snippet de la fuente original |
+| `Source` | Select | `arXiv` / `Hacker News` / `OpenAI` / `Google AI` / `MIT Tech Review` |
+| `PublishedAt` | Date | requerido, se usa para ordenar y mostrar día/mes |
+| `Tags` | Multi-select | `Papers` / `Industria` / `Blog` |
+| `Status` | Status | `Nuevo` → `Publicado` |
+
+### Setup (one-time)
+
+1. Crear **una sola database** en Notion con el schema de arriba.
+2. En `Status` (tipo Status) crear los 2 valores: `Nuevo`, `Publicado`.
+3. Compartir la database con la integración existente (`Spärck Subscribers`
+   o una nueva, misma que usa `NOTION_TOKEN`).
+4. Copiar el database ID y agregarlo a `.env.local`:
+
+```bash
+NOTION_NEWS_DB_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+### Cron-job.org
+
+- Method: `POST`
+- URL: `https://<domain>/api/news/discover`
+- Schedule: diario
+- Body: (vacío)
+- Auth: (ninguna)
+
+### Test rápido
+
+```bash
+pnpm dev
+curl -X POST localhost:3000/api/news/discover
+# → { ok, sources: { arxiv, hackernews, blogs }, scraped, deduped, created, discarded, errors }
+```
+
+Para mostrar una noticia en la web: en Notion cambiar la fila a
+`Status = Publicado`. Aparece en la home (top 5) y en `/noticias` en el
+próximo revalidate (≤ 1h).
+
 ## Pendiente (v1)
 
 - [ ] Reemplazar links placeholder de Telegram/Discord

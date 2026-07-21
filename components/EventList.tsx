@@ -26,16 +26,6 @@ interface EventListProps {
   emptyMessage?: string;
 }
 
-function formatTime(isoTime: string | null): string | null {
-  if (!isoTime) return null;
-  const [hours, minutes] = isoTime.split(":").map(Number);
-  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
-  const suffix = hours >= 12 ? "hs" : "hs";
-  const h24 = hours;
-  const m = String(minutes).padStart(2, "0");
-  return `${h24}:${m}${suffix}`;
-}
-
 function renderMarkdownish(text: string): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   const regex = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
@@ -160,7 +150,6 @@ export default function EventList({ events, emptyMessage = "Pronto habrá evento
             <div className="event-title-meta">
               <span className="event-meta-date">
                 {ev.day} {ev.month}
-                {ev.time && ` · ${formatTime(ev.time)}`}
               </span>
               <span>{ev.meta}</span>
               

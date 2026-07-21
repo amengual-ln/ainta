@@ -8,7 +8,7 @@ Spec: `../spec.md` · Design system: `../design.md`
 
 - **Next.js 14** (App Router) + **TypeScript**
 - **Tailwind CSS** + CSS variables (design tokens)
-- Fonts via `next/font` (Space Grotesk + Inter)
+- Fonts via `next/font` (Geist Sans, Geist Mono, Geist Pixel, Open Sauce Sans)
 
 ## Run
 
@@ -23,19 +23,37 @@ pnpm lint
 
 ```
 app/
-  layout.tsx        ← fuentes, metadata, OG, orbs de fondo
-  page.tsx          ← landing
-  globals.css       ← design tokens + animaciones
-  eventos/, recursos/, talleres/  ← v2 placeholders
+  layout.tsx          ← fuentes, metadata, OG, orbs de fondo
+  page.tsx            ← landing
+  globals.css         ← design tokens + animaciones
+  eventos/page.tsx    ← agenda completa (live, lee Notion)
+  recursos/page.tsx   ← placeholder v2
+  talleres/page.tsx   ← placeholder v2
+  api/subscribe       ← newsletter (Notion + Resend)
+  api/events/discover ← pipeline de descubrimiento (Luma, Eventbrite, Meetup)
+
 components/
-  Nav, Hero, Pillars, Events, Resources, JoinSection, Footer
-  BgOrbs, ScrollReveal, NewsletterForm
+  Hero.tsx            ← h1 con animación per-char (glitch → smooth)
+  Pillars.tsx         ← 3 cards de ejes de la comunidad
+  Events.tsx          ← lista de próximos eventos (async, Notion)
+  EventList.tsx       ← componente de lista reutilizable
+  Resources.tsx       ← bento 2×2 de categorías (data estática)
+  JoinSection.tsx     ← card de newsletter
+  Footer.tsx          ← minimal, año dinámico
+  CharTitle.tsx       ← wrapper client-side para animación per-char en h2
+  ScrollReveal.tsx    ← IntersectionObserver wrapper
+  BgOrbs.tsx          ← orbs de fondo animados
+  NewsletterForm.tsx  ← form client-side con honeypot
+  PageHeader.tsx      ← botón flotante "volver al inicio" (subpáginas)
+  PhosphorIcon.tsx    ← wrapper de @phosphor-icons/react
+
 lib/
-  sources/          ← fetchers de eventos (Luma, Eventbrite, Meetup, Notion)
-  meetup-groups.ts  ← slugs de grupos Meetup curados
-  normalize.ts      ← shape unificado de eventos crudos
-  sparck-events.ts  ← eventos propios de Spärck (vacío por ahora)
-  resources.ts      ← data estática de categorías de recursos
+  sources/            ← fetchers de eventos (Luma, Eventbrite, Meetup, Notion)
+  meetup-groups.ts    ← slugs de grupos Meetup curados
+  normalize.ts        ← shape unificado de eventos crudos
+  sparck-events.ts    ← eventos propios de Spärck (vacío por ahora)
+  resources.ts        ← data estática de categorías de recursos
+  resend.ts           ← template de welcome email
 ```
 
 ## Newsletter (suscripciones → Notion DB)
@@ -178,14 +196,38 @@ Aparece en la landing en el próximo revalidate (≤ 1h). Para eventos propios d
 crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setear
 `Status = curado`.
 
-## Pendiente (v1)
+## Estado actual
 
-- [ ] Reemplazar links placeholder de Telegram/Discord
-- [ ] Cargar fotos de miembros fundadores
-- [ ] Recursos curados (mín. 10)
+### ✅ Hecho (v1)
 
-## Pendiente (v2)
+- [x] Landing page estática con todas las secciones
+- [x] SEO básico (meta tags, OG tags, favicon, sitemap, robots)
+- [x] Responsive mobile
+- [x] Deploy en Vercel (dominio: `sparck.com.ar`)
+- [x] Newsletter: formulario + API + Notion DB + welcome email vía Resend
+- [x] Eventos: pipeline de descubrimiento (Luma, Eventbrite, Meetup) → Notion
+- [x] Página `/eventos` con agenda completa (lee Notion, revalidate 1h)
+- [x] Animaciones: hero per-char glitch, scroll reveal, orbs de fondo
+- [x] Design system implementado (tokens, tipografía, componentes)
 
-- CMS (Notion o Sanity) para eventos/recursos
-- Filtros + búsqueda en `/eventos` y `/recursos`
-- Auth magic link + perfil de miembro + directorio opt-in
+### 🚧 En progreso / Pendiente (v1)
+
+- [ ] Reemplazar links placeholder de Telegram/Discord en la landing
+- [ ] Cargar fotos de miembros fundadores (si aplica)
+- [ ] Recursos curados: la landing muestra 4 categorías estáticas; falta expandir a mín. 10 recursos individuales con links reales
+
+### 📋 Pendiente (v2)
+
+- [ ] Página `/recursos` con recursos individuales, filtros por categoría/nivel y búsqueda
+- [ ] Página `/talleres` con talleres propios (próximos + pasados con grabaciones)
+- [ ] Filtros + búsqueda en `/eventos`
+- [ ] Auth magic link + perfil de miembro + directorio opt-in
+- [ ] Integración con Telegram para anuncios automáticos de nuevos eventos
+
+### 🚀 Ideas (v3)
+
+- Inscripción a talleres con recordatorio por email
+- Sistema de propuesta de talleres (formulario → revisión → publicación)
+- Directorio de miembros con opt-in
+
+

@@ -86,3 +86,9 @@ export function isAiRelevant(title: string, extra = ""): boolean {
   const t = ` ${title} ${extra} `.toLowerCase();
   return AI_KEYWORDS.some((k) => t.includes(k));
 }
+
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+export function isWithinLastDay(publishedAt: Date, now: Date = new Date()): boolean {
+  return now.getTime() - publishedAt.getTime() <= ONE_DAY_MS;
+}

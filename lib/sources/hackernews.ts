@@ -1,5 +1,6 @@
 import {
   isAiRelevant,
+  isWithinLastDay,
   normalizeNews,
   type NewsSourceFetchResult,
   type RawNewsItem,
@@ -22,6 +23,7 @@ export async function fetchHackerNews(): Promise<NewsSourceFetchResult> {
   try {
     const res = await fetch(HN_ALGOLIA_URL, {
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(15000),
     });
     if (!res.ok) {
       out.errors.push(`hackernews http ${res.status}`);
@@ -35,9 +37,9 @@ export async function fetchHackerNews(): Promise<NewsSourceFetchResult> {
       const title = hit.title?.trim() ?? "";
       if (!isAiRelevant(title, hit.story_text ?? "")) continue;
 
-      const url =
-        hit.url ??
-        (hit.objectID ? `https://news.ycombinator.com/item?id=${hit.objectID}` : "");
+      const url = hit.objectID
+        ? `https://news.ycombinator.com/item?id=${hit.objectID}`
+        : "";
 
       const raw: RawNewsItem = {
         source: "hackernews",
@@ -60,6 +62,7 @@ export async function fetchHackerNews(): Promise<NewsSourceFetchResult> {
         });
         continue;
       }
+      if (!isWithinLastDay(n.publishedAt)) continue;
       out.items.push(n);
     }
     return out;

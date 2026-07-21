@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import {
+  isWithinLastDay,
   normalizeNews,
   type NewsSourceFetchResult,
   type RawNewsItem,
@@ -27,7 +28,7 @@ interface BlogRssItem {
 
 export async function fetchAiBlogs(): Promise<NewsSourceFetchResult> {
   const out: NewsSourceFetchResult = { items: [], rejected: [], errors: [] };
-  const parser = new Parser();
+  const parser = new Parser({ timeout: 15000 });
 
   const results = await Promise.allSettled(
     AI_BLOGS.map(async (blog) => ({
@@ -66,6 +67,7 @@ export async function fetchAiBlogs(): Promise<NewsSourceFetchResult> {
         });
         continue;
       }
+      if (!isWithinLastDay(n.publishedAt)) continue;
       out.items.push(n);
     }
   }

@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import {
+  isWithinLastDay,
   normalizeNews,
   type NewsSourceFetchResult,
   type RawNewsItem,
@@ -20,7 +21,7 @@ export async function fetchArxiv(): Promise<NewsSourceFetchResult> {
   const out: NewsSourceFetchResult = { items: [], rejected: [], errors: [] };
 
   try {
-    const parser = new Parser();
+    const parser = new Parser({ timeout: 15000 });
     const feed = await parser.parseURL(ARXIV_API_URL);
     const items = (feed.items ?? []) as ArxivItem[];
 
@@ -47,6 +48,7 @@ export async function fetchArxiv(): Promise<NewsSourceFetchResult> {
         });
         continue;
       }
+      if (!isWithinLastDay(n.publishedAt)) continue;
       out.items.push(n);
     }
     return out;

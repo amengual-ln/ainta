@@ -89,6 +89,9 @@ function readDate(page: PageObjectResponse, name: string): string | null {
   return null;
 }
 
+const STATUS_NEW = "Por leer";
+const STATUS_PUBLISHED = "Leído";
+
 function monthShort(monthIdx: number): string {
   return ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"][
     monthIdx
@@ -111,10 +114,10 @@ export async function fetchPublishedNews(): Promise<NewsItem[]> {
     const res = await notion.databases.query({
       database_id: dbId,
       filter: {
-        property: "Status",
-        status: { equals: "Publicado" },
+        property: "Estado",
+        status: { equals: STATUS_PUBLISHED },
       },
-      sorts: [{ property: "PublishedAt", direction: "descending" }],
+      sorts: [{ property: "Fecha", direction: "descending" }],
       page_size: 50,
     });
 
@@ -123,13 +126,13 @@ export async function fetchPublishedNews(): Promise<NewsItem[]> {
       if (!isPageObject(r)) continue;
       const title = readTitle(r);
       const url = readUrl(r, "URL");
-      const publishedAt = readDate(r, "PublishedAt");
+      const publishedAt = readDate(r, "Fecha");
       if (!title || !url || !publishedAt) continue;
 
       const d = new Date(publishedAt);
       if (Number.isNaN(d.getTime())) continue;
 
-      const sourceName = readSelect(r, "Source") ?? "Otro";
+      const sourceName = readSelect(r, "Fuente") ?? "Otro";
 
       items.push({
         title,
@@ -253,10 +256,10 @@ export async function writeDiscoveredNews(
               ? [{ type: "text", text: { content: it.summary.slice(0, 1900) } }]
               : [],
           },
-          Source: { select: { name: it.sourceName } },
-          PublishedAt: { date: { start: it.publishedAt.toISOString() } },
+          Fuente: { select: { name: it.sourceName } },
+          Fecha: { date: { start: it.publishedAt.toISOString() } },
           Tags: { multi_select: it.tags.map((t) => ({ name: t })) },
-          Status: { status: { name: "Nuevo" } },
+          Estado: { status: { name: STATUS_NEW } },
         },
       });
       created++;

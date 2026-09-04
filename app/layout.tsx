@@ -23,7 +23,7 @@ const geistPixelSquare = localFont({
   display: "swap",
 });
 
-/* Open Sauce Sans — wordmark "Spärck" del hero. Los 3 weights se cargan
+/* Open Sauce Sans - wordmark "Spärck" del hero. Los 3 weights se cargan
    en paralelo para poder probar Light/Regular/Medium cambiando solo las
    dos variables en :root de globals.css (sin re-bundle ni reinstalar). */
 const openSauceLight = localFont({
@@ -47,11 +47,11 @@ const siteUrl = "https://sparck.com.ar";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Spärck — Comunidad de Estudiantes de IA",
+    default: "Spärck | Comunidad de estudiantes de IA",
     template: "%s · Spärck",
   },
   description:
-    "Comunidad abierta de estudiantes y graduados de IA — sin fronteras geográficas, sin jerarquías, sin humo. Talleres, recursos y red de pares.",
+    "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y una red de pares.",
   keywords: [
     "IA",
     "Inteligencia Artificial",
@@ -68,15 +68,15 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: siteUrl,
     siteName: "Spärck",
-    title: "Spärck — Comunidad de Estudiantes de IA y ciencia de datos",
+    title: "Spärck | Comunidad de estudiantes de IA",
     description:
-      "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y red de pares.",
+      "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y una red de pares.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spärck — Comunidad de Estudiantes de IA y ciencia de datos",
+    title: "Spärck | Comunidad de estudiantes de IA",
     description:
-      "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y red de pares.",
+      "Comunidad abierta de estudiantes y graduados de IA. Talleres, recursos y una red de pares.",
   },
   robots: {
     index: true,

@@ -1,8 +1,8 @@
-# Spärck — Web
+# Spärck | Web
 
-Landing + hub de la comunidad Spärck (estudiantes y graduados de IA).
+Landing de la comunidad Spärck con acceso directo a la agenda de eventos y la biblioteca de recursos.
 
-Spec: `../spec.md` · Design system: `../design.md`
+Spec: `spec.md` · Design system: `design.md`
 
 ## Stack
 
@@ -17,6 +17,7 @@ pnpm install
 pnpm dev          # http://localhost:3000
 pnpm build && pnpm start
 pnpm lint
+pnpm test
 ```
 
 ## Estructura
@@ -24,27 +25,26 @@ pnpm lint
 ```
 app/
   layout.tsx          ← fuentes, metadata, OG, orbs de fondo
-  page.tsx            ← landing
+  page.tsx            ← landing promocional + newsletter
   globals.css         ← design tokens + animaciones
-  eventos/page.tsx    ← agenda completa (live, lee Notion)
-  recursos/page.tsx   ← placeholder v2
-  talleres/page.tsx   ← placeholder v2
+  eventos/page.tsx    ← agenda agrupada por mes (live, lee Notion)
+  recursos/page.tsx   ← biblioteca estática de recursos
+  talleres/page.tsx   ← placeholder noindex
   api/subscribe       ← newsletter (Notion + Resend)
   api/events/discover ← pipeline de descubrimiento (Luma, Eventbrite, Meetup)
 
 components/
   Hero.tsx            ← h1 con animación per-char (glitch → smooth)
   Pillars.tsx         ← 3 cards de ejes de la comunidad
-  Events.tsx          ← lista de próximos eventos (async, Notion)
-  EventList.tsx       ← componente de lista reutilizable
-  Resources.tsx       ← bento 2×2 de categorías (data estática)
+  SiteHeader.tsx      ← header sticky común + menú details en móvil
+  EventGrid.tsx       ← grilla compacta y agrupación mensual
+  ResourceGrid.tsx    ← grilla reutilizable de recursos
   JoinSection.tsx     ← card de newsletter
   Footer.tsx          ← minimal, año dinámico
   CharTitle.tsx       ← wrapper client-side para animación per-char en h2
   ScrollReveal.tsx    ← IntersectionObserver wrapper
   BgOrbs.tsx          ← orbs de fondo animados
   NewsletterForm.tsx  ← form client-side con honeypot
-  PageHeader.tsx      ← botón flotante "volver al inicio" (subpáginas)
   PhosphorIcon.tsx    ← wrapper de @phosphor-icons/react
 
 lib/
@@ -52,7 +52,8 @@ lib/
   meetup-groups.ts    ← slugs de grupos Meetup curados
   normalize.ts        ← shape unificado de eventos crudos
   sparck-events.ts    ← eventos propios de Spärck (vacío por ahora)
-  resources.ts        ← data estática de categorías de recursos
+  events.ts           ← fechas y agrupación en timezone Buenos Aires
+  resources.ts        ← catálogo estático tipado de recursos
   resend.ts           ← template de welcome email
 ```
 
@@ -105,7 +106,7 @@ Después de crear la fila en Notion, se envía un mail de bienvenida vía [Resen
 
 Si las env vars faltan, la suscripción sigue funcionando (Notion es la fuente de verdad); el cliente recibe `emailQueued: false` y muestra un mensaje más neutro.
 
-El template del mail (`lib/resend.ts`) está maquetado con `<table>` (sin flexbox/grid), todos los estilos inline, sin web fonts — usa el system stack. El logo es el `favicon.png` oficial (fondo transparente, blend limpio sobre el `#080B10` del mail). El copy y los colores siguen `design.md`: emerald curada `#34A88B`, eyebrow mono uppercase, card `#0D1117` con border `#1F2630` y radius 16px.
+El template del mail (`lib/resend.ts`) está maquetado con `<table>` (sin flexbox/grid), todos los estilos inline, sin web fonts — usa el system stack. El logo es el `favicon.png` oficial (fondo transparente, blend limpio sobre el `#080B10` del mail). El copy y los colores siguen `design.md`: emerald curada `#34A88B`, card `#0D1117` con border `#1F2630` y radius 16px.
 
 ### Test rápido
 
@@ -119,7 +120,7 @@ curl -X POST localhost:3000/api/subscribe \
 
 ## Eventos (Notion + cron-job.org)
 
-La landing y el discover pipeline usan **una sola database** en Notion.
+La agenda y el discover pipeline usan **una sola database** en Notion.
 Un cron diario scrapea 3 fuentes externas y crea filas con `Status = Nuevo`; el curador
 revisa la tabla y cambia `Status` a `curado` para mostrar el evento en la web.
 
@@ -139,9 +140,10 @@ cron-job.org (09:00 ART) ──→ POST /api/events/discover
                               Curador revisa y cambia Status → curado
                                        │
                                        ▼
-                              components/Events.tsx (async, revalidate=3600)
+                              app/eventos/page.tsx (async, revalidate=3600)
                               lee la misma DB filtrando Status = curado
-                              y Fecha >= hoy, muestra 2 Spärck + 4 externos
+                              y Fecha >= inicio de hoy en Buenos Aires
+                              muestra la agenda en orden cronológico
 ```
 
 ### Schema de la database (única)
@@ -192,7 +194,7 @@ curl -X POST localhost:3000/api/events/discover
 ```
 
 Para mostrar un evento en la web: en Notion cambiar la fila a `Status = curado`.
-Aparece en la landing en el próximo revalidate (≤ 1h). Para eventos propios de Spärck:
+Aparece en la agenda en el próximo revalidate (≤ 1h). Para eventos propios de Spärck:
 crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setear
 `Status = curado`.
 
@@ -200,13 +202,14 @@ crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setea
 
 ### ✅ Hecho (v1)
 
-- [x] Landing page estática con todas las secciones
+- [x] Landing de comunidad en `/` con accesos directos a eventos y recursos
 - [x] SEO básico (meta tags, OG tags, favicon, sitemap, robots)
 - [x] Responsive mobile
 - [x] Deploy en Vercel (dominio: `sparck.com.ar`)
 - [x] Newsletter: formulario + API + Notion DB + welcome email vía Resend
 - [x] Eventos: pipeline de descubrimiento (Luma, Eventbrite, Meetup) → Notion
-- [x] Página `/eventos` con agenda completa (lee Notion, revalidate 1h)
+- [x] Página `/eventos` con agenda mensual en grilla (lee Notion, revalidate 1h)
+- [x] Página `/recursos` con recursos agrupados por categoría
 - [x] Animaciones: hero per-char glitch, scroll reveal, orbs de fondo
 - [x] Design system implementado (tokens, tipografía, componentes)
 
@@ -214,13 +217,12 @@ crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setea
 
 - [ ] Reemplazar links placeholder de Telegram/Discord en la landing
 - [ ] Cargar fotos de miembros fundadores (si aplica)
-- [ ] Recursos curados: la landing muestra 4 categorías estáticas; falta expandir a mín. 10 recursos individuales con links reales
+- [ ] Revisar y ampliar periódicamente el catálogo estático de recursos
 
 ### 📋 Pendiente (v2)
 
-- [ ] Página `/recursos` con recursos individuales, filtros por categoría/nivel y búsqueda
 - [ ] Página `/talleres` con talleres propios (próximos + pasados con grabaciones)
-- [ ] Filtros + búsqueda en `/eventos`
+- [ ] Evaluar filtros o búsqueda cuando el volumen de contenido lo justifique
 - [ ] Auth magic link + perfil de miembro + directorio opt-in
 - [ ] Integración con Telegram para anuncios automáticos de nuevos eventos
 
@@ -229,5 +231,3 @@ crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setea
 - Inscripción a talleres con recordatorio por email
 - Sistema de propuesta de talleres (formulario → revisión → publicación)
 - Directorio de miembros con opt-in
-
-

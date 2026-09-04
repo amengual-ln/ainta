@@ -6,6 +6,10 @@ import {
   UsersThree,
   Compass,
   Broadcast,
+  ArrowDown,
+  ArrowUpRight,
+  Certificate,
+  List,
 } from "@phosphor-icons/react";
 
 type IconComponent = typeof GraduationCap;
@@ -16,6 +20,10 @@ const iconRegistry: Record<string, IconComponent> = {
   UsersThree,
   Compass,
   Broadcast,
+  ArrowDown,
+  ArrowUpRight,
+  Certificate,
+  List,
 };
 
 interface PhosphorIconProps {

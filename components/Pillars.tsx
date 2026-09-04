@@ -44,7 +44,7 @@ export default function Pillars() {
 
       <ScrollReveal as="div" threshold={0.08}>
         <div
-          className="grid grid-cols-1 md:grid-cols-3 overflow-hidden"
+          className="pillar-grid grid grid-cols-1 md:grid-cols-2 overflow-hidden"
           style={{
             gap: "2px",
             border: "1px solid var(--border)",

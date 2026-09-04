@@ -4,19 +4,18 @@ import type {
   QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import type { NormalizedEvent, RejectedEvent } from "@/lib/normalize";
+import { sortEventsByStart, todayInBuenosAires } from "@/lib/events";
 
 export type EventType = "taller" | "charla" | "externo" | "hackathon";
 
 export interface EventItem {
-  day: string;
-  month: string;
-  year: string;
-  time: string | null;
+  startAt: string;
   title: string;
-  meta: string;
+  modality: "Presencial" | "Online" | "Híbrido" | null;
+  location: string;
   type: EventType;
   url: string;
-  source: "luma" | "eventbrite" | "meetup" | "sparck";
+  source: "luma" | "eventbrite" | "meetup" | "sparck" | "other";
   summary: string;
   notes: string;
   extraTags: string[];
@@ -112,38 +111,6 @@ function readUrl(page: PageObjectResponse, name: string): string {
   return "";
 }
 
-function monthShort(monthIdx: number): string {
-  return ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"][
-    monthIdx
-  ];
-}
-
-function dateParts(iso: string): { day: string; month: string; year: string; time: string | null } | null {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return null;
-  const hours = d.getUTCHours();
-  const minutes = d.getUTCMinutes();
-  const time =
-    hours === 0 && minutes === 0
-      ? null
-      : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-  return {
-    day: String(d.getUTCDate()).padStart(2, "0"),
-    month: monthShort(d.getUTCMonth()),
-    year: String(d.getUTCFullYear()),
-    time,
-  };
-}
-
-function buildMeta(modality: string | null, location: string): string {
-  const parts: string[] = [];
-  if (modality) parts.push(modality);
-  if (location && location.toLowerCase() !== (modality ?? "").toLowerCase()) {
-    parts.push(location);
-  }
-  return parts.join(" · ");
-}
-
 function getNotion(): Client {
   const token = process.env.NOTION_TOKEN;
   if (!token) throw new Error("NOTION_TOKEN missing");
@@ -172,7 +139,7 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
           },
           {
             property: "Fecha",
-            date: { on_or_after: new Date().toISOString() },
+            date: { on_or_after: todayInBuenosAires() },
           },
         ],
       },
@@ -188,11 +155,12 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
       const url = readUrl(r, "Link");
       if (!title || !fecha || !url) continue;
 
-      const parts = dateParts(fecha);
-      if (!parts) continue;
-
       const fuente = readSelect(r, "Fuente") ?? "Otro";
-      const modality = readSelect(r, "Modalidad");
+      const modalityRaw = readSelect(r, "Modalidad");
+      const modality: EventItem["modality"] =
+        modalityRaw === "Presencial" || modalityRaw === "Online" || modalityRaw === "Híbrido"
+          ? modalityRaw
+          : null;
       const location = readRichText(r, "Lugar");
       const tags = readMultiSelect(r, "Tags");
       const summary = readRichText(r, "Summary");
@@ -211,15 +179,13 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
           ? "meetup"
           : fuente.toLowerCase() === "eventbrite"
           ? "eventbrite"
-          : "sparck";
+          : "other";
 
       items.push({
-        day: parts.day,
-        month: parts.month,
-        year: parts.year,
-        time: parts.time,
+        startAt: fecha,
         title,
-        meta: buildMeta(modality, location),
+        modality,
+        location,
         type: source === "sparck" ? "taller" : tagClassFor(tags),
         url,
         source,
@@ -229,7 +195,7 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
         cost,
       });
     }
-    return items;
+    return sortEventsByStart(items);
   } catch (err) {
     console.error("[notion] fetchCuratedEvents failed:", (err as Error).message);
     return [];

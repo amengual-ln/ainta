@@ -151,8 +151,8 @@ Somos una comunidad de estudiantes y graduados de IA en Argentina. Te avisaremos
 
 Ver próximos eventos: ${SITE_URL}/eventos
 
-—
-Hecho por estudiantes, para estudiantes · ${SITE_URL}`;
+-
+Hecho por estudiantes, para estudiantes. ${SITE_URL}`;
 }
 
 export async function sendWelcomeEmail(

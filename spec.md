@@ -1,152 +1,108 @@
-# Spärck — Product Spec
+# Spärck | Product Spec
 
-## Visión general
+## Visión
 
-Spärck es una comunidad abierta de estudiantes y graduados de carreras de Inteligencia Artificial. Nace como respuesta a un problema concreto: la baja calidad pedagógica de muchas carreras de IA, donde los contenidos fundamentales (programación, gestión de proyectos, bases teóricas reales) no se enseñan bien o directamente no se enseñan.
+Spärck es una comunidad abierta de estudiantes y aficionados de inteligencia artificial y ciencia de datos. Nació para compensar una formación técnica insuficiente con aprendizaje entre pares, eventos útiles, recursos concretos y networking.
 
-El sitio web es el hub central de la comunidad: punto de entrada, directorio de eventos y recursos, y puerta a los canales de comunicación (Telegram, Discord, newsletter).
-
----
-
-## Nombre y posicionamiento
-
-**Nombre:** Spärck  
-**Tagline:** *Aprender IA entre quienes la viven de verdad*  
-**Descripción corta:** Comunidad abierta de estudiantes y graduados de IA — sin fronteras geográficas, sin jerarquías, sin humo.
-
-**Lo que NO es:**
-- Una institución académica
-- Un foro de discusión genérico
-- Un servicio de empleo
-- Una empresa
-
-**Lo que SÍ es:**
-- Un colectivo horizontal de estudiantes que se enseñan entre sí
-- Un radar de eventos y oportunidades del ecosistema IA
-- Una biblioteca de recursos curados y reales
-- Una red de pares para armar grupos de estudio y proyectos
-
----
+La web presenta la comunidad, explica su origen y permite llegar rápido a eventos, recursos y formas de sumarse.
 
 ## Audiencia
 
-**Primaria:** Estudiantes activos de carreras de IA, datos, sistemas o afines — en cualquier país de habla hispana (y potencialmente anglófona a futuro).
+La audiencia principal son estudiantes, graduados recientes y personas autodidactas de IA, datos, sistemas o áreas afines. Buscan contenido práctico, una agenda confiable y pares con intereses similares.
 
-**Secundaria:** Graduados recientes que quieren seguir conectados a la comunidad y contribuir con talleres, charlas o mentoría.
+Spärck no es una institución académica, una bolsa de trabajo ni un foro corporativo.
 
-**No es para:** Profesionales senior buscando networking corporativo, ni empresas buscando contratar directamente.
+## Arquitectura pública
 
----
+### `/` | Comunidad
 
-## Páginas y secciones (v1)
+- Identidad visual original, wordmark, orbs y glitch.
+- Header sticky con accesos directos a Eventos, Recursos y Sumate.
+- CTA principal a `/eventos` y secundaria a `/recursos`.
+- Historia y pilares de la comunidad.
+- Newsletter como cierre mediante `#unirse`.
 
-### `/` — Landing page
+### `/eventos` | Agenda
 
-1. **Nav** — Logo Spärck + links de sección + CTA "Unirse →". Transparente, integrado al hero sin borde ni fondo.
+- Eventos curados desde Notion.
+- Filtro desde el comienzo del día actual en `America/Argentina/Buenos_Aires`.
+- Grilla agrupada por mes: dos columnas en escritorio y una en móvil.
+- Cada tarjeta muestra fecha, hora cuando existe, modalidad, ubicación, resumen y badges útiles.
+- Los eventos propios llevan badge `Spärck`.
+- Los links abren la fuente externa con `noopener noreferrer`.
+- ISR de una hora.
 
-2. **Hero** — Eyebrow label, título grande, descripción, dos CTAs (primario: unirse / secundario: ver eventos), fila de stats (miembros, talleres, recursos).
+### `/recursos` | Biblioteca
 
-3. **Pilares** — Tres cards que explican los ejes de la comunidad:
-   - Aprendizaje real (talleres propios)
-   - Radar de eventos (curación externa)
-   - Red de pares (networking entre estudiantes)
+Catálogo estático de recursos agrupados en:
 
-4. **Próximos eventos** — Lista de los próximos 4–5 eventos con fecha, título, metadata (online/presencial, hora, speaker) y tag de tipo (Taller / Charla / Externo).
+- Fundamentos
+- Modelos y LLMs
+- Herramientas de IA
+- Proyectos reales
 
-5. **Recursos** — Grid 2×2 de categorías de la biblioteca:
-   - Programación para IA (fundamentos)
-   - ML sin misterios
-   - Gestión y deployment
-   - Grabaciones de talleres
+Cada recurso tiene tipo, nivel, idioma y link externo. Esta iteración no incluye filtros ni búsqueda.
 
-6. **Sumate a Spärck** — Card de cierre con tres botones de canal: Telegram, Discord, Newsletter.
+### `/talleres`
 
-7. **Footer** — Logo + copyright.
+La ruta se conserva como placeholder, pero queda fuera del sitemap y con `noindex` hasta contar con contenido propio.
 
----
+## Datos de eventos
 
-### `/eventos` — Agenda completa (v2)
+Notion sigue siendo el CMS sin cambios de schema. La web lee filas con `Status = Curado`.
 
-- Listado completo con filtros por tipo (Taller / Charla / Externo / Hackathon)
-- Cada evento con: fecha, título, descripción, speaker, modalidad, link de inscripción
-- Posibilidad de agregar al calendario
+`EventItem` mantiene datos sin formatear:
 
-### `/recursos` — Biblioteca (v2)
+- `startAt`: fecha ISO o fecha literal `YYYY-MM-DD`.
+- `modality`: Presencial, Online, Híbrido o null.
+- `location`: ubicación estructurada como texto.
+- título, URL, fuente, resumen, notas, tags y costo.
 
-- Categorías expandidas con recursos individuales
-- Cada recurso con: título, descripción, tipo (video / artículo / notebook / paper), nivel (básico / intermedio / avanzado), link externo
-- Filtros por categoría y nivel
+Las fechas sin hora se preservan como literales locales. Los timestamps se convierten a Buenos Aires antes de generar día, mes, año, hora y clave mensual.
 
-### `/talleres` — Talleres propios (v2)
+## Modelo de recursos
 
-- Próximos talleres con inscripción
-- Talleres pasados con grabación y materiales
+```ts
+type ResourceCategory =
+  | "fundamentos"
+  | "modelos"
+  | "herramientas"
+  | "proyectos";
 
----
+type ResourceLevel = "Básico" | "Intermedio" | "Avanzado";
+type ResourceLanguage = "ES" | "EN";
+type ResourceKind = "Curso" | "Guía" | "Libro" | "Práctica";
 
-## Funcionalidades v1 (MVP)
+interface ResourceItem {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  category: ResourceCategory;
+  level: ResourceLevel;
+  language: ResourceLanguage;
+  kind: ResourceKind;
+  certificate?: boolean;
+  featured: boolean;
+}
+```
 
-- [ ] Landing page estática con todas las secciones
-- [ ] Links funcionales a Telegram y Discord
-- [ ] Formulario de suscripción a newsletter (Resend / Mailchimp / Buttondown)
-- [ ] SEO básico (meta tags, OG tags, favicon)
-- [ ] Responsive mobile
-- [ ] Deploy en Vercel (dominio: `sparck.com.ar`)
+El catálogo debe mantener exactamente un destacado por categoría.
 
-## Funcionalidades v2
+## Restricciones de esta iteración
 
-- [ ] CMS para eventos y recursos (Notion API o Sanity)
-- [ ] Página `/eventos` con filtros
-- [ ] Página `/recursos` con filtros y búsqueda
-- [ ] Autenticación simple para miembros (magic link)
-- [ ] Perfil de miembro (carrera, país, intereses)
-- [ ] Directorio de miembros (opt-in)
+- Sin nuevas dependencias.
+- Sin auth, analytics ni detalle interno de evento.
+- Sin calendario mensual, filtros, búsqueda ni CMS de recursos.
+- APIs de newsletter y descubrimiento sin cambios.
+- Tema oscuro, tipografías y acento emerald preservados.
 
-## Funcionalidades v3
+## Aceptación
 
-- [ ] Inscripción a talleres con recordatorio por email
-- [ ] Sistema de propuesta de talleres (formulario → revisión → publicación)
-- [ ] Integración con canal de Telegram para anuncios automáticos de nuevos eventos
-
----
-
-## Stack sugerido
-
-### Frontend
-- **Framework:** Next.js 14+ (App Router)
-- **Estilos:** Tailwind CSS
-- **Tipografías:** Space Grotesk + Inter (Google Fonts)
-- **Animaciones:** CSS nativo para orbs de fondo; Framer Motion para transiciones de página y scroll reveal
-
-### CMS (v2)
-- **Opción A:** Notion como base de datos + Notion API (cero costo, fácil de mantener por no-devs)
-- **Opción B:** Sanity (más control, mejor DX)
-
-### Infraestructura
-- **Deploy:** Vercel (free tier suficiente para v1)
-- **Dominio:** `sparck.com.ar`
-- **Newsletter:** Resend (gratuito hasta 3k emails/mes) o Buttondown
-- **Analytics:** Vercel Analytics o Plausible (privacy-first)
-
-### Comunicación
-- **Telegram:** Canal de anuncios (solo admins) + grupo de discusión general
-- **Discord:** Servidor con canales temáticos (general, proyectos, recursos, ofertas, off-topic)
-
----
-
-## Métricas de éxito (v1)
-
-- 50 miembros en Telegram en el primer mes
-- 3 talleres organizados en los primeros 90 días
-- 20 recursos subidos a la biblioteca antes del lanzamiento
-- Tasa de rebote < 60% en la landing
-
----
-
-## Contenido mínimo para lanzar
-
-- Texto definitivo del hero y descripción de los tres pilares
-- Al menos 2 eventos reales cargados
-- Al menos 10 recursos curados por categoría
-- Links reales de Telegram y Discord
-- Foto o avatar de al menos 3 miembros fundadores (para dar cara a la comunidad)
+- `pnpm test`, `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- Landing, agenda y biblioteca funcionan en desktop y móvil sin overflow horizontal.
+- Header y menú móvil son utilizables con teclado.
+- Los títulos animados exponen frases completas a lectores de pantalla.
+- Reduced motion desactiva animaciones.
+- Tarjetas móviles de evento rondan un máximo de 220 px.
+- Empty state de eventos y estados del newsletter siguen funcionando.

@@ -73,8 +73,8 @@ export default function NewsletterForm() {
         data.duplicate
           ? "Ya estabas en la lista. ¡Gracias!"
           : data.emailQueued === false
-          ? "Listo! Bienvenido a la comunidad. (El mail de bienvenida no se pudo enviar — te contactaremos igual.)"
-          : "Listo! Bienvenido a la comunidad. Revisá tu mail."
+          ? "¡Listo! Ya estás en la comunidad. El mail de bienvenida no salió, pero tu suscripción quedó guardada."
+          : "¡Listo! Bienvenido a la comunidad. Revisá tu mail."
       );
       setEmail("");
       setName("");

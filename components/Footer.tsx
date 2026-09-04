@@ -28,7 +28,7 @@ export default function Footer() {
           letterSpacing: "0.02em",
         }}
       >
-        Hecho por estudiantes, para estudiantes · {year}
+        Hecho por estudiantes, para estudiantes. {year}
       </span>
     </footer>
   );

@@ -108,16 +108,19 @@ export default function CharTitle({
   return (
     <Tag
       ref={ref}
+      aria-label={children}
       className={`${className} ${triggered ? "is-revealed" : "deferred"}`.trim()}
       style={combinedStyle}
     >
-      {tokens.map((token, i) => {
-        if (token.match(/\s/)) {
-          charIndex += token.length;
-          return token;
-        }
-        return renderWord(token, i);
-      })}
+      <span aria-hidden="true">
+        {tokens.map((token, i) => {
+          if (token.match(/\s/)) {
+            charIndex += token.length;
+            return token;
+          }
+          return renderWord(token, i);
+        })}
+      </span>
     </Tag>
   );
 }

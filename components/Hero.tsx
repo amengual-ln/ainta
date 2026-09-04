@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import PhosphorIcon from "./PhosphorIcon";
 
 const H1_LINES: string[] = ["Spärck", "", ""];
 
@@ -104,25 +106,9 @@ export default function Hero() {
 
   return (
     <section
-      className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-12"
-      style={{ minHeight: "100dvh", paddingTop: "80px", paddingBottom: "80px" }}
+      className="community-hero relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-12"
     >
       <div className="lg:col-span-7">
-        <div
-          className="fade-up eyebrow-anim inline-flex items-center gap-2 mb-8"
-          style={{
-            fontSize: "12px",
-            fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--accent-soft)",
-          }}
-        >
-          <span className="eyebrow-line" />
-          COMUNIDAD DE ESTUDIANTES Y GRADUADOS DE CARRERAS DE IA
-        </div>
-
         <div className="hero-mark-wrap mb-7">
           <Image
             src="/favicon.png"
@@ -138,6 +124,7 @@ export default function Hero() {
             }}
           />
           <h1
+            aria-label="Spärck"
             className="text-white"
             style={{
               fontFamily: "var(--font-open-sauce), sans-serif",
@@ -147,9 +134,11 @@ export default function Hero() {
               letterSpacing: "-0.04em",
             }}
           >
-            {renderLine(0, false, decodeStaggers, line0Offset)}
-            {renderLine(1, true, decodeStaggers, line1Offset)}
-            {renderLine(2, false, decodeStaggers, line2Offset)}
+            <span aria-hidden="true">
+              {renderLine(0, false, decodeStaggers, line0Offset)}
+              {renderLine(1, true, decodeStaggers, line1Offset)}
+              {renderLine(2, false, decodeStaggers, line2Offset)}
+            </span>
           </h1>
         </div>
 
@@ -167,13 +156,13 @@ export default function Hero() {
           comparte sin filtro y se construye en comunidad.
         </p>
 
-        <div className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
-          <a href="#unirse" className="btn-primary">
-            Sumate
-          </a>
-          <a href="#eventos" className="btn-ghost">
-            Mirá los próximos eventos
-          </a>
+        <div id="eventos" className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
+          <Link href="/eventos" className="btn-primary">
+            Explorar eventos
+          </Link>
+          <Link href="/recursos" className="btn-ghost">
+            Ver recursos
+          </Link>
         </div>
       </div>
 
@@ -184,12 +173,20 @@ export default function Hero() {
       >
         {/*
           TODO[hero-side-asset]: motion abstracto en loop (dirección A2
-          — kinetic typography con Geist Pixel → Geist Sans). Cuando se
+          - kinetic typography con Geist Pixel → Geist Sans). Cuando se
           implemente, este slot reemplaza el comentario con el componente.
           Por ahora queda vacío (no rellenar con div-fake).
           Spec objetivo: ~480x520, abstracción visual sin fake-screenshots.
         */}
       </aside>
+
+      <a
+        href="#pilares"
+        className="hero-scroll-cue"
+        aria-label="Ver más contenido"
+      >
+        <PhosphorIcon name="ArrowDown" size={18} aria-hidden="true" />
+      </a>
     </section>
   );
 }

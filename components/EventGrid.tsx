@@ -18,6 +18,10 @@ function cleanText(value: string): string {
   return value.replace(/\*\*?|__/g, "").trim();
 }
 
+function isFeaturedTag(tag: string): boolean {
+  return tag.trim().toLowerCase() === "destacado";
+}
+
 function EventCard({ event }: { event: EventItem }) {
   const date = getEventDateParts(event.startAt);
   if (!date) return null;
@@ -26,13 +30,17 @@ function EventCard({ event }: { event: EventItem }) {
   const location = event.location && event.location.toLowerCase() !== event.modality?.toLowerCase()
     ? event.location
     : null;
+  const featuredTag = event.extraTags.find(isFeaturedTag);
+  const visibleExtraTags = featuredTag
+    ? [featuredTag, ...event.extraTags.filter((tag) => !isFeaturedTag(tag))]
+    : event.extraTags;
 
   return (
     <a
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="event-card"
+      className={`event-card${featuredTag ? " is-featured" : ""}`}
     >
       <div className="event-card-date" aria-label={`${date.day} de ${date.monthLabel}`}>
         <strong>{date.day}</strong>
@@ -54,7 +62,11 @@ function EventCard({ event }: { event: EventItem }) {
           {eventTypeLabels[event.type] && <span>{eventTypeLabels[event.type]}</span>}
           {event.cost === "Pago" && <span className="is-paid">Pago</span>}
           {waitlist && <span className="is-waitlist">Lista de espera</span>}
-          {event.extraTags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
+          {visibleExtraTags.slice(0, 2).map((tag) => (
+            <span key={tag} className={isFeaturedTag(tag) ? "is-featured" : undefined}>
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     </a>

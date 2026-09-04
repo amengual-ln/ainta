@@ -262,6 +262,15 @@
   border-color: rgba(93, 201, 168, 0.32);
   background: rgba(16, 24, 27, 0.82);
 }
+.event-card.is-featured {
+  border-color: rgba(93, 201, 168, 0.42);
+  background: linear-gradient(110deg, rgba(52, 168, 139, 0.12), rgba(13, 17, 23, 0.68) 46%);
+  box-shadow: inset 3px 0 0 rgba(93, 201, 168, 0.78);
+}
+.event-card.is-featured:hover {
+  border-color: rgba(93, 201, 168, 0.62);
+  background: linear-gradient(110deg, rgba(52, 168, 139, 0.17), rgba(16, 24, 27, 0.82) 46%);
+}
 .event-card-date {
   align-self: start;
   padding-top: 2px;
@@ -348,6 +357,7 @@
   text-transform: uppercase;
 }
 .event-card-badges .is-sparck { border-color: rgba(93, 201, 168, 0.34); color: var(--accent-soft); }
+.event-card-badges .is-featured { border-color: rgba(93, 201, 168, 0.42); background: var(--accent-dim); color: var(--accent-soft); }
 .event-card-badges .is-paid { border-color: rgba(232, 160, 160, 0.3); color: #e8a0a0; }
 .event-card-badges .is-waitlist { border-color: rgba(240, 200, 130, 0.32); color: #f0c882; }
 .empty-state {

@@ -157,7 +157,7 @@ cron-job.org (09:00 ART) ──→ POST /api/events/discover
 | `Link` | URL | requerido, dedupe key |
 | `Fuente` | Select | `Luma` / `Eventbrite` / `Meetup` / `Spärck` |
 | `Costo` | Select | `Gratis` / `Pago` |
-| `Tags` | Multi-select | `Taller` / `Workshop` / `Charla` / `Meetup` / `Networking` / `Hackathon` |
+| `Tags` | Multi-select | `Taller` / `Workshop` / `Charla` / `Meetup` / `Networking` / `Hackathon` / `Destacado` |
 | `Encontrado por` | Rich text | ej: `Auto · Luma` |
 | `Status` | Status | `Nuevo` → `curado` |
 | `Notas` | Rich text | opcional |

@@ -28,6 +28,7 @@ Spärck no es una institución académica, una bolsa de trabajo ni un foro corpo
 - Filtro desde el comienzo del día actual en `America/Argentina/Buenos_Aires`.
 - Grilla agrupada por mes: dos columnas en escritorio y una en móvil.
 - Cada tarjeta muestra fecha, hora cuando existe, modalidad, ubicación, resumen y badges útiles.
+- El tag `Destacado` resalta la tarjeta sin alterar el orden cronológico.
 - Los eventos propios llevan badge `Spärck`.
 - Los links abren la fuente externa con `noopener noreferrer`.
 - ISR de una hora.

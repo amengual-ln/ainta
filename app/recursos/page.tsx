@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import ResourceGrid from "@/components/ResourceGrid";
+import CharTitle from "@/components/CharTitle";
 import {
   resourceCategoryLabels,
   resourceCategoryOrder,
@@ -20,7 +21,7 @@ export default function RecursosPage() {
       <SiteHeader />
       <main className="relative z-10 site-shell page-main">
         <header className="page-intro">
-          <h1>Recursos para aprender haciendo</h1>
+          <CharTitle as="h1">Recursos para aprender haciendo</CharTitle>
           <p>Cursos, guías y prácticas para avanzar desde los fundamentos hasta proyectos completos.</p>
         </header>
 

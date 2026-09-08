@@ -142,6 +142,20 @@ export default function Hero() {
           </h1>
         </div>
 
+        <pre
+          className="fade-up hero-slogan-anim"
+          style={{
+            marginBottom: "14px",
+            color: "var(--accent-soft)",
+            fontSize: "clamp(14px, 2vw, 16px)",
+            
+            letterSpacing: "0.025em",
+            lineHeight: 1.45,
+          }}
+        >
+          LA CHISPA QUE CONECTA EL CONOCIMIENTO
+        </pre>
+
         <p
           className="fade-up hero-sub-anim mb-12"
           style={{

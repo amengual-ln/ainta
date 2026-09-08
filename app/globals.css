@@ -555,8 +555,9 @@
   animation: fadeUp 0.8s ease forwards;
 }
 
-.hero-sub-anim       { animation-delay: 0.50s; }
-.hero-actions-anim   { animation-delay: 0.65s; }
+.hero-slogan-anim    { animation-delay: 0.50s; }
+.hero-sub-anim       { animation-delay: 0.65s; }
+.hero-actions-anim   { animation-delay: 0.80s; }
 .hero-aside-anim     { animation-delay: 0.90s; }
 
 @keyframes fadeUp {

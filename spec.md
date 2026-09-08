@@ -27,7 +27,8 @@ Spärck no es una institución académica, una bolsa de trabajo ni un foro corpo
 - Eventos curados desde Notion.
 - Filtro desde el comienzo del día actual en `America/Argentina/Buenos_Aires`.
 - Grilla agrupada por mes: dos columnas en escritorio y una en móvil.
-- Cada tarjeta muestra fecha, hora cuando existe, modalidad, ubicación, resumen y badges útiles.
+- Cada tarjeta muestra fecha, hora cuando existe, ubicación, resumen y badges útiles.
+- El resumen ocupa dos líneas inicialmente y permite desplegar el texto completo.
 - El tag `Destacado` resalta la tarjeta sin alterar el orden cronológico.
 - Los eventos propios llevan badge `Spärck`.
 - Los links abren la fuente externa con `noopener noreferrer`.
@@ -105,5 +106,5 @@ El catálogo debe mantener exactamente un destacado por categoría.
 - Header y menú móvil son utilizables con teclado.
 - Los títulos animados exponen frases completas a lectores de pantalla.
 - Reduced motion desactiva animaciones.
-- Tarjetas móviles de evento rondan un máximo de 220 px.
+- Tarjetas móviles cerradas de evento rondan un máximo de 220 px.
 - Empty state de eventos y estados del newsletter siguen funcionando.

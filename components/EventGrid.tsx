@@ -36,27 +36,36 @@ function EventCard({ event }: { event: EventItem }) {
     : event.extraTags;
 
   return (
-    <a
-      href={event.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`event-card${featuredTag ? " is-featured" : ""}`}
-    >
+    <article className={`event-card${featuredTag ? " is-featured" : ""}`}>
       <div className="event-card-date" aria-label={`${date.day} de ${date.monthLabel}`}>
         <strong>{date.day}</strong>
         <span>{date.month}</span>
       </div>
       <div className="event-card-body">
-        <div className="event-card-heading">
+        <a
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="event-card-heading"
+          aria-label={`${event.title} (abre en una pestaña nueva)`}
+        >
           <h3>{event.title}</h3>
           <PhosphorIcon name="ArrowUpRight" size={17} aria-hidden="true" />
-        </div>
+        </a>
         <div className="event-card-meta">
           {date.time && <span>{date.time} h</span>}
-          {event.modality && <span>{event.modality}</span>}
           {location && <span>{location}</span>}
         </div>
-        {description && <p>{description}</p>}
+        {description && (
+          <details className="event-card-description">
+            <summary>
+              <span className="event-card-description-preview">{description}</span>
+              <span className="event-card-description-more">Ver más</span>
+              <span className="event-card-description-less">Ver menos</span>
+            </summary>
+            <p>{description}</p>
+          </details>
+        )}
         <div className="event-card-badges">
           {event.source === "sparck" && <span className="is-sparck">Spärck</span>}
           {eventTypeLabels[event.type] && <span>{eventTypeLabels[event.type]}</span>}
@@ -69,7 +78,7 @@ function EventCard({ event }: { event: EventItem }) {
           ))}
         </div>
       </div>
-    </a>
+    </article>
   );
 }
 

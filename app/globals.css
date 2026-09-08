@@ -123,7 +123,8 @@
 .site-nav-desktop a:focus-visible,
 .site-nav-mobile summary:focus-visible,
 .site-nav-mobile a:focus-visible,
-.event-card:focus-visible,
+.event-card-heading:focus-visible,
+.event-card-description summary:focus-visible,
 .resource-card:focus-visible,
 .hero-scroll-cue:focus-visible {
   outline: 2px solid var(--accent-soft);
@@ -327,16 +328,52 @@
   padding-left: 10px;
   border-left: 1px solid var(--border-strong);
 }
-.event-card-body > p {
-  display: -webkit-box;
-  overflow: hidden;
+.event-card-description {
   margin-top: 12px;
   color: #b9bdcf;
   font-size: 13px;
   line-height: 1.5;
+}
+.event-card-description summary {
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+}
+.event-card-description summary::-webkit-details-marker { display: none; }
+.event-card-description-preview {
+  display: -webkit-box;
+  overflow: hidden;
+  padding-right: 58px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.event-card-description-more,
+.event-card-description-less {
+  color: var(--accent-soft);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(93, 201, 168, 0.45);
+  text-underline-offset: 3px;
+}
+.event-card-description-more {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.event-card-description-less { display: none; }
+.event-card-description[open] {
+  display: flex;
+  flex-direction: column;
+}
+.event-card-description[open] summary {
+  order: 2;
+  width: fit-content;
+  margin-top: 4px;
+}
+.event-card-description[open] .event-card-description-preview,
+.event-card-description[open] .event-card-description-more { display: none; }
+.event-card-description[open] .event-card-description-less { display: inline-block; }
+.event-card-description > p { order: 1; }
 .event-card-badges {
   display: flex;
   flex-wrap: wrap;
@@ -409,8 +446,8 @@
   .page-intro > p { font-size: 15px; }
   .event-grid,
   .resource-grid { grid-template-columns: 1fr; }
-  .event-card { min-height: 0; max-height: 220px; padding: 18px; gap: 14px; }
-  .event-card-body > p { margin-top: 9px; }
+  .event-card { min-height: 0; padding: 18px; gap: 14px; }
+  .event-card-description { margin-top: 9px; }
   .event-card-badges { padding-top: 10px; }
   .event-months,
   .resource-groups { gap: 52px; }

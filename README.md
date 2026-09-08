@@ -29,6 +29,8 @@ app/
   globals.css         ← design tokens + animaciones
   eventos/page.tsx    ← agenda agrupada por mes (live, lee Notion)
   recursos/page.tsx   ← biblioteca estática de recursos
+  s/week/route.tsx    ← historia PNG con eventos hasta el domingo
+  s/month/route.tsx   ← historia PNG con eventos restantes del mes
   talleres/page.tsx   ← placeholder noindex
   api/subscribe       ← newsletter (Notion + Resend)
   api/events/discover ← pipeline de descubrimiento (Luma, Eventbrite, Meetup)
@@ -210,6 +212,7 @@ crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setea
 - [x] Eventos: pipeline de descubrimiento (Luma, Eventbrite, Meetup) → Notion
 - [x] Página `/eventos` con agenda mensual en grilla (lee Notion, revalidate 1h)
 - [x] Página `/recursos` con recursos agrupados por categoría
+- [x] Historias descargables en `/s/week` y `/s/month` para difusión en redes
 - [x] Animaciones: hero per-char glitch, scroll reveal, orbs de fondo
 - [x] Design system implementado (tokens, tipografía, componentes)
 

@@ -49,6 +49,14 @@ Cada recurso tiene tipo, nivel, idioma y link externo. Esta iteración no incluy
 
 La ruta se conserva como placeholder, pero queda fuera del sitemap y con `noindex` hasta contar con contenido propio.
 
+### `/s/week` y `/s/month` | Historias para redes
+
+- Rutas públicas no enlazadas que descargan una historia PNG de 1080×1920.
+- `/s/week` muestra hasta 6 eventos desde hoy hasta el domingo.
+- `/s/month` muestra hasta 8 eventos desde hoy hasta fin de mes y prioriza los destacados.
+- Ambas usan fechas de Buenos Aires, cards sin descripción ni links y un contador cuando quedan eventos fuera.
+- Se generan desde Notion al solicitarlas, tienen caché de una hora y quedan fuera de sitemap e indexación.
+
 ## Datos de eventos
 
 Notion sigue siendo el CMS sin cambios de schema. La web lee filas con `Status = Curado`.

@@ -123,12 +123,25 @@ function isPageObject(
   return r.object === "page";
 }
 
-export async function fetchCuratedEvents(): Promise<EventItem[]> {
+export async function fetchCuratedEvents(options: {
+  from?: string;
+  through?: string;
+} = {}): Promise<EventItem[]> {
   const dbId = process.env.NOTION_DISCOVERED_EVENTS_DB_ID;
   if (!dbId) return [];
   const notion = getNotion();
 
   try {
+    const from = options.from ?? todayInBuenosAires();
+    const dateFilters = [
+      {
+        property: "Fecha",
+        date: { on_or_after: from },
+      },
+      ...(options.through
+        ? [{ property: "Fecha", date: { on_or_before: options.through } }]
+        : []),
+    ];
     const res = await notion.databases.query({
       database_id: dbId,
       filter: {
@@ -137,10 +150,7 @@ export async function fetchCuratedEvents(): Promise<EventItem[]> {
             property: "Status",
             status: { equals: "Curado" },
           },
-          {
-            property: "Fecha",
-            date: { on_or_after: todayInBuenosAires() },
-          },
+          ...dateFilters,
         ],
       },
       sorts: [{ property: "Fecha", direction: "ascending" }],

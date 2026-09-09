@@ -12,6 +12,15 @@ import { fetchCuratedEvents, type EventItem } from "@/lib/sources/notion";
 
 const regularFont = readFile(path.join(process.cwd(), "app/fonts/OpenSauceSans-Regular.ttf"));
 const mediumFont = readFile(path.join(process.cwd(), "app/fonts/OpenSauceSans-Medium.ttf"));
+const geistRegularFont = readFile(
+  path.join(process.cwd(), "node_modules/geist/dist/fonts/geist-sans/Geist-Regular.ttf"),
+);
+const geistMediumFont = readFile(
+  path.join(process.cwd(), "node_modules/geist/dist/fonts/geist-sans/Geist-Medium.ttf"),
+);
+const logoImage = readFile(path.join(process.cwd(), "public/favicon.png")).then(
+  (file) => `data:image/png;base64,${file.toString("base64")}`,
+);
 
 function cleanText(value: string): string {
   return value.replace(/\*\*?|__/g, "").trim();
@@ -29,7 +38,9 @@ function eventBadges(event: EventItem): string[] {
 function StoryCard({ event, compact }: { event: EventItem; compact: boolean }) {
   const date = getEventDateParts(event.startAt);
   if (!date) return null;
+  const title = cleanText(event.title);
   const featured = isFeaturedEvent(event);
+  const longTitle = title.length > (compact ? 42 : 48);
   const location = event.location && event.location.toLowerCase() !== event.modality?.toLowerCase()
     ? cleanText(event.location)
     : "";
@@ -46,7 +57,7 @@ function StoryCard({ event, compact }: { event: EventItem; compact: boolean }) {
         border: `${featured ? 2 : 1}px solid ${featured ? "#34A88B" : "#27313d"}`,
         borderRadius: 20,
         background: featured ? "#10201c" : "#0d1117",
-        overflow: "hidden",
+        fontFamily: "Geist",
       }}
     >
       <div
@@ -61,7 +72,7 @@ function StoryCard({ event, compact }: { event: EventItem; compact: boolean }) {
           color: featured ? "#5ed0b0" : "#dce5e2",
         }}
       >
-        <span style={{ fontSize: compact ? (featured ? 64 : 62) : featured ? 73 : 70, lineHeight: 1, fontWeight: 500 }}>
+        <span style={{ fontSize: compact ? (featured ? 60 : 58) : featured ? 68 : 66, lineHeight: 1.25, fontWeight: 500 }}>
           {date.day}
         </span>
         <span style={{ fontSize: featured ? 30 : 29, marginTop: 7 }}>{date.month}</span>
@@ -73,24 +84,21 @@ function StoryCard({ event, compact }: { event: EventItem; compact: boolean }) {
           minWidth: 0,
           padding: compact ? "17px 24px" : "21px 28px",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "center",
         }}
       >
         <div
           style={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
             color: "#f1f5f4",
-            fontSize: compact ? (featured ? 39 : 37) : featured ? 43 : 42,
-            lineHeight: compact ? 1.08 : 1.12,
+            fontSize: compact
+              ? longTitle ? 35 : 39
+              : longTitle ? 39 : 43,
+            lineHeight: 1.15,
             fontWeight: 500,
-            maxHeight: compact ? 74 : 85,
-            marginBottom: 4,
-            overflow: "hidden",
+            marginBottom: 10,
           }}
         >
-          {cleanText(event.title)}
+          {title}
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18 }}>
           <span
@@ -136,7 +144,14 @@ export async function createEventStory(period: EventStoryPeriod) {
   const allEvents = await fetchCuratedEvents({ from: range.start, through: range.end });
   const selection = selectStoryEvents(allEvents, range, limit, period === "month");
   const compact = period === "month";
-  const [regular, medium] = await Promise.all([regularFont, mediumFont]);
+  const listOffset = selection.events.length <= 4 ? -78 : selection.events.length <= 6 ? -38 : 0;
+  const [regular, medium, geistRegular, geistMedium, logo] = await Promise.all([
+    regularFont,
+    mediumFont,
+    geistRegularFont,
+    geistMediumFont,
+    logoImage,
+  ]);
 
   const response = new ImageResponse(
     (
@@ -180,7 +195,11 @@ export async function createEventStory(period: EventStoryPeriod) {
         />
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 58, fontWeight: 500, letterSpacing: -2 }}>Spärck</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logo} width="58" height="58" alt="" />
+            <span style={{ fontSize: 58, fontWeight: 500, letterSpacing: -2 }}>Spärck</span>
+          </div>
           <span style={{ color: "#67c7ad", fontSize: 30 }}>sparck.com.ar</span>
         </div>
 
@@ -200,7 +219,15 @@ export async function createEventStory(period: EventStoryPeriod) {
         </div>
 
         {selection.events.length > 0 ? (
-          <div style={{ display: "flex", flex: 1, flexDirection: "column", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              transform: `translateY(${listOffset}px)`,
+            }}
+          >
             <div style={{ display: "flex", flexDirection: "column", gap: compact ? 13 : 16 }}>
               {selection.events.map((event) => (
                 <StoryCard key={event.url} event={event} compact={compact} />
@@ -231,17 +258,23 @@ export async function createEventStory(period: EventStoryPeriod) {
             position: "absolute",
             left: 104,
             right: 104,
-            bottom: 82,
+            bottom: 180,
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            color: "#82908c",
+            justifyContent: "center",
+            color: "#f1f5f4",
             fontSize: 28,
+            fontWeight: 500,
+            letterSpacing: 1.2,
           }}
         >
-          <span>La chispa que conecta el conocimiento</span>
+          <div style={{ display: "flex" }}>
+            <span>LA CHISPA QUE</span>
+            <span style={{ color: "#5ed0b0", margin: "0 9px" }}>CONECTA</span>
+            <span>EL CONOCIMIENTO</span>
+          </div>
           {selection.remaining > 0 && (
-            <span style={{ color: "#67c7ad" }}>
+            <span style={{ position: "absolute", right: 0, bottom: -44, color: "#67c7ad", fontSize: 20, letterSpacing: 0 }}>
               +{selection.remaining} {selection.remaining === 1 ? "evento más" : "eventos más"} en /eventos
             </span>
           )}
@@ -254,6 +287,8 @@ export async function createEventStory(period: EventStoryPeriod) {
       fonts: [
         { name: "Open Sauce", data: regular, weight: 400 },
         { name: "Open Sauce", data: medium, weight: 500 },
+        { name: "Geist", data: geistRegular, weight: 400 },
+        { name: "Geist", data: geistMedium, weight: 500 },
       ],
       headers: {
         "Content-Disposition": `attachment; filename="sparck-eventos-${period === "week" ? "semana" : "mes"}-${range.fileStamp}.png"`,

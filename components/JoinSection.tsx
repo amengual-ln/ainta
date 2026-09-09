@@ -55,10 +55,9 @@ export default function JoinSection() {
             style={{
               fontSize: "16px",
               maxWidth: "420px",
-              marginTop: "30px",
               lineHeight: 1.65,
               color: "var(--muted)",
-              margin: "0 auto 40px",
+              margin: "30px auto 0px",
             }}>
             ¿Querés conversar con la comunidad?
           </p>

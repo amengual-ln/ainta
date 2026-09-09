@@ -1,10 +1,24 @@
 import Image from "next/image";
+import PhosphorIcon from "./PhosphorIcon";
+
+const socialLinks = [
+  {
+    href: "https://www.instagram.com/sparck.ai",
+    label: "Instagram",
+    icon: "InstagramLogo" as const,
+  },
+  {
+    href: "https://www.linkedin.com/company/sparck-ai",
+    label: "LinkedIn",
+    icon: "LinkedinLogo" as const,
+  },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer
-      className="relative z-10 flex flex-wrap items-center justify-between gap-4"
+      className="site-footer relative z-10"
       style={{
         padding: "32px 40px",
         borderTop: "1px solid var(--border)",
@@ -20,7 +34,23 @@ export default function Footer() {
           className="footer-logo"
         />
       </a>
+
+      <nav className="footer-socials" aria-label="Redes sociales">
+        {socialLinks.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <PhosphorIcon name={link.icon} size={18} aria-hidden="true" />
+            <span>{link.label}</span>
+          </a>
+        ))}
+      </nav>
+
       <span
+        className="footer-note"
         style={{
           fontSize: "13px",
           color: "var(--muted)",
@@ -28,7 +58,7 @@ export default function Footer() {
           letterSpacing: "0.02em",
         }}
       >
-        Hecho por estudiantes, para estudiantes. {year}
+        Hecho por y para estudiantes. {year}
       </span>
     </footer>
   );

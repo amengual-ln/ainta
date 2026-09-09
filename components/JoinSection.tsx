@@ -1,6 +1,7 @@
 import ScrollReveal from "./ScrollReveal";
 import CharTitle from "./CharTitle";
 import NewsletterForm from "./NewsletterForm";
+import PhosphorIcon from "./PhosphorIcon";
 
 export default function JoinSection() {
   return (
@@ -44,10 +45,32 @@ export default function JoinSection() {
               margin: "0 auto 40px",
             }}
           >
-            Es gratis, abierto, y está hecho por estudiantes para estudiantes.
+            Dejanos tu mail para recibir eventos, recursos y novedades de la
+            comunidad.
           </p>
 
           <NewsletterForm />
+
+          <p 
+            style={{
+              fontSize: "16px",
+              maxWidth: "420px",
+              marginTop: "30px",
+              lineHeight: 1.65,
+              color: "var(--muted)",
+              margin: "0 auto 40px",
+            }}>
+            ¿Querés conversar con la comunidad?
+          </p>
+          <a
+            href="https://chat.whatsapp.com/FzOeQXKbnOrGfrVlgb41k1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost join-community-link"
+          >
+            <PhosphorIcon name="WhatsappLogo" size={20} weight="bold" aria-hidden="true" />
+            Sumate al grupo de WhatsApp
+          </a>
         </div>
       </ScrollReveal>
     </section>

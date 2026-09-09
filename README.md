@@ -42,7 +42,7 @@ components/
   EventGrid.tsx       ← grilla compacta y agrupación mensual
   ResourceGrid.tsx    ← grilla reutilizable de recursos
   JoinSection.tsx     ← card de newsletter
-  Footer.tsx          ← minimal, año dinámico
+  Footer.tsx          ← redes oficiales + año dinámico
   CharTitle.tsx       ← wrapper client-side para animación per-char en h2
   ScrollReveal.tsx    ← IntersectionObserver wrapper
   BgOrbs.tsx          ← orbs de fondo animados
@@ -218,7 +218,6 @@ crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setea
 
 ### 🚧 En progreso / Pendiente (v1)
 
-- [ ] Reemplazar links placeholder de Telegram/Discord en la landing
 - [ ] Cargar fotos de miembros fundadores (si aplica)
 - [ ] Revisar y ampliar periódicamente el catálogo estático de recursos
 

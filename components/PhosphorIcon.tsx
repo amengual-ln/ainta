@@ -10,6 +10,9 @@ import {
   ArrowUpRight,
   Certificate,
   List,
+  InstagramLogo,
+  LinkedinLogo,
+  WhatsappLogo,
 } from "@phosphor-icons/react";
 
 type IconComponent = typeof GraduationCap;
@@ -24,6 +27,9 @@ const iconRegistry: Record<string, IconComponent> = {
   ArrowUpRight,
   Certificate,
   List,
+  InstagramLogo,
+  LinkedinLogo,
+  WhatsappLogo,
 };
 
 interface PhosphorIconProps {

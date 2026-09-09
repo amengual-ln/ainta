@@ -549,6 +549,69 @@
   mix-blend-mode: screen;
 }
 
+.site-footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.footer-socials a:hover {
+  color: var(--accent-soft);
+}
+
+.footer-socials a:focus-visible,
+.join-community-link:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 3px;
+}
+
+.footer-note {
+  justify-self: end;
+  text-align: right;
+}
+
+.join-community-link {
+  width: min(100%, 420px);
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.join-community-label {
+  margin-top: 36px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .site-footer {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    padding: 28px 24px !important;
+  }
+
+  .footer-note {
+    justify-self: start;
+    text-align: left;
+    font-size: 12px !important;
+  }
+}
+
 /* ── Hero entry cascade ── */
 .fade-up {
   opacity: 0;

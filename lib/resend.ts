@@ -21,6 +21,9 @@ const SITE_URL = (process.env.SITE_URL ?? "https://sparck.com.ar").replace(
   /\/+$/,
   ""
 );
+const WHATSAPP_URL = "https://chat.whatsapp.com/FzOeQXKbnOrGfrVlgb41k1";
+const INSTAGRAM_URL = "https://www.instagram.com/sparck.ai";
+const LINKEDIN_URL = "https://www.linkedin.com/company/sparck-ai";
 
 const FONT_SANS =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
@@ -124,9 +127,29 @@ Ver próximos eventos &rarr;
 </tr>
 
 <tr>
+<td style="padding:0 40px 40px;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:${BRAND.bg};border:1px solid ${BRAND.border};border-radius:12px;border-collapse:separate;">
+<tr>
+<td style="padding:20px;font-family:${FONT_SANS};">
+<p style="margin:0 0 6px;font-size:15px;line-height:1.45;font-weight:600;color:${BRAND.text};">La comunidad también vive en WhatsApp.</p>
+<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${BRAND.textMuted};">Sumate al grupo para conversar, compartir y conocer a otros estudiantes.</p>
+<a href="${escapeAttr(WHATSAPP_URL)}" target="_blank" rel="noopener" style="font-family:${FONT_SANS};font-size:14px;font-weight:600;color:${BRAND.accentSoft};text-decoration:underline;text-decoration-color:${BRAND.accentSoft};text-underline-offset:3px;">
+Sumate al grupo &rarr;
+</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
 <td style="padding:24px 40px 32px;border-top:1px solid ${BRAND.border};">
 <p style="margin:0;font-family:${FONT_MONO};font-size:11px;letter-spacing:0.04em;color:${BRAND.muted};">
 Hecho por estudiantes, para estudiantes &middot; <a href="${escapeAttr(SITE_URL)}" style="color:${BRAND.muted};text-decoration:underline;text-decoration-color:${BRAND.muted};text-underline-offset:2px;">sparck.com.ar</a>
+</p>
+<p style="margin:10px 0 0;font-family:${FONT_SANS};font-size:12px;line-height:1.5;color:${BRAND.muted};">
+<a href="${escapeAttr(INSTAGRAM_URL)}" target="_blank" rel="noopener" style="color:${BRAND.muted};text-decoration:underline;text-decoration-color:${BRAND.muted};text-underline-offset:2px;">Instagram</a>&nbsp;&nbsp;
+<a href="${escapeAttr(LINKEDIN_URL)}" target="_blank" rel="noopener" style="color:${BRAND.muted};text-decoration:underline;text-decoration-color:${BRAND.muted};text-underline-offset:2px;">LinkedIn</a>
 </p>
 </td>
 </tr>
@@ -150,6 +173,14 @@ Gracias por sumarte a Spärck.
 Somos una comunidad de estudiantes y graduados de IA en Argentina. Te avisaremos por acá cuando haya talleres, meetups y recursos nuevos.
 
 Ver próximos eventos: ${SITE_URL}/eventos
+
+La comunidad también vive en WhatsApp.
+Sumate al grupo para conversar, compartir y conocer a otros estudiantes:
+${WHATSAPP_URL}
+
+Seguinos:
+Instagram: ${INSTAGRAM_URL}
+LinkedIn: ${LINKEDIN_URL}
 
 -
 Hecho por estudiantes, para estudiantes. ${SITE_URL}`;

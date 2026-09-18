@@ -195,37 +195,26 @@ export default function Hero() {
       </aside>
 
       <div className="hero-partners">
-        <p className="hero-partner">
-          Community partners @{" "}
+        <p className="hero-partners-label">Community partners</p>
+        <div className="hero-partners-links">
           <a
             href="https://nerdearla.com"
             target="_blank"
             rel="noopener noreferrer"
             className="hero-partner-link"
           >
-            Nerdearla
+            Nerdearla <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
           </a>
-        </p>
-        <p className="hero-partner">
-          Community partners @{" "}
           <a
             href="https://argentina.campus-party.org/"
             target="_blank"
             rel="noopener noreferrer"
             className="hero-partner-link"
           >
-            Campus Party
+            Campus Party <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
           </a>
-        </p>
+        </div>
       </div>
-
-      <a
-        href="#pilares"
-        className="hero-scroll-cue"
-        aria-label="Ver más contenido"
-      >
-        <PhosphorIcon name="ArrowDown" size={18} aria-hidden="true" />
-      </a>
     </section>
   );
 }

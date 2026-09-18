@@ -195,7 +195,7 @@ export default function Hero() {
       </aside>
 
       <div className="hero-partners">
-        <p className="hero-partners-label">Community partners</p>
+        <p className="hero-partners-label">Acompañamos como comunidad a</p>
         <div className="hero-partners-links">
           <a
             href="https://nerdearla.com"

@@ -178,6 +178,34 @@ export default function Hero() {
             Ver recursos
           </Link>
         </div>
+
+        <div
+          className="fade-up hero-partners-anim hero-partners"
+          aria-label="Community partners: Nerdearla y Campus Party"
+        >
+          <p className="hero-partner">
+            Community partners @{" "}
+            <a
+              href="https://nerdearla.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-partner-link"
+            >
+              Nerdearla
+            </a>
+          </p>
+          <p className="hero-partner">
+            Community partners @{" "}
+            <a
+              href="https://argentina.campus-party.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-partner-link"
+            >
+              Campus Party
+            </a>
+          </p>
+        </div>
       </div>
 
       <aside

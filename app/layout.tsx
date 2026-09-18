@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import BgOrbs from "@/components/BgOrbs";
 import "./globals.css";
 
@@ -107,6 +108,7 @@ export default function RootLayout({
       <body>
         <BgOrbs />
         {children}
+        <Analytics />
       </body>
     </html>
   );

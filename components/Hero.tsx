@@ -194,13 +194,27 @@ export default function Hero() {
         */}
       </aside>
 
-      <a
-        href="#pilares"
-        className="hero-scroll-cue"
-        aria-label="Ver más contenido"
-      >
-        <PhosphorIcon name="ArrowDown" size={18} aria-hidden="true" />
-      </a>
+      <div className="hero-partners">
+        <p className="hero-partners-label">Acompañamos como comunidad a</p>
+        <div className="hero-partners-links">
+          <a
+            href="https://nerdearla.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-partner-link"
+          >
+            Nerdearla <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
+          </a>
+          <a
+            href="https://argentina.campus-party.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-partner-link"
+          >
+            Campus Party <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

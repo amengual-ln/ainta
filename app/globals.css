@@ -617,27 +617,44 @@
 }
 
 .hero-partners-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  align-items: center;
+  width: min(100%, 430px);
+  margin-inline: auto;
+  gap: clamp(18px, 4vw, 44px);
 }
 
 .hero-partner-link {
   display: inline-flex;
+  width: 100%;
   align-items: center;
-  gap: 5px;
-  padding: 6px 0;
-  color: var(--accent-soft);
-  font-weight: 500;
+  justify-content: center;
+  padding: 8px 4px;
+  opacity: 0.82;
   text-decoration: none;
-  text-underline-offset: 3px;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
 
 .hero-partner-link:hover {
-  color: var(--white);
-  text-decoration: underline;
+  opacity: 1;
+  filter: drop-shadow(0 0 12px rgba(93, 201, 168, 0.14));
+  transform: translateY(-1px);
+}
+
+.partner-logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.partner-logo-nerdearla {
+  width: 220px;
+}
+
+.partner-logo-campus-party {
+  width: 145px;
 }
 
 

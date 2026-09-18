@@ -126,6 +126,7 @@
 .event-card-heading:focus-visible,
 .event-card-description summary:focus-visible,
 .resource-card:focus-visible,
+.hero-partner-link:focus-visible,
 .hero-scroll-cue:focus-visible {
   outline: 2px solid var(--accent-soft);
   outline-offset: 3px;
@@ -621,11 +622,67 @@
 .hero-slogan-anim    { animation-delay: 0.50s; }
 .hero-sub-anim       { animation-delay: 0.65s; }
 .hero-actions-anim   { animation-delay: 0.80s; }
+.hero-partners-anim  { animation-delay: 0.95s; }
 .hero-aside-anim     { animation-delay: 0.90s; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-partners {
+  display: grid;
+  gap: 6px;
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hero-partner-link {
+  color: var(--accent-soft);
+  font-weight: 500;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.hero-partner-link:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .hero-partners {
+    position: relative;
+    display: block;
+    height: 20px;
+    overflow: hidden;
+  }
+
+  .hero-partner {
+    position: absolute;
+    inset: 0 auto auto 0;
+    opacity: 0;
+    animation: heroPartnerLoop 8s ease-in-out infinite;
+  }
+
+  .hero-partner:nth-child(2) {
+    animation-delay: 4s;
+  }
+
+  .hero-partner:focus-within {
+    z-index: 1;
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+@keyframes heroPartnerLoop {
+  0%      { opacity: 0; transform: translateY(8px); }
+  10%, 40% { opacity: 1; transform: translateY(0); }
+  50%, 100% { opacity: 0; transform: translateY(-8px); }
 }
 
 /* ── Trigger para CharTitle: pausa hasta entrar al viewport ── */
@@ -880,6 +937,13 @@
   .char-decode, .char-decode--sparse { display: none !important; }
   .char-smooth { opacity: 1 !important; }
   .bg-orb { animation: none !important; }
+  .hero-partners { display: grid; height: auto; overflow: visible; }
+  .hero-partner {
+    position: static;
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
 }
 
 /* ── Reduced transparency (glassmorphism fallback) ── */

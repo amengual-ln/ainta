@@ -126,43 +126,15 @@
 .event-card-heading:focus-visible,
 .event-card-description summary:focus-visible,
 .resource-card:focus-visible,
-.hero-scroll-cue:focus-visible {
+.hero-partner-link:focus-visible {
   outline: 2px solid var(--accent-soft);
   outline-offset: 3px;
 }
 
 .community-hero {
   min-height: calc(100dvh - 64px);
-  padding: 40px 0 104px;
-}
-
-.hero-scroll-cue {
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--muted);
-  opacity: 0.62;
-  transform: translateX(-50%);
-  transition: color 0.2s ease, opacity 0.2s ease;
-}
-
-.hero-scroll-cue:hover {
-  color: var(--accent-soft);
-  opacity: 1;
-}
-
-.hero-scroll-cue svg {
-  animation: heroArrowBounce 2.2s ease-in-out infinite;
-}
-
-@keyframes heroArrowBounce {
-  0%, 100% { transform: translateY(-2px); }
-  50% { transform: translateY(4px); }
+  padding: 40px 0 32px;
+  grid-template-rows: 1fr auto;
 }
 
 .site-nav-mobile { display: none; position: relative; }
@@ -442,7 +414,7 @@
   .site-shell { width: min(100% - 32px, 1120px); }
   .site-nav-desktop { display: none; }
   .site-nav-mobile { display: block; }
-  .community-hero { padding: 28px 0 96px; }
+  .community-hero { padding: 28px 0 32px; }
   .page-intro > p { font-size: 15px; }
   .event-grid,
   .resource-grid { grid-template-columns: 1fr; }
@@ -627,6 +599,47 @@
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+.hero-partners {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.hero-partners-label {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.hero-partners-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+}
+
+.hero-partner-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 0;
+  color: var(--accent-soft);
+  font-weight: 500;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.hero-partner-link:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
 
 /* ── Trigger para CharTitle: pausa hasta entrar al viewport ── */
 /* Specificity (0,2,0) > (0,1,0) de .char-wrap / .char-glitch / .char-smooth,

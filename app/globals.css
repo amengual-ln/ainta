@@ -657,6 +657,16 @@
   width: 120px;
 }
 
+@media (max-width: 767px) {
+  .partner-logo-nerdearla {
+    width: 145px;
+  }
+
+  .partner-logo-campus-party {
+    width: 100px;
+  }
+}
+
 
 /* ── Trigger para CharTitle: pausa hasta entrar al viewport ── */
 /* Specificity (0,2,0) > (0,1,0) de .char-wrap / .char-glitch / .char-smooth,

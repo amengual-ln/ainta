@@ -120,6 +120,37 @@ curl -X POST localhost:3000/api/subscribe \
 # → {"ok":true,"emailQueued":true}
 ```
 
+## Correo interno (ImprovMX + Resend)
+
+`/interno/correo` permite redactar correos nuevos y responder mensajes recibidos
+por ImprovMX. El formulario usa `POST /api/internal/email`; ambos paths están
+protegidos por Basic Auth en `middleware.ts` y no se indexan.
+
+Variables requeridas en Vercel y en `.env.local`:
+
+```bash
+INTERNAL_EMAIL_USER=sparck
+INTERNAL_EMAIL_PASSWORD=una-clave-larga-y-unica
+RESEND_API_KEY=re_xxxxxxxxx
+RESEND_FROM="Spärck <hola@sparck.com.ar>"
+RESEND_REPLY_TO=hola@sparck.com.ar # opcional
+```
+
+Usar caracteres ASCII para usuario y clave. Si falta una credencial interna, la
+ruta falla cerrada con `503`; si falta Resend, la pantalla abre pero bloquea el
+envío con un error de configuración.
+
+Para responder dentro del hilo original:
+
+1. Abrir el mensaje reenviado por ImprovMX.
+2. Elegir **Responder** en `/interno/correo`.
+3. Copiar destinatario, asunto y cuerpo.
+4. Opcional: desde “Mostrar original”, copiar el header `Message-ID` completo
+   (`<id@dominio>`). El envío lo usa como `In-Reply-To` y `References`.
+
+El alcance inicial no incluye inbox, persistencia de borradores, adjuntos ni
+editor rich-text. ImprovMX sigue siendo la capa de recepción y Resend la de envío.
+
 ## Eventos (Notion + cron-job.org)
 
 La agenda y el discover pipeline usan **una sola database** en Notion.

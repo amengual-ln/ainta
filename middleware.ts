@@ -60,5 +60,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/interno/:path*", "/api/internal/:path*"],
+  matcher: ["/app/:path*", "/api/internal/:path*"],
 };

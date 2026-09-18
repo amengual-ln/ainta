@@ -6,6 +6,6 @@
     "enrichment": "none",
     "nav": "N9",
     "footer": "Ft2",
-    "brief": "Internal compose and reply email console"
+    "brief": "Internal compose and reply email console at /app/mail"
   }
 ]

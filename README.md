@@ -122,7 +122,7 @@ curl -X POST localhost:3000/api/subscribe \
 
 ## Correo interno (ImprovMX + Resend)
 
-`/interno/correo` permite redactar correos nuevos y responder mensajes recibidos
+`/app/mail` permite redactar correos nuevos y responder mensajes recibidos
 por ImprovMX. El formulario usa `POST /api/internal/email`; ambos paths están
 protegidos por Basic Auth en `middleware.ts` y no se indexan.
 
@@ -143,7 +143,7 @@ envío con un error de configuración.
 Para responder dentro del hilo original:
 
 1. Abrir el mensaje reenviado por ImprovMX.
-2. Elegir **Responder** en `/interno/correo`.
+2. Elegir **Responder** en `/app/mail`.
 3. Copiar destinatario, asunto y cuerpo.
 4. Opcional: desde “Mostrar original”, copiar el header `Message-ID` completo
    (`<id@dominio>`). El envío lo usa como `In-Reply-To` y `References`.

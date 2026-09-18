@@ -7,7 +7,7 @@ import {
   SpinnerGap,
   WarningCircle,
 } from "@phosphor-icons/react";
-import styles from "@/app/interno/correo/email.module.css";
+import styles from "@/app/app/mail/email.module.css";
 
 type Mode = "compose" | "reply";
 type SendState =

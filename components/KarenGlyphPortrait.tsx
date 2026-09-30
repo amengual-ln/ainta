@@ -5,6 +5,7 @@ import {
   glyphForCell,
   glyphHash,
   portraitDensity,
+  portraitParticleDensity,
 } from "@/lib/glyph-portrait";
 
 const FRAME_INTERVAL_MS = 140;
@@ -53,26 +54,43 @@ export default function KarenGlyphPortrait() {
           const x = (column + 0.5) / columns;
           const y = (row + 0.5) / rows;
           const density = portraitDensity(x, y);
-          const fragment = glyphHash(column, row, phase) > 0.992;
+          const particleDensity = portraitParticleDensity(x, y);
+          const stableNoise = glyphHash(column, row, 12);
+          const edgeVisible = stableNoise < Math.min(1, density * 3.4);
+          const particle = density <= 0.08 &&
+            glyphHash(column, row, phase) > 1 - particleDensity * 0.32;
+          const strayParticle = density === 0 &&
+            particleDensity > 0 &&
+            glyphHash(column, row, 21) > 0.996;
 
-          if (density <= 0.025 && !fragment) continue;
+          if ((!edgeVisible || density <= 0.025) && !particle && !strayParticle) {
+            continue;
+          }
 
           const flicker = glyphHash(column, row, phase + 3);
-          const alpha = fragment
-            ? 0.16
+          const isParticle = particle || strayParticle;
+          const alpha = isParticle
+            ? Math.min(0.34, 0.08 + particleDensity * 0.3)
             : Math.min(0.9, 0.12 + density * 0.78 + flicker * 0.08);
           const accent =
-            density > 0.7 && glyphHash(column, row, 4) > 0.72;
+            (density > 0.7 || isParticle) &&
+            glyphHash(column, row, 4) > 0.72;
           const scanShift =
             !reduceMotion.matches && row % 17 === phase % 17 ? 3 : 0;
+          const particleX = isParticle && !reduceMotion.matches
+            ? (glyphHash(column, row, phase + 5) - 0.5) * 6
+            : 0;
+          const particleY = isParticle && !reduceMotion.matches
+            ? (glyphHash(column, row, phase + 7) - 0.5) * 4
+            : 0;
 
           context.fillStyle = accent
             ? `rgba(93, 201, 168, ${alpha})`
             : `rgba(240, 240, 245, ${alpha})`;
           context.fillText(
             glyphForCell(column, row, phase),
-            column * cell + cell / 2 + scanShift,
-            row * cell + cell / 2,
+            column * cell + cell / 2 + scanShift + particleX,
+            row * cell + cell / 2 + particleY,
           );
         }
       }

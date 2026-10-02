@@ -26,37 +26,29 @@ export default function OriginSection() {
               marginBottom: "32px",
             }}
           >
-            Spärck. Con “ck”.
+            ¿Por qué “Spärck”?
           </CharTitle>
 
           <div className="origin-story">
             <p>
-              Nuestro nombre viene de Karen Spärck Jones, pionera del
-              procesamiento del lenguaje y la recuperación de información.
-            </p>
-            <p>
-              En 1972 formuló la frecuencia inversa de documento, o IDF: una
-              manera de reconocer qué palabras contienen más información. Su
-              trabajo ayudó a construir las bases de los buscadores modernos y
-              de muchas de las tecnologías con las que hoy interactuamos usando
-              lenguaje.
+              Formuló la frecuencia inversa de documento, o IDF: una forma de
+              reconocer qué palabras contienen más información. Su trabajo ayudó
+              a sentar las bases de los buscadores modernos y de tecnologías que
+              hoy permiten interactuar usando lenguaje.
             </p>
             <p>
               Pero no elegimos su nombre solamente por su aporte técnico.
-              Karen desarrolló su carrera dentro de la investigación y la
-              educación, formando estudiantes, compartiendo conocimiento y
-              trabajando para que los avances de la computación ampliaran lo
-              que las personas podían comprender y construir.
+              Dedicó su carrera a investigar, enseñar y compartir conocimiento
+              para ampliar lo que más personas podían comprender y construir.
             </p>
             <p>
-              También defendió activamente la participación de las mujeres en
-              una disciplina que durante gran parte de su vida estuvo dominada
-              por hombres. Su convicción era clara: la computación era demasiado
+              También promovió la participación de las mujeres en una disciplina
+              dominada por hombres. Creía que la computación era demasiado
               importante para quedar en manos de unos pocos.
             </p>
             <p className="origin-principle">
               Spärck representa eso: conocimiento que circula, tecnología con
-              propósito y una comunidad en la que más personas puedan aprender,
+              propósito y una comunidad donde más personas puedan aprender,
               participar y crear.
             </p>
           </div>

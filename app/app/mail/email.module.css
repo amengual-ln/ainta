@@ -1,0 +1,521 @@
+/* Hallmark · macrostructure: Workbench · genre: atmospheric · tone: utilitarian · anchor hue: emerald · nav: N9 · footer: Ft2 · enrichment: none · audience: Spärck operators · use: compose and reply · pre-emit critique: P5 H4 E4 S5 R5 V4 · contrast: pass (40–41) · slop: pass (42–45) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · mobile: pass (34, 49, 50–57) · icons: pass (30) */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  color: var(--color-mail-ink);
+  font-family: var(--font-mail-body);
+}
+
+.header,
+.footer,
+.main {
+  width: min(calc(100% - 2rem), 70rem);
+  margin-inline: auto;
+}
+
+.header {
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-mail-md);
+  border-bottom: var(--rule-mail) solid var(--color-mail-rule);
+}
+
+.brand,
+.backLink {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.brand {
+  gap: var(--space-mail-sm);
+  font-family: var(--font-mail-display);
+  font-size: var(--text-mail-md);
+  letter-spacing: -0.03em;
+}
+
+.backLink {
+  color: var(--color-mail-body);
+  font-size: var(--text-mail-sm);
+  transition: color var(--dur-mail-short) var(--ease-mail-out);
+}
+
+.main {
+  padding-block: var(--space-mail-xl) var(--space-mail-2xl);
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-mail-xl);
+  align-items: end;
+  animation: emailReveal 420ms var(--ease-mail-out) both;
+}
+
+.kicker {
+  margin: 0 0 var(--space-mail-xs);
+  color: var(--color-mail-accent-soft);
+  font-family: var(--font-mail-mono);
+  font-size: var(--text-mail-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-mail-display);
+  font-size: var(--text-mail-display);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+}
+
+.intro > div > p:last-child {
+  max-width: 65ch;
+  margin: var(--space-mail-md) 0 0;
+  color: var(--color-mail-body);
+  font-size: var(--text-mail-base);
+  line-height: 1.65;
+}
+
+.senderStatus {
+  display: grid;
+  gap: var(--space-mail-sm);
+  margin: 0;
+}
+
+.senderStatus div {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--space-mail-md);
+  padding-block: var(--space-mail-sm);
+  border-top: var(--rule-mail) solid var(--color-mail-rule);
+}
+
+.senderStatus dt,
+.senderStatus dd {
+  margin: 0;
+  font-size: var(--text-mail-sm);
+}
+
+.senderStatus dt {
+  color: var(--color-mail-muted);
+}
+
+.senderStatus dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-mail-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.senderStatus dd span {
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  margin-inline-end: var(--space-mail-xs);
+  border-radius: 50%;
+  background: var(--color-mail-success);
+}
+
+.senderStatus dd[data-ready="false"] {
+  color: var(--color-mail-error);
+}
+
+.senderStatus dd[data-ready="false"] span {
+  background: var(--color-mail-error);
+}
+
+.workbench {
+  display: grid;
+  gap: var(--space-mail-lg);
+  margin-top: var(--space-mail-xl);
+  align-items: start;
+}
+
+.composer {
+  min-width: 0;
+  border: var(--rule-mail) solid var(--color-mail-rule-strong);
+  border-radius: var(--radius-mail-lg);
+  background: var(--color-mail-surface);
+  overflow: clip;
+}
+
+.composerTopbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-mail-md);
+  padding: var(--space-mail-lg);
+  border-bottom: var(--rule-mail) solid var(--color-mail-rule);
+}
+
+.composerTopbar h2,
+.guide h2 {
+  margin: 0;
+  font-size: var(--text-mail-md);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.composerTopbar p {
+  margin: var(--space-mail-2xs) 0 0;
+  color: var(--color-mail-muted);
+  font-size: var(--text-mail-sm);
+}
+
+.modeSwitch {
+  display: inline-flex;
+  padding: var(--space-mail-2xs);
+  border: var(--rule-mail) solid var(--color-mail-rule);
+  border-radius: var(--radius-mail-md);
+  background: var(--color-mail-paper);
+}
+
+.modeSwitch button {
+  min-height: 2.75rem;
+  padding-inline: var(--space-mail-md);
+  border: 0;
+  border-radius: var(--radius-mail-sm);
+  background: transparent;
+  color: var(--color-mail-muted);
+  cursor: pointer;
+  font-size: var(--text-mail-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.modeSwitch button[aria-pressed="true"] {
+  background: var(--color-mail-surface-raised);
+  color: var(--color-mail-ink);
+}
+
+.modeSwitch button:active,
+.copyToggle:active {
+  transform: translateY(1px);
+}
+
+.modeSwitch button:disabled,
+.copyToggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-mail-lg);
+  padding: var(--space-mail-lg);
+}
+
+.field {
+  min-width: 0;
+  display: grid;
+  gap: var(--space-mail-xs);
+}
+
+.field label,
+.labelRow {
+  color: var(--color-mail-body);
+  font-size: var(--text-mail-sm);
+  font-weight: 600;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-mail-md);
+}
+
+.copyToggle {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-mail-accent-soft);
+  cursor: pointer;
+  font-size: var(--text-mail-sm);
+  white-space: nowrap;
+}
+
+.copyFields {
+  display: grid;
+  gap: var(--space-mail-lg);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  border: var(--rule-mail) solid var(--color-mail-rule-strong);
+  border-radius: var(--radius-mail-sm);
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+  background: var(--color-mail-paper);
+  color: var(--color-mail-ink);
+  font: inherit;
+  transition: background-color var(--dur-mail-short) var(--ease-mail-out), border-color var(--dur-mail-short) var(--ease-mail-out);
+}
+
+.field input {
+  min-height: 2.75rem;
+  padding: 0 var(--space-mail-sm);
+}
+
+.field textarea {
+  min-height: 18rem;
+  padding: var(--space-mail-sm);
+  line-height: 1.65;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-mail-muted);
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.modeSwitch button:focus-visible,
+.copyToggle:focus-visible,
+.sendButton:focus-visible,
+.secondaryButton:focus-visible,
+.brand:focus-visible,
+.backLink:focus-visible {
+  outline: 2px solid var(--color-mail-focus);
+  outline-offset: 3px;
+}
+
+.field input:disabled,
+.field textarea:disabled,
+.sendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.field input:user-invalid,
+.field textarea:user-invalid {
+  border-color: var(--color-mail-error);
+}
+
+.field input:user-valid:not(:placeholder-shown),
+.field textarea:user-valid:not(:placeholder-shown) {
+  border-color: var(--color-mail-success);
+}
+
+.help {
+  min-height: 1lh;
+  margin: 0;
+  color: var(--color-mail-muted);
+  font-size: var(--text-mail-sm);
+}
+
+.actionRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-mail-md);
+  padding-top: var(--space-mail-md);
+  border-top: var(--rule-mail) solid var(--color-mail-rule);
+}
+
+.feedback {
+  min-width: 0;
+  min-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-mail-muted);
+  font-size: var(--text-mail-sm);
+}
+
+.feedback span {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-mail-xs);
+  overflow-wrap: anywhere;
+}
+
+.feedback span[data-state="error"] {
+  color: var(--color-mail-error);
+}
+
+.feedback span[data-state="sent"] {
+  color: var(--color-mail-success);
+}
+
+.sendButton,
+.secondaryButton {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-mail-xs);
+  padding-inline: var(--space-mail-lg);
+  border: var(--rule-mail) solid transparent;
+  border-radius: var(--radius-mail-sm);
+  cursor: pointer;
+  font-size: var(--text-mail-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: transform var(--dur-mail-micro) var(--ease-mail-out), background-color var(--dur-mail-short) var(--ease-mail-out), border-color var(--dur-mail-short) var(--ease-mail-out);
+}
+
+.sendButton {
+  background: var(--color-mail-accent);
+  color: var(--color-mail-accent-ink);
+}
+
+.secondaryButton {
+  border-color: var(--color-mail-rule-strong);
+  background: transparent;
+  color: var(--color-mail-ink);
+}
+
+.sendButton:active,
+.secondaryButton:active {
+  transform: translateY(1px);
+}
+
+.spinner {
+  animation: emailSpin 900ms linear infinite;
+}
+
+.guide {
+  padding: var(--space-mail-lg) 0;
+  border-top: var(--rule-mail) solid var(--color-mail-rule-strong);
+  color: var(--color-mail-body);
+}
+
+.guide ol {
+  display: grid;
+  gap: var(--space-mail-md);
+  margin: var(--space-mail-lg) 0;
+  padding-inline-start: var(--space-mail-lg);
+}
+
+.guide li,
+.guide p {
+  font-size: var(--text-mail-sm);
+  line-height: 1.6;
+}
+
+.guide li::marker {
+  color: var(--color-mail-accent-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.guide p {
+  margin: 0;
+  color: var(--color-mail-muted);
+}
+
+.guide code {
+  color: var(--color-mail-body);
+  font-family: var(--font-mail-mono);
+  font-size: 0.92em;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-mail-xs);
+  padding-block: var(--space-mail-lg);
+  border-top: var(--rule-mail) solid var(--color-mail-rule);
+  color: var(--color-mail-muted);
+  font-family: var(--font-mail-body);
+  font-size: var(--text-mail-sm);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backLink:hover,
+  .copyToggle:hover {
+    color: var(--color-mail-ink);
+  }
+
+  .modeSwitch button:hover,
+  .field input:hover,
+  .field textarea:hover {
+    background: var(--color-mail-surface-raised);
+  }
+
+  .sendButton:hover,
+  .secondaryButton:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (min-width: 40rem) {
+  .header,
+  .footer,
+  .main {
+    width: min(calc(100% - 3rem), 70rem);
+  }
+
+  .copyFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actionRow,
+  .footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sendButton,
+  .secondaryButton {
+    width: auto;
+  }
+}
+
+@media (min-width: 60rem) {
+  .main {
+    padding-block-start: var(--space-mail-2xl);
+  }
+
+  .intro {
+    grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 0.7fr);
+  }
+
+  .workbench {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    gap: var(--space-mail-xl);
+  }
+
+  .guide {
+    position: sticky;
+    top: var(--space-mail-lg);
+    padding-top: var(--space-mail-lg);
+  }
+}
+
+@keyframes emailReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes emailSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    animation: none;
+  }
+
+  .sendButton,
+  .secondaryButton {
+    transition-duration: 150ms;
+  }
+}

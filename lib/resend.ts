@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { manualEmailHtml, type ManualEmailInput } from "@/lib/manual-email";
 
 export type SendResult =
   | { ok: true; id: string }
@@ -221,6 +222,55 @@ export async function sendWelcomeEmail(
     return { ok: true, id: data.id };
   } catch (err) {
     console.error("[resend] send exception:", err);
+    return { ok: false, reason: "send-failed", error: err };
+  }
+}
+
+export async function sendManualEmail(
+  email: ManualEmailInput
+): Promise<SendResult> {
+  const from = process.env.RESEND_FROM;
+  if (!from) {
+    console.error("[resend] missing RESEND_FROM");
+    return { ok: false, reason: "missing-env" };
+  }
+
+  const resend = client();
+  if (!resend) {
+    console.error("[resend] missing RESEND_API_KEY");
+    return { ok: false, reason: "missing-env" };
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from,
+      to: email.to,
+      ...(email.cc.length ? { cc: email.cc } : {}),
+      ...(email.bcc.length ? { bcc: email.bcc } : {}),
+      ...(process.env.RESEND_REPLY_TO
+        ? { replyTo: process.env.RESEND_REPLY_TO }
+        : {}),
+      ...(email.inReplyTo
+        ? {
+            headers: {
+              "In-Reply-To": email.inReplyTo,
+              References: email.inReplyTo,
+            },
+          }
+        : {}),
+      subject: email.subject,
+      text: email.body,
+      html: manualEmailHtml(email.body),
+    });
+
+    if (error || !data) {
+      console.error("[resend] manual send error:", error);
+      return { ok: false, reason: "send-failed", error };
+    }
+
+    return { ok: true, id: data.id };
+  } catch (err) {
+    console.error("[resend] manual send exception:", err);
     return { ok: false, reason: "send-failed", error: err };
   }
 }

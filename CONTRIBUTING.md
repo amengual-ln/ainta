@@ -4,9 +4,10 @@
 
 1. Creá una rama desde la rama base correspondiente.
 2. Hacé cambios pequeños y verificables.
-3. Cuando el cambio esté listo, usá `$sparck-release` para validar la rama,
-   ejecutar los checks, generar la descripción y abrir el pull request hacia
-   `master`.
+3. Cuando el cambio esté listo, pedile a tu agente que use la skill
+   `sparck-release` para validar la rama, ejecutar los checks, generar la
+   descripción y abrir el pull request hacia `master`. Está disponible para
+   Codex, Claude Code y otros agentes que sigan `AGENTS.md`.
 4. Esperá que pasen los checks de GitHub y que una persona con acceso de
    escritura lo apruebe.
 

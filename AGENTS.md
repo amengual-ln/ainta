@@ -7,6 +7,7 @@ Instructions for AI agents working on this project.
 - **Ponytail mode is required.** Always operate in ponytail mode (full intensity by default). If it is not active, activate it first by invoking `/ponytail full`.
 - **Caveman mode is required alongside ponytail.** Use caveman communication to keep responses terse and token-efficient while maintaining technical accuracy.
 - **Frontend/design tasks use the `design-taste-frontend` skill.** For any web component, page, UI, or design task, load and follow the `design-taste-frontend` skill.
+- **Release PR tasks use the shared Spärck workflow.** When asked to prepare or open a pull request to `master`, read and follow `docs/agent-workflows/sparck-release.md`.
 
 ## Before you start
 
@@ -67,4 +68,3 @@ Instructions for AI agents working on this project.
 - **Eventos**: pipeline de descubrimiento en `app/api/events/discover` (Luma, Eventbrite, Meetup) → Notion. La web lee `Status = curado` desde `lib/sources/notion.ts`.
 - **Newsletter**: `app/api/subscribe` → Notion DB + welcome email vía Resend.
 - **Revalidate**: landing y `/eventos` usan `revalidate = 3600` (ISR de 1h).
-

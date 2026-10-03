@@ -11,7 +11,6 @@ export default function OriginSection() {
             <div className="origin-portrait">
               <KarenGlyphPortrait />
             </div>
-            <figcaption>Karen Spärck Jones, 1935-2007</figcaption>
           </figure>
         </ScrollReveal>
 
@@ -31,10 +30,10 @@ export default function OriginSection() {
 
           <div className="origin-story">
             <p>
-              Formuló la frecuencia inversa de documento, o IDF: una forma de
-              reconocer qué palabras contienen más información. Su trabajo ayudó
-              a sentar las bases de los buscadores modernos y de tecnologías que
-              hoy permiten interactuar usando lenguaje.
+              Karen Spärck Jones formuló la frecuencia inversa de documento, o
+              IDF: una forma de reconocer qué palabras contienen más información.
+              Su trabajo ayudó a sentar las bases de los buscadores modernos y de
+              tecnologías que hoy permiten interactuar usando lenguaje.
             </p>
             <p>
               Pero no elegimos su nombre solamente por su aporte técnico.

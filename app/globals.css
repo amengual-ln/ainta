@@ -460,14 +460,6 @@
   100% { transform: translate3d(-1px, -1px, 0) rotate(-0.08deg); }
 }
 
-.origin-visual figcaption {
-  margin-top: 10px;
-  color: var(--muted);
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-}
-
 .origin-copy {
   max-width: 610px;
 }

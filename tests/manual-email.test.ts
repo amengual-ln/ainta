@@ -33,3 +33,24 @@ test("rejects header injection and escapes message HTML", () => {
   assert.equal(result.ok, false);
   assert.match(manualEmailHtml("<script>alert('x')</script>"), /&lt;script&gt;/);
 });
+
+test("rejects invalid recipients, message IDs, and recipient overflow", () => {
+  const base = {
+    to: "persona@example.com",
+    subject: "Consulta",
+    body: "Mensaje",
+  };
+
+  assert.equal(validateManualEmailPayload({ ...base, to: "sin-arroba" }).ok, false);
+  assert.equal(
+    validateManualEmailPayload({ ...base, inReplyTo: "mensaje@example.com" }).ok,
+    false
+  );
+  assert.equal(
+    validateManualEmailPayload({
+      ...base,
+      to: Array.from({ length: 21 }, (_, index) => `persona${index}@example.com`).join(","),
+    }).ok,
+    false
+  );
+});

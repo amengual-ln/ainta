@@ -1,0 +1,44 @@
+name: Pull request checks
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+
+jobs:
+  description:
+    name: PR description
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a non-empty description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          node -e 'const body = process.env.PR_BODY ?? ""; const text = body.replace(/<!--[\s\S]*?-->/g, "").trim(); if (!text) { console.error("Agregá una descripción al pull request."); process.exit(1); }'
+
+  test:
+    name: Tests and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm test:coverage
+      - run: pnpm build

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spärck Release"
+  short_description: "Valida cambios y abre un PR de release"
+  default_prompt: "Usá $sparck-release para validar esta rama y abrir un PR hacia master."

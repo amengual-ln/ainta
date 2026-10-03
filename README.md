@@ -20,6 +20,11 @@ pnpm lint
 pnpm test
 ```
 
+## Contribuciones
+
+El flujo de ramas, pull requests y checks requeridos está documentado en
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Estructura
 
 ```

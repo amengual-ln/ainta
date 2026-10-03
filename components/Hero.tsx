@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import PhosphorIcon from "./PhosphorIcon";
 
 const H1_LINES: string[] = ["Spärck", "", ""];
 
@@ -202,16 +201,30 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             className="hero-partner-link"
+            aria-label="Visitar el sitio de Nerdearla"
           >
-            Nerdearla <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
+            <Image
+              src="/partners/nerdearla.png"
+              alt=""
+              width={900}
+              height={122}
+              className="partner-logo partner-logo-nerdearla"
+            />
           </a>
           <a
             href="https://argentina.campus-party.org/"
             target="_blank"
             rel="noopener noreferrer"
             className="hero-partner-link"
+            aria-label="Visitar el sitio de Campus Party Argentina"
           >
-            Campus Party <PhosphorIcon name="ArrowUpRight" size={14} aria-hidden="true" />
+            <Image
+              src="/partners/campus-party.png"
+              alt=""
+              width={600}
+              height={209}
+              className="partner-logo partner-logo-campus-party"
+            />
           </a>
         </div>
       </div>

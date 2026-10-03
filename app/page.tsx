@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
+import OriginSection from "@/components/OriginSection";
 import Pillars from "@/components/Pillars";
 import JoinSection from "@/components/JoinSection";
 import Footer from "@/components/Footer";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <SiteHeader minimal />
       <main className="relative z-10 site-shell">
         <Hero />
+        <OriginSection />
         <Pillars />
         <JoinSection />
       </main>

@@ -2,12 +2,12 @@
 
 Instructions for AI agents working on this project.
 
-## Required modes and skills
+## Project skills and guidance
 
-- **Ponytail mode is required.** Always operate in ponytail mode (full intensity by default). If it is not active, activate it first by invoking `/ponytail full`.
-- **Caveman mode is required alongside ponytail.** Use caveman communication to keep responses terse and token-efficient while maintaining technical accuracy.
-- **Frontend/design tasks use the `design-taste-frontend` skill.** For any web component, page, UI, or design task, load and follow the `design-taste-frontend` skill.
-- **Release PR tasks use the shared Spärck workflow.** When asked to prepare or open a pull request to `master`, read and follow `docs/agent-workflows/sparck-release.md`.
+- **Ponytail is strongly recommended for coding tasks.** Use the project `ponytail` skill at full intensity by default to avoid unnecessary dependencies, abstractions, and oversized diffs.
+- **Frontend/design tasks use the project design source.** Read `design.md`, inspect the existing tokens and components, and preserve the current visual language. No generic design skill is required.
+- **Release PR tasks use `sparck-release`.** When asked to prepare or open a pull request to `master`, invoke the project `sparck-release` skill. If the agent does not support project skills, read and follow `docs/agent-workflows/sparck-release.md` directly.
+- **`grill-me` is recommended, not required.** Suggest it before implementing a plan, feature, or architectural change that still has important product or technical decisions open. Invoke it only when the user agrees or asks to be grilled.
 
 ## Before you start
 

@@ -40,3 +40,16 @@ La suite exige al menos 80% de cobertura de líneas, funciones y branches en el
 código ejecutado por los tests. Cuando un cambio agregue lógica o corrija un error,
 agregá un test que compruebe el comportamiento esperado. Los cambios de contenido
 o estilos no necesitan un test nuevo si no modifican lógica.
+
+## Skills recomendadas
+
+- `ponytail`: fuertemente recomendada para cualquier cambio de código. Prioriza
+  reutilizar lo existente, evita dependencias y abstracciones innecesarias, y
+  busca el cambio correcto más pequeño.
+- `grill-me`: entrevista y pone a prueba una idea o plan antes de implementarlo.
+  Es útil cuando todavía hay decisiones importantes abiertas; no es obligatoria
+  para cambios pequeños o ya definidos. Pedile a tu agente que use `grill-me`
+  cuando quieras revisar supuestos y alternativas.
+
+Para cambios visuales, leé `design.md` y preservá los tokens y patrones
+existentes.

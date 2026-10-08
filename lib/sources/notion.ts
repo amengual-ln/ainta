@@ -5,6 +5,10 @@ import type {
 } from "@notionhq/client/build/src/api-endpoints";
 import type { NormalizedEvent, RejectedEvent } from "@/lib/normalize";
 import { sortEventsByStart, todayInBuenosAires } from "@/lib/events";
+import type {
+  CuratableSource,
+  CurationResult,
+} from "@/lib/event-curation";
 
 export type EventType = "taller" | "charla" | "externo" | "hackathon";
 
@@ -37,6 +41,19 @@ export interface DiscoverResult {
   filtered: number;
   errors: string[];
   discarded: DiscoverDiscard[];
+}
+
+export interface CurationCandidate {
+  pageId: string;
+  title: string;
+  source: CuratableSource;
+  url: string;
+  startAt: string;
+  modality: string;
+  location: string;
+  cost: string;
+  summary: string;
+  tags: string[];
 }
 
 const SOURCE_TAG_MAP: Record<string, EventType> = {
@@ -103,6 +120,12 @@ function readRichText(page: PageObjectResponse, name: string): string {
   return "";
 }
 
+function readNumber(page: PageObjectResponse, name: string): number | null {
+  const p = getProp(page, name);
+  if (p?.type === "number") return p.number;
+  return null;
+}
+
 function readUrl(page: PageObjectResponse, name: string): string {
   const p = getProp(page, name);
   if (p?.type === "url") {
@@ -121,6 +144,131 @@ function isPageObject(
   r: QueryDatabaseResponse["results"][number]
 ): r is PageObjectResponse {
   return r.object === "page";
+}
+
+function curatableSource(value: string | null): CuratableSource | null {
+  const source = value?.toLowerCase();
+  if (source === "luma" || source === "eventbrite" || source === "meetup") {
+    return source;
+  }
+  return null;
+}
+
+async function assertCurationProperties(notion: Client, databaseId: string) {
+  const database = await notion.databases.retrieve({ database_id: databaseId });
+  if (!("properties" in database)) throw new Error("Notion database is unavailable");
+  const score = database.properties["Score IA"];
+  const criterion = database.properties["Criterio IA"];
+  if (score?.type !== "number" || criterion?.type !== "rich_text") {
+    throw new Error(
+      'Notion requires "Score IA" (Number) and "Criterio IA" (Rich text) properties'
+    );
+  }
+}
+
+export async function fetchEventCurationCandidates(
+  limit = 12
+): Promise<{ events: CurationCandidate[]; hasMore: boolean }> {
+  const dbId = process.env.NOTION_DISCOVERED_EVENTS_DB_ID;
+  if (!dbId) throw new Error("NOTION_DISCOVERED_EVENTS_DB_ID missing");
+  const notion = getNotion();
+  await assertCurationProperties(notion, dbId);
+
+  const res = await notion.databases.query({
+    database_id: dbId,
+    filter: {
+      and: [
+        {
+          or: [
+            { property: "Status", status: { equals: "Nuevo" } },
+            { property: "Status", status: { is_empty: true } },
+          ],
+        },
+        {
+          property: "Fecha",
+          date: { on_or_after: todayInBuenosAires() },
+        },
+        {
+          property: "Score IA",
+          number: { is_empty: true },
+        },
+      ],
+    },
+    sorts: [{ property: "Fecha", direction: "ascending" }],
+    page_size: Math.min(100, limit + 1),
+  });
+
+  const candidates: CurationCandidate[] = [];
+  for (const result of res.results) {
+    if (!isPageObject(result) || readNumber(result, "Score IA") !== null) continue;
+    const source = curatableSource(readSelect(result, "Fuente"));
+    const title = readTitle(result);
+    const url = readUrl(result, "Link");
+    const startAt = readDate(result);
+    if (!source || !title || !url || !startAt) continue;
+
+    candidates.push({
+      pageId: result.id,
+      title,
+      source,
+      url,
+      startAt,
+      modality: readSelect(result, "Modalidad") ?? "",
+      location: readRichText(result, "Lugar"),
+      cost: readSelect(result, "Costo") ?? "",
+      summary: readRichText(result, "Summary"),
+      tags: readMultiSelect(result, "Tags"),
+    });
+  }
+
+  return {
+    events: candidates.slice(0, limit),
+    hasMore: res.has_more || candidates.length > limit,
+  };
+}
+
+export async function updateEventCuration(
+  candidate: CurationCandidate,
+  result: CurationResult
+): Promise<void> {
+  const notion = getNotion();
+  const decisionLabels: Record<CurationResult["decision"], string> = {
+    recomendar: "Recomendar",
+    revisar: "Revisar",
+    descartar: "Descartar",
+  };
+  const tags = [...new Set([...candidate.tags, ...result.tags])];
+
+  await notion.pages.update({
+    page_id: candidate.pageId,
+    properties: {
+      Status: { status: { name: "Nuevo" } },
+      "Score IA": { number: result.score },
+      "Criterio IA": {
+        rich_text: [
+          {
+            type: "text",
+            text: {
+              content: `${decisionLabels[result.decision]} · ${result.reason}`.slice(0, 2_000),
+            },
+          },
+        ],
+      },
+      Tags: { multi_select: tags.map((name) => ({ name })) },
+      ...(candidate.summary || !result.summary
+        ? {}
+        : {
+            Summary: {
+              rich_text: [
+                {
+                  type: "text" as const,
+                  text: { content: result.summary.slice(0, 2_000) },
+                },
+              ],
+            },
+          }),
+    },
+  });
 }
 
 export async function fetchCuratedEvents(options: {
@@ -235,8 +383,7 @@ async function getExistingLinksInDiscovered(): Promise<Set<string>> {
       if (!res.has_more || !res.next_cursor) break;
       cursor = res.next_cursor;
     } catch (err) {
-      console.error("[notion] getExistingLinks failed:", (err as Error).message);
-      break;
+      throw new Error(`get existing links: ${(err as Error).message}`);
     }
   }
   return links;
@@ -364,6 +511,7 @@ export async function writeDiscoveredEvents(
           Link: { url: ev.url },
           Fuente: { select: { name: sourceNameMap[ev.source] } },
           Costo: { select: { name: ev.cost } },
+          Status: { status: { name: "Nuevo" } },
           "Encontrado por": {
             rich_text: [
               { type: "text", text: { content: `Auto · ${sourceNameMap[ev.source]}` } },

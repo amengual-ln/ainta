@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -83,7 +83,7 @@ function renderLine(
   );
 }
 
-export default function Hero() {
+export default function Hero({ aside }: { aside?: ReactNode }) {
   const [decodeStaggers, setDecodeStaggers] = useState<(number | null)[]>([]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function Hero() {
 
   return (
     <section
-      className="community-hero relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-12"
+      className="community-hero relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-x-12 gap-y-10"
     >
       <div className="lg:col-span-7">
         <div className="hero-mark-wrap mb-7">
@@ -156,7 +156,7 @@ export default function Hero() {
         </pre>
 
         <p
-          className="fade-up hero-sub-anim mb-12"
+          className="fade-up hero-sub-anim mb-10"
           style={{
             fontSize: "18px",
             fontWeight: 300,
@@ -165,37 +165,22 @@ export default function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Un espacio donde se aprende haciendo, se
-          comparte sin filtro y se construye en comunidad.
+          Comunidad abierta de estudiantes y graduados en carreras de IA.
+          Aprendemos haciendo, compartimos sin filtro y construimos en
+          comunidad.
         </p>
 
         <div id="eventos" className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
           <Link href="/eventos" className="btn-primary">
             Explorar eventos
           </Link>
-          <Link href="/recursos" className="btn-ghost">
-            Ver recursos
+          <Link href="/#unirse" className="btn-ghost">
+            Sumate a la comunidad
           </Link>
         </div>
-      </div>
 
-      <aside
-        className="fade-up hero-aside-anim hidden lg:flex lg:col-span-5 items-end justify-end"
-        style={{ minHeight: "400px" }}
-        aria-hidden="true"
-      >
-        {/*
-          TODO[hero-side-asset]: motion abstracto en loop (dirección A2
-          - kinetic typography con Geist Pixel → Geist Sans). Cuando se
-          implemente, este slot reemplaza el comentario con el componente.
-          Por ahora queda vacío (no rellenar con div-fake).
-          Spec objetivo: ~480x520, abstracción visual sin fake-screenshots.
-        */}
-      </aside>
-
-      <div className="hero-partners">
-        <p className="hero-partners-label">Acompañamos como comunidad a</p>
-        <div className="hero-partners-links">
+        <div className="hero-partners">
+          <span className="hero-partners-label">Community partner de</span>
           <a
             href="https://nerdearla.com"
             target="_blank"
@@ -228,6 +213,12 @@ export default function Hero() {
           </a>
         </div>
       </div>
+
+      {aside && (
+        <aside className="fade-up hero-aside-anim lg:col-span-5 lg:justify-self-end w-full">
+          {aside}
+        </aside>
+      )}
     </section>
   );
 }

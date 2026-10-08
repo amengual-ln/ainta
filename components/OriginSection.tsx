@@ -7,13 +7,24 @@ export default function OriginSection() {
     <section id="origen" className="origin-section relative z-10">
       <div className="origin-layout">
         <ScrollReveal as="div" className="origin-visual" threshold={0.16}>
-          <figure>
+          <figure className="origin-figure">
             <div className="origin-portrait">
               <KarenGlyphPortrait />
             </div>
+            <figcaption>Karen Spärck Jones · 1935–2007</figcaption>
+          </figure>
+
+          <figure className="idf">
+            <figcaption className="idf-label">Frecuencia inversa de documento · 1972</figcaption>
+            <p className="idf-formula" aria-label="idf de t es igual al logaritmo de N sobre n sub t">
+              idf(t) = log <span className="idf-fraction"><span>N</span><span>n<sub>t</sub></span></span>
+            </p>
+            <p className="idf-note">
+              <span>N</span> documentos en total, <span>n<sub>t</sub></span> que contienen la palabra <span>t</span>.
+              Cuanto más rara es una palabra, más dice sobre el documento que la usa.
+            </p>
           </figure>
         </ScrollReveal>
-
         <ScrollReveal as="div" className="origin-copy" threshold={0.12}>
           <CharTitle
             className="font-display text-white"
@@ -52,6 +63,7 @@ export default function OriginSection() {
             </p>
           </div>
         </ScrollReveal>
+
       </div>
     </section>
   );

@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   creator: "Spärck",
   openGraph: {
     type: "website",
-    locale: "es_ES",
+    locale: "es_AR",
     url: siteUrl,
     siteName: "Spärck",
     title: "Spärck | Comunidad de estudiantes de IA",
@@ -100,10 +100,12 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${geistPixelSquare.variable} ${openSauceLight.variable} ${openSauceRegular.variable} ${openSauceMedium.variable}`}
+      suppressHydrationWarning
     >
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="alternate icon" href="/favicon.ico" />
+        {/* Marca que hay JavaScript: recién ahí se ocultan los bloques que aparecen al hacer scroll. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>
         <BgOrbs />

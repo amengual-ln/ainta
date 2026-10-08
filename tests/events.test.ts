@@ -6,6 +6,7 @@ import {
   groupEventsByMonth,
   selectStoryEvents,
   sortEventsByStart,
+  publicTag,
 } from "../lib/events.ts";
 
 test("preserva una fecha sin hora como fecha local literal", () => {
@@ -112,4 +113,10 @@ test("prioriza destacados y devuelve la selección en orden cronológico", () =>
 
   assert.deepEqual(result.events.map((event) => event.id), [1, 9, 10]);
   assert.equal(result.remaining, 7);
+});
+
+test("publicTag hides internal curation prefixes", () => {
+  assert.equal(publicTag("offtopic: IoT"), "IoT");
+  assert.equal(publicTag("Offtopic:hacking/cyberseguridad"), "Hacking/cyberseguridad");
+  assert.equal(publicTag("Destacado"), "Destacado");
 });

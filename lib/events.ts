@@ -198,3 +198,9 @@ export function groupEventsByMonth<T extends { startAt: string }>(
 
   return [...groups.values()];
 }
+
+// "offtopic: IoT" es una nota interna de curaduría: al público le sirve "IoT".
+export function publicTag(tag: string): string {
+  const clean = tag.replace(/^offtopic:\s*/i, "").trim();
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}

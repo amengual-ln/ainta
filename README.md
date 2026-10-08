@@ -197,22 +197,28 @@ cron-job.org (09:00 ART) ──→ POST /api/events/discover
 | `Costo` | Select | `Gratis` / `Pago` |
 | `Tags` | Multi-select | `Taller` / `Workshop` / `Charla` / `Meetup` / `Networking` / `Hackathon` / `Destacado` |
 | `Encontrado por` | Rich text | ej: `Auto · Luma` |
-| `Status` | Status | `Nuevo` → `curado` |
+| `Status` | Status | `Nuevo` → `Curado` |
+| `Summary` | Rich text | descripción editorial visible en la web |
+| `Score IA` | Number | prioridad sugerida por el copiloto |
+| `Criterio IA` | Rich text | recomendación y motivo breve |
 | `Notas` | Rich text | opcional |
 
 ### Setup (one-time)
 
 1. Crear **una sola database** en Notion con el schema de arriba.
 2. En el select `Fuente` agregar el valor `Spärck` (para eventos propios).
-3. En `Status` (tipo Status) crear los 2 valores: `Nuevo`, `curado`.
+3. En `Status` (tipo Status) crear al menos los valores `Nuevo` y `Curado`.
 4. Compartir la database con la integración.
-5. Copiar `.env.example` → `.env.local` y completar las 4 vars.
+5. Copiar `.env.example` → `.env.local` y completar las variables necesarias.
 
 ```bash
 NOTION_TOKEN=secret_xxx
 NOTION_SUBSCRIBERS_DB_ID=...
 NOTION_DISCOVERED_EVENTS_DB_ID=...
 EVENTBRITE_API_TOKEN=...
+GROQ_API_KEY=...
+GROQ_MODEL=qwen/qwen3.8-27b
+CURATION_SECRET=...
 ```
 
 ### Cron-job.org
@@ -231,10 +237,37 @@ curl -X POST localhost:3000/api/events/discover
 # → { ok, sources: { luma, eventbrite, meetup }, scraped, deduped, created, discarded, errors }
 ```
 
-Para mostrar un evento en la web: en Notion cambiar la fila a `Status = curado`.
+### Copiloto editorial con Groq
+
+Después del descubrimiento, `POST /api/events/curate` toma hasta 3 eventos futuros
+con `Status = Nuevo` (o sin estado) y `Score IA` vacío. Para cada uno lee la página
+original, solicita a Groq una clasificación estructurada y actualiza en Notion:
+
+- `Score IA` de 0 a 100.
+- `Criterio IA`: `Recomendar`, `Revisar` o `Descartar`, más un motivo breve.
+- `Summary`: borrador en español, sólo si no había uno escrito manualmente.
+- `Tags`: suma las categorías sugeridas sin borrar las existentes.
+
+El endpoint nunca publica por sí solo: todos los registros quedan en `Nuevo` hasta
+que el curador cambie manualmente `Status` a `Curado` o `Descartado`. Cada evento
+se envía a Groq por separado para impedir cruces de contenido. Si quedan más de
+3 candidatos, la respuesta incluye `hasMore: true` y el cron puede repetir la
+llamada más tarde para mantenerse dentro de los límites gratuitos de Groq.
+
+```bash
+curl -X POST localhost:3000/api/events/curate \
+  -H "Authorization: Bearer $CURATION_SECRET"
+# → { ok, found, enriched, analyzed, hasMore, errors }
+```
+
+El host de cada link se valida contra la fuente antes de descargarlo. Una falla de
+la página, Groq o Notion no publica el evento: al conservar `Score IA` vacío queda
+disponible para el siguiente intento.
+
+Para mostrar un evento en la web: en Notion cambiar la fila a `Status = Curado`.
 Aparece en la agenda en el próximo revalidate (≤ 1h). Para eventos propios de Spärck:
 crear la fila directo en la DB con `Fuente = Spärck`, llenar los campos y setear
-`Status = curado`.
+`Status = Curado`.
 
 ## Estado actual
 

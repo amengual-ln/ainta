@@ -123,12 +123,21 @@ function isPageObject(
   return r.object === "page";
 }
 
+// Sin acceso a Notion, en desarrollo la agenda puede salir de un JSON local
+// (EVENTS_PREVIEW_FILE) para ver la web con eventos reales.
+async function readPreviewEvents(): Promise<EventItem[]> {
+  const file = process.env.EVENTS_PREVIEW_FILE;
+  if (!file || process.env.NODE_ENV === "production") return [];
+  const { readFile } = await import("node:fs/promises");
+  return sortEventsByStart(JSON.parse(await readFile(file, "utf8")) as EventItem[]);
+}
+
 export async function fetchCuratedEvents(options: {
   from?: string;
   through?: string;
 } = {}): Promise<EventItem[]> {
   const dbId = process.env.NOTION_DISCOVERED_EVENTS_DB_ID;
-  if (!dbId) return [];
+  if (!dbId) return readPreviewEvents();
   const notion = getNotion();
 
   try {

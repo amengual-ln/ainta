@@ -1,5 +1,9 @@
 import { Resend } from "resend";
-import { manualEmailHtml, type ManualEmailInput } from "@/lib/manual-email";
+import {
+  manualEmailHtml,
+  manualEmailText,
+  type ManualEmailInput,
+} from "@/lib/manual-email";
 
 export type SendResult =
   | { ok: true; id: string }
@@ -259,7 +263,7 @@ export async function sendManualEmail(
           }
         : {}),
       subject: email.subject,
-      text: email.body,
+      text: manualEmailText(email.body),
       html: manualEmailHtml(email.body),
     });
 

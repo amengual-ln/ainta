@@ -5,71 +5,26 @@ import PhosphorIcon from "./PhosphorIcon";
 
 export default function JoinSection() {
   return (
-    <section
-      id="unirse"
-      className="relative z-10"
-      style={{ padding: "80px 0 140px" }}
-    >
-      <ScrollReveal as="div" threshold={0.1}>
-        <div
-          id="newsletter"
-          className="text-center"
-          style={{
-            border: "1px solid var(--border)",
-            borderRadius: "16px",
-            padding: "72px 64px",
-            background: "var(--card-bg)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            overflow: "hidden",
-          }}
-        >
-          <CharTitle
-            className="font-display text-white"
-            style={{
-              fontSize: "clamp(28px, 3.5vw, 42px)",
-              fontWeight: 700,
-              letterSpacing: "-0.04em",
-              marginBottom: "16px",
-            }}
-          >
-            Sumate a Spärck
-          </CharTitle>
-          <p
-            style={{
-              fontSize: "16px",
-              maxWidth: "420px",
-              marginBottom: "40px",
-              lineHeight: 1.65,
-              color: "var(--muted)",
-              margin: "0 auto 40px",
-            }}
-          >
-            Dejanos tu mail para recibir eventos, recursos y novedades de la
-            comunidad.
-          </p>
-
-          <NewsletterForm />
-
-          <p 
-            style={{
-              fontSize: "16px",
-              maxWidth: "420px",
-              lineHeight: 1.65,
-              color: "var(--muted)",
-              margin: "30px auto 0px",
-            }}>
-            ¿Querés conversar con la comunidad?
+    <section id="unirse" className="join-section relative z-10">
+      <ScrollReveal as="div" className="join-layout" threshold={0.1}>
+        <div className="join-copy">
+          <CharTitle className="home-section-title">Sumate a Spärck</CharTitle>
+          <p>
+            Cada tanto te mandamos los eventos que vienen, recursos nuevos y
+            novedades de la comunidad. Sin spam.
           </p>
           <a
             href="https://chat.whatsapp.com/FzOeQXKbnOrGfrVlgb41k1"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-ghost join-community-link"
+            className="join-community-link"
           >
             <PhosphorIcon name="WhatsappLogo" size={20} weight="bold" aria-hidden="true" />
-            Sumate al grupo de WhatsApp
+            O charlá con la comunidad en el grupo de WhatsApp
           </a>
+        </div>
+        <div id="newsletter" className="join-form">
+          <NewsletterForm />
         </div>
       </ScrollReveal>
     </section>

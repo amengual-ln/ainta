@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   creator: "Spärck",
   openGraph: {
     type: "website",
-    locale: "es_ES",
+    locale: "es_AR",
     url: siteUrl,
     siteName: "Spärck",
     title: "Spärck | Comunidad de estudiantes de IA",
@@ -103,7 +103,6 @@ export default function RootLayout({
     >
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body>
         <BgOrbs />

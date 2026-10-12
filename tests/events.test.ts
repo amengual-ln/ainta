@@ -5,7 +5,9 @@ import {
   getEventStoryRange,
   groupEventsByMonth,
   selectStoryEvents,
+  selectHeroEvent,
   sortEventsByStart,
+  publicTag,
 } from "../lib/events.ts";
 
 test("preserva una fecha sin hora como fecha local literal", () => {
@@ -112,4 +114,47 @@ test("prioriza destacados y devuelve la selección en orden cronológico", () =>
 
   assert.deepEqual(result.events.map((event) => event.id), [1, 9, 10]);
   assert.equal(result.remaining, 7);
+});
+
+test("publicTag hides internal curation prefixes", () => {
+  assert.equal(publicTag("offtopic: IoT"), "IoT");
+  assert.equal(publicTag("Offtopic:hacking/cyberseguridad"), "Hacking/cyberseguridad");
+  assert.equal(publicTag("Destacado"), "Destacado");
+});
+
+test("hero prioriza el próximo evento propio sobre un destacado externo más cercano", () => {
+  const events = [
+    { id: "own-later", startAt: "2026-10-20", source: "sparck", extraTags: [] },
+    { id: "invalid", startAt: "invalid", source: "sparck", extraTags: [] },
+    { id: "featured", startAt: "2026-10-13", source: "luma", extraTags: ["Destacado"] },
+    { id: "own-first", startAt: "2026-10-16T18:30:00-03:00", source: "sparck", extraTags: [] },
+  ];
+  assert.equal(selectHeroEvent(events, new Date("2026-10-12T15:00:00Z"))?.id, "own-first");
+  assert.equal(events[0].id, "own-later");
+});
+
+test("hero elige el próximo externo destacado cuando no hay propios", () => {
+  const events = [
+    { id: "later", startAt: "2026-10-20", source: "meetup", extraTags: ["Destacado"] },
+    { id: "ordinary", startAt: "2026-10-12", source: "luma", extraTags: [] },
+    { id: "first", startAt: "2026-10-16", source: "luma", extraTags: [" DESTACADO "] },
+  ];
+  assert.equal(selectHeroEvent(events, new Date("2026-10-12T15:00:00Z"))?.id, "first");
+});
+
+test("hero no muestra eventos pasados, inválidos o externos no destacados", () => {
+  const now = new Date("2026-10-12T15:00:00Z");
+  assert.equal(selectHeroEvent([], now), null);
+  assert.equal(selectHeroEvent([
+    { startAt: "2026-10-11", source: "sparck" },
+    { startAt: "2026-10-12T10:00:00-03:00", source: "sparck" },
+    { startAt: "invalid", source: "sparck" },
+    { startAt: "2026-10-20", source: "luma" },
+  ], now), null);
+});
+
+test("hero conserva fechas sin hora del día actual en Buenos Aires", () => {
+  const event = { startAt: "2026-10-12", source: "sparck" };
+  assert.equal(selectHeroEvent([event], new Date("2026-10-13T02:00:00Z")), event);
+  assert.equal(selectHeroEvent([event], new Date("2026-10-13T03:00:00Z")), null);
 });

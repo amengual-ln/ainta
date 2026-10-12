@@ -1,33 +1,30 @@
 import CharTitle from "./CharTitle";
-import KarenGlyphPortrait from "./KarenGlyphPortrait";
+import KarenPortrait from "./KarenPortrait";
 import ScrollReveal from "./ScrollReveal";
 
 export default function OriginSection() {
   return (
     <section id="origen" className="origin-section relative z-10">
       <div className="origin-layout">
+        <CharTitle className="home-section-title origin-title">
+          ¿Por qué “Spärck”?
+        </CharTitle>
         <ScrollReveal as="div" className="origin-visual" threshold={0.16}>
-          <figure>
+          <figure className="origin-figure">
             <div className="origin-portrait">
-              <KarenGlyphPortrait />
+              <KarenPortrait />
             </div>
+            <figcaption className="portrait-credit">
+              Ilustración basada en fotos de{" "}
+              <a href="https://www.cl.cam.ac.uk/misc/obituaries/sparck-jones/photos/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>
+              {" · "}
+              <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+              {" / "}
+              <a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">2.5</a>
+            </figcaption>
           </figure>
         </ScrollReveal>
-
         <ScrollReveal as="div" className="origin-copy" threshold={0.12}>
-          <CharTitle
-            className="font-display text-white"
-            style={{
-              fontSize: "clamp(34px, 4.8vw, 58px)",
-              fontWeight: 600,
-              letterSpacing: "-0.045em",
-              lineHeight: 1.05,
-              marginBottom: "32px",
-            }}
-          >
-            ¿Por qué “Spärck”?
-          </CharTitle>
-
           <div className="origin-story">
             <p>
               Karen Spärck Jones formuló la frecuencia inversa de documento, o
@@ -35,6 +32,14 @@ export default function OriginSection() {
               Su trabajo ayudó a sentar las bases de los buscadores modernos y de
               tecnologías que hoy permiten interactuar usando lenguaje.
             </p>
+            <div className="origin-idf">
+              <p className="origin-idf-formula" role="math" aria-label="idf de t es igual al logaritmo de N dividido por n sub t">
+                <span aria-hidden="true">idf(t) = log(N / n<sub>t</sub>)</span>
+              </p>
+              <p className="origin-idf-note">
+                N: documentos totales · n<sub>t</sub>: documentos que contienen t.
+              </p>
+            </div>
             <p>
               Pero no elegimos su nombre solamente por su aporte técnico.
               Dedicó su carrera a investigar, enseñar y compartir conocimiento

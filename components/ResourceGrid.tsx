@@ -15,11 +15,6 @@ export default function ResourceGrid({ resources }: { resources: ResourceItem[] 
           <div className="resource-card-heading">
             <h3>
               {resource.title}
-              {resource.certificate && (
-                <span className="resource-certificate" aria-label="Incluye certificado">
-                  <PhosphorIcon name="Certificate" size={18} weight="duotone" aria-hidden="true" />
-                </span>
-              )}
             </h3>
             <PhosphorIcon name="ArrowUpRight" size={17} aria-hidden="true" />
           </div>
@@ -28,6 +23,12 @@ export default function ResourceGrid({ resources }: { resources: ResourceItem[] 
             <span>{resource.kind}</span>
             <span>{resource.level}</span>
             <span>{resource.language}</span>
+            {resource.certificate && (
+              <span className="is-certificate">
+                <PhosphorIcon name="Certificate" size={13} weight="bold" aria-hidden="true" />
+                Certificado
+              </span>
+            )}
           </div>
         </a>
       ))}

@@ -149,6 +149,24 @@ export function isFeaturedEvent(event: { extraTags?: string[] }): boolean {
   return event.extraTags?.some((tag) => tag.trim().toLowerCase() === "destacado") ?? false;
 }
 
+export function selectHeroEvent<T extends { startAt: string; source: string; extraTags?: string[] }>(
+  events: T[],
+  now = new Date(),
+): T | null {
+  const today = todayInBuenosAires(now);
+  const upcoming = sortEventsByStart(events.filter((event) => {
+    const timestamp = eventTimestamp(event.startAt);
+    if (!Number.isFinite(timestamp)) return false;
+    return DATE_ONLY.test(event.startAt)
+      ? event.startAt >= today
+      : timestamp >= now.getTime();
+  }));
+
+  return upcoming.find((event) => event.source === "sparck")
+    ?? upcoming.find(isFeaturedEvent)
+    ?? null;
+}
+
 export function selectStoryEvents<T extends { startAt: string; extraTags?: string[] }>(
   events: T[],
   range: Pick<EventStoryRange, "start" | "end">,
@@ -197,4 +215,10 @@ export function groupEventsByMonth<T extends { startAt: string }>(
   }
 
   return [...groups.values()];
+}
+
+// "offtopic: IoT" es una nota interna de curaduría: al público le sirve "IoT".
+export function publicTag(tag: string): string {
+  const clean = tag.replace(/^offtopic:\s*/i, "").trim();
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
 }

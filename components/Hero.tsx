@@ -1,79 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const H1_LINES: string[] = ["Spärck", "", ""];
-
-const LINE_DELAYS = [350, 550, 750] as const;
+const WORDMARK = Array.from("Spärck");
+const LINE_DELAY_MS = 350;
 const CHAR_STAGGER_MS = 30;
 const DECODE_CYCLE_MS = 20000;
 const DECODE_BASE_DELAY_MS = 3000;
 
-function splitChars(line: string): string[] {
-  const out: string[] = [];
-  for (const ch of line) {
-    out.push(ch === " " ? "\u00A0" : ch);
-  }
-  return out;
-}
-
-const LINES = H1_LINES.map((line, li) => ({
-  text: line,
-  delay: LINE_DELAYS[li],
-  chars: splitChars(line).map((ch, ci) => ({
-    ch,
-    charDelay: ci * CHAR_STAGGER_MS,
-  })),
-}));
-
-function renderLine(
-  lineIdx: number,
-  gradientOn: boolean,
-  decodeStaggers: (number | null)[],
-  charOffset: number,
-) {
-  const line = LINES[lineIdx];
+function renderWordmark(decodeStaggers: (number | null)[]) {
   return (
     <span
-      key={lineIdx}
       className="h1-reveal block"
       style={{
-        ["--line-delay" as string]: `${line.delay}ms`,
+        ["--line-delay" as string]: `${LINE_DELAY_MS}ms`,
         whiteSpace: "nowrap",
       }}
     >
-      {line.chars.map((c, ci) => {
-        const visibleChar = c.ch === "\u00A0" ? "\u00A0" : c.ch;
-        const decodeStagger = decodeStaggers[charOffset + ci];
+      {WORDMARK.map((ch, ci) => {
+        const decodeStagger = decodeStaggers[ci];
         return (
           <span
             key={ci}
             className="char-wrap"
             style={{
-              ["--char-delay" as string]: `${c.charDelay}ms`,
+              ["--char-delay" as string]: `${ci * CHAR_STAGGER_MS}ms`,
               ...(decodeStagger != null
                 ? { ["--decode-stagger" as string]: `${decodeStagger}ms` }
                 : {}),
             }}
-            aria-hidden={c.ch === "\u00A0" ? undefined : undefined}
           >
             <span className="char-layer char-glitch" aria-hidden="true">
-              {visibleChar}
+              {ch}
             </span>
-            <span
-              className={
-                gradientOn
-                  ? "char-layer char-smooth h1-gradient"
-                  : "char-layer char-smooth"
-              }
-            >
-              {visibleChar}
+            <span className="char-layer char-smooth">
+              {ch}
             </span>
             {decodeStagger != null && (
               <span className="char-layer char-decode" aria-hidden="true">
-                {visibleChar}
+                {ch}
               </span>
             )}
           </span>
@@ -83,31 +50,23 @@ function renderLine(
   );
 }
 
-export default function Hero() {
+export default function Hero({ aside }: { aside?: ReactNode }) {
   const [decodeStaggers, setDecodeStaggers] = useState<(number | null)[]>([]);
 
   useEffect(() => {
-    const totalChars = LINES.reduce((acc, l) => acc + l.chars.length, 0);
     setDecodeStaggers(
       Array.from(
-        { length: totalChars },
+        { length: WORDMARK.length },
         () => DECODE_BASE_DELAY_MS + Math.random() * (DECODE_CYCLE_MS - DECODE_BASE_DELAY_MS),
       ),
     );
   }, []);
 
-  let charOffset = 0;
-  const line0Offset = 0;
-  charOffset = LINES[0].chars.length;
-  const line1Offset = charOffset;
-  charOffset += LINES[1].chars.length;
-  const line2Offset = charOffset;
-
   return (
     <section
-      className="community-hero relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-12"
+      className={`community-hero${aside ? " community-hero--with-event" : ""} relative z-10`}
     >
-      <div className="lg:col-span-7">
+      <div>
         <div className="hero-mark-wrap mb-7">
           <Image
             src="/favicon.png"
@@ -134,29 +93,26 @@ export default function Hero() {
             }}
           >
             <span aria-hidden="true">
-              {renderLine(0, false, decodeStaggers, line0Offset)}
-              {renderLine(1, true, decodeStaggers, line1Offset)}
-              {renderLine(2, false, decodeStaggers, line2Offset)}
+              {renderWordmark(decodeStaggers)}
             </span>
           </h1>
         </div>
 
-        <pre
+        <p
           className="fade-up hero-slogan-anim"
           style={{
             marginBottom: "14px",
             color: "var(--accent-soft)",
             fontSize: "clamp(14px, 2vw, 16px)",
-            
             letterSpacing: "0.025em",
             lineHeight: 1.45,
           }}
         >
           LA CHISPA QUE CONECTA EL CONOCIMIENTO
-        </pre>
+        </p>
 
         <p
-          className="fade-up hero-sub-anim mb-12"
+          className="fade-up hero-sub-anim mb-10"
           style={{
             fontSize: "18px",
             fontWeight: 300,
@@ -165,37 +121,22 @@ export default function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Un espacio donde se aprende haciendo, se
-          comparte sin filtro y se construye en comunidad.
+          Comunidad abierta de estudiantes y graduados en carreras de IA.
+          Aprendemos haciendo, compartimos sin filtro y construimos en
+          comunidad.
         </p>
 
         <div id="eventos" className="fade-up hero-actions-anim flex flex-wrap items-center gap-4">
           <Link href="/eventos" className="btn-primary">
             Explorar eventos
           </Link>
-          <Link href="/recursos" className="btn-ghost">
-            Ver recursos
+          <Link href="/#unirse" className="btn-ghost">
+            Sumate
           </Link>
         </div>
-      </div>
 
-      <aside
-        className="fade-up hero-aside-anim hidden lg:flex lg:col-span-5 items-end justify-end"
-        style={{ minHeight: "400px" }}
-        aria-hidden="true"
-      >
-        {/*
-          TODO[hero-side-asset]: motion abstracto en loop (dirección A2
-          - kinetic typography con Geist Pixel → Geist Sans). Cuando se
-          implemente, este slot reemplaza el comentario con el componente.
-          Por ahora queda vacío (no rellenar con div-fake).
-          Spec objetivo: ~480x520, abstracción visual sin fake-screenshots.
-        */}
-      </aside>
-
-      <div className="hero-partners">
-        <p className="hero-partners-label">Acompañamos como comunidad a</p>
-        <div className="hero-partners-links">
+        <div className="hero-partners">
+          <span className="hero-partners-label">Acompañamos como comunidad a</span>
           <a
             href="https://nerdearla.com"
             target="_blank"
@@ -228,6 +169,7 @@ export default function Hero() {
           </a>
         </div>
       </div>
+      {aside ? <aside className="hero-event-slot">{aside}</aside> : null}
     </section>
   );
 }

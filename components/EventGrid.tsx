@@ -1,4 +1,4 @@
-import { getEventDateParts, groupEventsByMonth } from "@/lib/events";
+import { getEventDateParts, groupEventsByMonth, publicTag } from "@/lib/events";
 import type { EventItem } from "@/lib/sources/notion";
 import PhosphorIcon from "./PhosphorIcon";
 
@@ -67,13 +67,13 @@ function EventCard({ event }: { event: EventItem }) {
           </details>
         )}
         <div className="event-card-badges">
-          {event.source === "sparck" && <span className="is-sparck">Spärck</span>}
+          {event.source === "sparck" && <span className="is-sparck">Organiza Spärck</span>}
           {eventTypeLabels[event.type] && <span>{eventTypeLabels[event.type]}</span>}
           {event.cost === "Pago" && <span className="is-paid">Pago</span>}
           {waitlist && <span className="is-waitlist">Lista de espera</span>}
           {visibleExtraTags.slice(0, 2).map((tag) => (
             <span key={tag} className={isFeaturedTag(tag) ? "is-featured" : undefined}>
-              {tag}
+              {publicTag(tag)}
             </span>
           ))}
         </div>

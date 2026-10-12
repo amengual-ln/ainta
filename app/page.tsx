@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
 import Pillars from "@/components/Pillars";
-import UpcomingEvents from "@/components/UpcomingEvents";
+import NextEventCard from "@/components/NextEventCard";
 import OriginSection from "@/components/OriginSection";
 import JoinSection from "@/components/JoinSection";
 import Footer from "@/components/Footer";
 import { fetchCuratedEvents } from "@/lib/sources/notion";
+import { selectHeroEvent } from "@/lib/events";
 
 export const metadata: Metadata = {
   title: { absolute: "Spärck | Comunidad de estudiantes de IA" },
@@ -18,14 +19,14 @@ export const revalidate = 3600;
 
 export default async function HomePage() {
   const events = await fetchCuratedEvents();
+  const heroEvent = selectHeroEvent(events);
 
   return (
     <>
       <SiteHeader minimal />
       <main className="relative z-10 site-shell">
-        <Hero />
+        <Hero aside={heroEvent ? <NextEventCard event={heroEvent} /> : null} />
         <Pillars />
-        <UpcomingEvents events={events.slice(0, 4)} />
         <OriginSection />
         <JoinSection />
       </main>

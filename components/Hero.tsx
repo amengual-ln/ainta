@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,7 +50,7 @@ function renderWordmark(decodeStaggers: (number | null)[]) {
   );
 }
 
-export default function Hero() {
+export default function Hero({ aside }: { aside?: ReactNode }) {
   const [decodeStaggers, setDecodeStaggers] = useState<(number | null)[]>([]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function Hero() {
 
   return (
     <section
-      className="community-hero relative z-10"
+      className={`community-hero${aside ? " community-hero--with-event" : ""} relative z-10`}
     >
       <div>
         <div className="hero-mark-wrap mb-7">
@@ -130,6 +130,9 @@ export default function Hero() {
           <Link href="/eventos" className="btn-primary">
             Explorar eventos
           </Link>
+          <Link href="/#unirse" className="btn-ghost">
+            Sumate
+          </Link>
         </div>
 
         <div className="hero-partners">
@@ -166,7 +169,7 @@ export default function Hero() {
           </a>
         </div>
       </div>
-
+      {aside ? <aside className="hero-event-slot">{aside}</aside> : null}
     </section>
   );
 }

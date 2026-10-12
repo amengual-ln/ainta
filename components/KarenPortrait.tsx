@@ -35,6 +35,32 @@ export default function KarenPortrait() {
         className="karen-portrait-image"
         unoptimized
       />
+      <div className="karen-portrait-effects" aria-hidden="true">
+        <Image
+          src="/portraits/karen-dither.png"
+          alt=""
+          width={720}
+          height={900}
+          className="karen-portrait-tear"
+          unoptimized
+        />
+        <Image
+          src="/portraits/karen-dither.png"
+          alt=""
+          width={720}
+          height={900}
+          className="karen-portrait-glitch"
+          unoptimized
+        />
+        <Image
+          src="/portraits/karen-ascii.png"
+          alt=""
+          width={720}
+          height={900}
+          className="karen-portrait-ascii"
+          unoptimized
+        />
+      </div>
     </div>
   );
 }

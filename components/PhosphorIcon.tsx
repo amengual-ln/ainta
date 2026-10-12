@@ -8,6 +8,7 @@ import {
   Broadcast,
   ArrowDown,
   ArrowUpRight,
+  MapPin,
   Certificate,
   List,
   InstagramLogo,
@@ -17,7 +18,7 @@ import {
 
 type IconComponent = typeof GraduationCap;
 
-const iconRegistry: Record<string, IconComponent> = {
+const iconRegistry = {
   GraduationCap,
   CalendarBlank,
   UsersThree,
@@ -25,12 +26,13 @@ const iconRegistry: Record<string, IconComponent> = {
   Broadcast,
   ArrowDown,
   ArrowUpRight,
+  MapPin,
   Certificate,
   List,
   InstagramLogo,
   LinkedinLogo,
   WhatsappLogo,
-};
+} satisfies Record<string, IconComponent>;
 
 interface PhosphorIconProps {
   name: keyof typeof iconRegistry;

@@ -241,15 +241,23 @@ El sitio tiene home, agenda y biblioteca de recursos. El header compartido
 ofrece Eventos, Recursos y Sumate como enlaces discretos. En la home se usa
 la variante minimal: la marca se presenta en el hero y no se repite en el
 header. En móvil, un menú nativo con `details` contiene los mismos destinos.
-El footer es compacto: símbolo, redes oficiales y año.
+El footer es compacto: símbolo con wordmark Spärck, redes oficiales y año.
 
 ### Home
 
-Orden: hero, Qué hacemos, Próximos eventos, historia del nombre, Sumate.
+Orden: hero, Qué hacemos, historia del nombre, Sumate.
 El hero explica para quién es la comunidad y tiene una acción principal:
-Explorar eventos. Los próximos eventos aparecen solamente en la agenda.
+Explorar eventos, acompañada por Sumate como acción secundaria.
+El hero puede mostrar un único evento futuro: primero uno propio de Spärck,
+luego un externo destacado, o nada. Dentro de cada categoría se elige el más
+próximo por fecha. La tarjeta diferencia el organizador de un destacado externo
+y no promete entradas gratis si no hay costo informado. Sin evento no se
+reserva una columna vacía. En móvil la tarjeta sigue a la presentación del
+hero. La agenda completa queda en `/eventos`, sin listado duplicado en la home.
 Los tres ejes funcionan como enlaces; se presentan como filas con separadores
-sutiles, sin mostrar rutas de código ni agregar cajas independientes.
+sutiles y padding lateral de 24 px (16 px en móvil), sin mostrar rutas de
+código ni agregar cajas independientes. Orden: Radar del ecosistema,
+Red de pares y Aprendizaje real.
 La suscripción usa texto y formulario lado a lado; en móvil se apilan.
 
 ### Retrato de Karen
@@ -258,12 +266,24 @@ El retrato es una ilustración de Karen en una pose casual de tres cuartos.
 El dither Floyd–Steinberg se genera una vez, en verde `--accent-soft`,
 sobre fondo transparente. Conservar la sonrisa, las gafas y el pelo suelto.
 El movimiento es CSS: balanceo menor a un grado y respiración de 3 px.
+El conjunto usa una opacidad del 62% para fundirse con el fondo.
+Una máscara radial común desvanece los hombros y la base, sin desenfocar
+el dither ni el rostro; el ASCII y el tearing comparten ese mismo fundido.
+Ráfagas breves recortan y desplazan franjas horizontales hasta 16 px con eco.
+El ASCII en Geist Mono (24 px en el asset de 720 px, velo oscuro al 20%) alterna
+entre pelo, contornos y ropa, con pausas en dither puro. Ninguna
+zona queda fija. Balanceo, tearing y ASCII tienen ciclos de 13, 17 y 19 s,
+con distintas alturas, anchos y cadencias. Nunca sacudir la figura completa
+ni mantener ruido sobre los ojos y la sonrisa.
 Se pausa fuera del viewport y al ocultar la pestaña; sin JavaScript o con
 movimiento reducido, la misma imagen queda estática. No requiere canvas,
 WebGL ni una librería de animación.
 La sección acredita las fotografías de referencia de Cambridge y sus
 licencias CC BY 4.0 y 2.5.
-No se añade la fórmula IDF: la historia explica el aporte sin duplicarlo.
+El pie del retrato sólo contiene atribución y licencias, sin repetir nombre
+ni fechas, centrado y con opacidad 88% (100% al interactuar). Una fórmula IDF
+pequeña con leyenda, centrada, aparece entre el primer y segundo párrafo.
+El cierre se destaca por color, sin borde lateral.
 En móvil el orden es título, retrato y texto; coincide con el orden del DOM.
 
 ### Botones
@@ -340,7 +360,8 @@ Todos los containers siguen esta escala. No inventar radios nuevos sin actualiza
 
 ## Acciones
 
-El hero usa "Explorar eventos". El enlace a la comunidad se llama "Sumate",
+El hero usa "Explorar eventos" y "Sumate" como acción secundaria.
+El enlace a la comunidad se llama "Sumate",
 la sección final "Sumate a Spärck" y el formulario "Suscribirme".
 Son destinos distintos; no agregar variantes equivalentes en hero y footer.
 

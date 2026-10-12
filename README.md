@@ -43,7 +43,7 @@ app/
 components/
   Hero.tsx            ← h1 con animación per-char (glitch → smooth)
   Pillars.tsx         ← índice de los 3 ejes, con enlaces a sus destinos
-  UpcomingEvents.tsx  ← próximos 4 eventos curados en la home
+  NextEventCard.tsx   ← un evento en el hero: propio, externo destacado o ninguno
   KarenPortrait.tsx    ← ilustración dither con movimiento suave en CSS
   SiteHeader.tsx      ← header sticky común + menú details en móvil
   EventGrid.tsx       ← grilla compacta y agrupación mensual
@@ -66,16 +66,25 @@ lib/
   resend.ts           ← template de welcome email
 ```
 
+El hero selecciona un solo evento futuro curado: primero el próximo con
+`Fuente = Spärck`, luego el próximo externo con tag `Destacado`; sin candidatos,
+no muestra tarjeta ni reserva una segunda columna. La agenda completa vive
+en `/eventos`. La home mantiene ISR de una hora.
+
 ## Retrato de Karen
 
 La ilustración, sus referencias y licencias están documentadas en
 [`public/portraits/ATTRIBUTION.md`](public/portraits/ATTRIBUTION.md).
 El dither Floyd–Steinberg se genera una vez con Pillow y el color
 `--accent-soft` de la web. El PNG transparente pesa aproximadamente 67 KB.
-Una animación CSS sutil se pausa fuera de pantalla o con la pestaña oculta.
+El retrato usa una opacidad del 62% para integrarse con el fondo. Una animación
+CSS sutil suma tearing horizontal con eco y fragmentos ASCII en Geist Mono.
+Los glifos alternan entre pelo, contornos y ropa, con pausas sin ASCII;
+balanceo, cortes y glifos usan ciclos independientes. Todos los efectos se pausan
+fuera de pantalla o con la pestaña oculta.
 Sin JavaScript o con movimiento reducido, la misma imagen queda estática.
 
-Para regenerar el dither (Python 3 y Pillow):
+Para regenerar el dither y el ASCII (Python 3, Pillow y `pnpm install`):
 
 ```sh
 python3 scripts/karen-portrait.py

@@ -23,9 +23,14 @@ Es una representación artística, no una fotografía histórica.
 - karen-illustration.prompt.md: prompt y referencias de generación.
 - karen-dither.png: adaptación monocroma con dither Floyd–Steinberg en el
   verde Spärck, reducida a 360×450 y ampliada a 720×900 conservando los puntos.
+- karen-ascii.png: adaptación de la misma ilustración con glifos Geist Mono,
+  siguiendo la luminosidad y el fondo transparente; glifos de 24 px con un
+  velo Spärck al 20% dentro de la silueta para mejorar su lectura sin taparla.
 - karen-sparck.jpg: fotografía frontal conservada como referencia.
 
 La web acredita las fuentes debajo del retrato. No se implica respaldo
-de Cambridge a Spärck. La animación CSS mueve la ilustración suavemente.
+de Cambridge a Spärck. La animación CSS mueve la ilustración suavemente y
+agrega tearing horizontal con eco y zonas ASCII, también entre ráfagas.
 
-Regeneración del dither (Python 3 + Pillow): python3 scripts/karen-portrait.py
+Regeneración (Python 3 + Pillow, dependencias npm instaladas):
+python3 scripts/karen-portrait.py

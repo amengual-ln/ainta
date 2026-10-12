@@ -11,8 +11,9 @@ export default function Footer() {
   return (
     <footer className="site-footer relative z-10">
       <div className="site-shell footer-layout">
-        <Link href="/" aria-label="Spärck, inicio">
+        <Link href="/" className="site-brand" aria-label="Spärck, inicio">
           <Image src="/favicon.png" alt="" width={24} height={24} aria-hidden="true" />
+          <span>Spärck</span>
         </Link>
         <nav className="footer-socials" aria-label="Redes sociales">
           {socialLinks.map((link) => (

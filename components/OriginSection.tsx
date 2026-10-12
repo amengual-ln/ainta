@@ -14,16 +14,13 @@ export default function OriginSection() {
             <div className="origin-portrait">
               <KarenPortrait />
             </div>
-            <figcaption>
-              Karen Spärck Jones · 1935–2007
-              <span className="portrait-credit">
-                Ilustración basada en fotos de{" "}
-                <a href="https://www.cl.cam.ac.uk/misc/obituaries/sparck-jones/photos/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>
-                {" · "}
-                <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
-                {" / "}
-                <a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">2.5</a>
-              </span>
+            <figcaption className="portrait-credit">
+              Ilustración basada en fotos de{" "}
+              <a href="https://www.cl.cam.ac.uk/misc/obituaries/sparck-jones/photos/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>
+              {" · "}
+              <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+              {" / "}
+              <a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">2.5</a>
             </figcaption>
           </figure>
         </ScrollReveal>
@@ -35,6 +32,14 @@ export default function OriginSection() {
               Su trabajo ayudó a sentar las bases de los buscadores modernos y de
               tecnologías que hoy permiten interactuar usando lenguaje.
             </p>
+            <div className="origin-idf">
+              <p className="origin-idf-formula" role="math" aria-label="idf de t es igual al logaritmo de N dividido por n sub t">
+                <span aria-hidden="true">idf(t) = log(N / n<sub>t</sub>)</span>
+              </p>
+              <p className="origin-idf-note">
+                N: documentos totales · n<sub>t</sub>: documentos que contienen t.
+              </p>
+            </div>
             <p>
               Pero no elegimos su nombre solamente por su aporte técnico.
               Dedicó su carrera a investigar, enseñar y compartir conocimiento

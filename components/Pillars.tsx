@@ -4,11 +4,6 @@ import CharTitle from "./CharTitle";
 
 const pillars = [
   {
-    name: "Aprendizaje real",
-    desc: "Talleres y clases sobre lo que importa: fundamentos de IA y programación, gestión de proyectos, deployment. Lo que las aulas no llegaron a darnos, lo cubrimos entre todos.",
-    href: "/recursos",
-  },
-  {
     name: "Radar del ecosistema",
     desc: "Eventos, charlas, conferencias y oportunidades externas. Para que no te pierdas nada relevante del mundo de la IA.",
     href: "/eventos",
@@ -17,6 +12,11 @@ const pillars = [
     name: "Red de pares",
     desc: "Conectate con otros estudiantes, graduados y referentes del área. Armá grupos de estudio, encontrá compañeros de proyecto, oportunidades, creá con otros.",
     href: "/#unirse",
+  },
+  {
+    name: "Aprendizaje real",
+    desc: "Talleres y clases sobre lo que importa: fundamentos de IA y programación, gestión de proyectos, deployment. Lo que las aulas no llegaron a darnos, lo cubrimos entre todos.",
+    href: "/recursos",
   },
 ];
 

@@ -26,6 +26,7 @@ export default function CharTitle({
 }: CharTitleProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [triggered, setTriggered] = useState(false);
+  const [ready, setReady] = useState(false);
   const [decodeStaggers, setDecodeStaggers] = useState<(number | null)[]>([]);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function CharTitle({
     );
 
     observer.observe(el);
+    setReady(true);
     return () => observer.disconnect();
   }, [threshold]);
 
@@ -109,7 +111,7 @@ export default function CharTitle({
     <Tag
       ref={ref}
       aria-label={children}
-      className={`${className} ${triggered ? "is-revealed" : "deferred"}`.trim()}
+      className={`${className} ${triggered ? "is-revealed" : ready ? "deferred" : "title-static"}`.trim()}
       style={combinedStyle}
     >
       <span aria-hidden="true">

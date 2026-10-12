@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   glyphHash,
   idleHeadPose,
@@ -17,6 +18,7 @@ const PARTICLE_INTERVAL_MS = 560;
 const GLITCH_INTERVAL_MS = 900;
 const POINT_FLOATS = 8;
 const LOOK_FLOATS = 4;
+const FRAME_INTERVAL_MS = 1000 / 30;
 
 // Cada glifo es un cuadradito que la GPU mueve en 3D y alumbra.
 // Todos salen en una sola llamada: con canvas 2D, miles de glifos por cuadro
@@ -225,14 +227,25 @@ function compile(gl: WebGL2RenderingContext) {
     [gl.FRAGMENT_SHADER, FRAGMENT_SHADER],
   ] as const) {
     const shader = gl.createShader(type);
-    if (!shader) return null;
+    if (!shader) {
+      gl.deleteProgram(program);
+      return null;
+    }
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn("[portrait] shader compilation failed:", gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      gl.deleteProgram(program);
+      return null;
+    }
     gl.attachShader(program, shader);
+    gl.deleteShader(shader);
   }
   gl.linkProgram(program);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(gl.getProgramInfoLog(program));
+    console.warn("[portrait] shader linking failed:", gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
     return null;
   }
   return program;
@@ -240,9 +253,12 @@ function compile(gl: WebGL2RenderingContext) {
 
 export default function KarenGlyphPortrait() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fallbackRef = useRef<HTMLImageElement>(null);
+  const [contextVersion, setContextVersion] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const fallback = fallbackRef.current;
     if (!canvas) return;
 
     const gl = canvas.getContext("webgl2", { antialias: false });
@@ -273,6 +289,14 @@ export default function KarenGlyphPortrait() {
     const lookBuffer = gl.createBuffer();
     const texture = gl.createTexture();
     const vertexArray = gl.createVertexArray();
+    if (!pointBuffer || !lookBuffer || !texture || !vertexArray) {
+      gl.deleteBuffer(pointBuffer);
+      gl.deleteBuffer(lookBuffer);
+      gl.deleteTexture(texture);
+      gl.deleteVertexArray(vertexArray);
+      gl.deleteProgram(program);
+      return;
+    }
     gl.bindVertexArray(vertexArray);
     gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
     gl.enableVertexAttribArray(0);
@@ -301,7 +325,9 @@ export default function KarenGlyphPortrait() {
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
     let frame = 0;
-    let visible = true;
+    let visible = false;
+    let contextLost = false;
+    let previousFrame = 0;
     let cells: GlyphCell[] = [];
     let looks = new Float32Array(0);
     let gridKey = "";
@@ -352,7 +378,7 @@ export default function KarenGlyphPortrait() {
 
       const phase = still ? 0 : Math.floor(time / GLYPH_INTERVAL_MS);
       if (phase !== cachedPhase) {
-        buildLooks(cells, phase, Math.floor(time / PARTICLE_INTERVAL_MS), looks);
+        buildLooks(cells, phase, still ? 0 : Math.floor(time / PARTICLE_INTERVAL_MS), looks);
         gl.bindBuffer(gl.ARRAY_BUFFER, lookBuffer);
         gl.bufferSubData(gl.ARRAY_BUFFER, 0, looks);
         cachedPhase = phase;
@@ -397,16 +423,23 @@ export default function KarenGlyphPortrait() {
       }
       gl.uniform1f(uniforms.echo, 0);
       gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, cells.length);
+      if (fallback) fallback.hidden = true;
     };
 
     const animate = (time: number) => {
-      draw(time);
-      if (visible && !reduceMotion.matches) frame = requestAnimationFrame(animate);
+      if (!visible || document.hidden || contextLost) return;
+      if (time - previousFrame >= FRAME_INTERVAL_MS) {
+        draw(time);
+        previousFrame = time;
+      }
+      if (!reduceMotion.matches) frame = requestAnimationFrame(animate);
     };
 
     const restart = () => {
       cancelAnimationFrame(frame);
+      if (!visible || document.hidden || contextLost) return;
       draw(performance.now());
+      previousFrame = performance.now();
       if (visible && !reduceMotion.matches) frame = requestAnimationFrame(animate);
     };
 
@@ -420,6 +453,16 @@ export default function KarenGlyphPortrait() {
     observer.observe(canvas);
     visibility.observe(canvas);
     reduceMotion.addEventListener("change", restart);
+    document.addEventListener("visibilitychange", restart);
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      contextLost = true;
+      cancelAnimationFrame(frame);
+      if (fallback) fallback.hidden = false;
+    };
+    const handleContextRestored = () => setContextVersion((version) => version + 1);
+    canvas.addEventListener("webglcontextlost", handleContextLost);
+    canvas.addEventListener("webglcontextrestored", handleContextRestored);
     restart();
 
     // Si Geist Mono carga después, se vuelve a armar la hoja con la fuente real.
@@ -436,20 +479,34 @@ export default function KarenGlyphPortrait() {
       observer.disconnect();
       visibility.disconnect();
       reduceMotion.removeEventListener("change", restart);
+      document.removeEventListener("visibilitychange", restart);
+      canvas.removeEventListener("webglcontextlost", handleContextLost);
+      canvas.removeEventListener("webglcontextrestored", handleContextRestored);
+      if (fallback) fallback.hidden = false;
       gl.deleteBuffer(pointBuffer);
       gl.deleteBuffer(lookBuffer);
       gl.deleteTexture(texture);
       gl.deleteVertexArray(vertexArray);
       gl.deleteProgram(program);
     };
-  }, []);
+  }, [contextVersion]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="origin-glyph-canvas"
+    <div
+      className="h-full relative"
       role="img"
-      aria-label="Retrato abstracto de Karen Spärck Jones construido con glifos variables"
-    />
+      aria-label="Retrato de Karen Spärck Jones construido con glifos"
+    >
+      <Image
+        ref={fallbackRef}
+        src="/karen-glyph-portrait.png"
+        alt=""
+        fill
+        sizes="(max-width: 767px) 340px, 420px"
+        className="portrait-fallback"
+        aria-hidden="true"
+      />
+      <canvas ref={canvasRef} className="origin-glyph-canvas" aria-hidden="true" />
+    </div>
   );
 }

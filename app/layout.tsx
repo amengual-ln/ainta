@@ -100,12 +100,9 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${geistPixelSquare.variable} ${openSauceLight.variable} ${openSauceRegular.variable} ${openSauceMedium.variable}`}
-      suppressHydrationWarning
     >
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        {/* Marca que hay JavaScript: recién ahí se ocultan los bloques que aparecen al hacer scroll. */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>
         <BgOrbs />

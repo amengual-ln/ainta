@@ -95,7 +95,7 @@ export default function NewsletterForm() {
     <form
       onSubmit={handleSubmit}
       className="font-body mx-auto relative"
-      style={{ marginTop: "16px", maxWidth: "420px" }}
+      style={{ maxWidth: "420px" }}
       noValidate
     >
       <div

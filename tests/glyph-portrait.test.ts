@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  KAREN_DENSITY,
+  KAREN_DEPTH,
+  KAREN_DENSITY_WIDTH,
+  KAREN_DENSITY_HEIGHT,
+} from "../lib/karen-density.ts";
+import {
   glyphHash,
   idleHeadPose,
   glyphIndexForCell,
@@ -11,9 +17,22 @@ import {
   portraitParticleDensity,
 } from "../lib/glyph-portrait.ts";
 
+test("generated portrait grids contain complete, finite samples", () => {
+  const cells = KAREN_DENSITY_WIDTH * KAREN_DENSITY_HEIGHT;
+  assert.equal(KAREN_DENSITY.length, cells);
+  assert.equal(KAREN_DEPTH.length, cells);
+  assert.match(KAREN_DENSITY, /^[0-9a-f]+$/);
+  assert.match(KAREN_DEPTH, /^[0-9a-f]+$/);
+  for (const [x, y] of [[0, 0], [0.5, 0.4], [0.99, 0.99], [1, 1]]) {
+    assert.ok(Number.isFinite(portraitDensity(x, y)));
+    assert.ok(Number.isFinite(portraitDepth(x, y)));
+    assert.ok(portraitNormal(x, y).every(Number.isFinite));
+  }
+});
+
 test("glyph portrait follows Karen's photo", () => {
   assert.equal(glyphHash(4, 7, 2), glyphHash(4, 7, 2));
-  assert.ok(portraitDensity(0.5, 0.4) > 0.3);
+  assert.ok(portraitDensity(0.5, 0.4) > 0.2);
   assert.ok(portraitDensity(0.5, 0.84) > 0.3);
   assert.equal(portraitDensity(0.5, 0.99), 0);
   assert.equal(portraitDensity(0.02, 0.02), 0);

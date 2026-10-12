@@ -36,9 +36,7 @@ function EventCard({ event }: { event: EventItem }) {
     : event.extraTags;
 
   return (
-    <article
-      className={`event-card${featuredTag ? " is-featured" : ""}${event.source === "sparck" ? " is-own" : ""}`}
-    >
+    <article className={`event-card${featuredTag ? " is-featured" : ""}`}>
       <div className="event-card-date" aria-label={`${date.day} de ${date.monthLabel}`}>
         <strong>{date.day}</strong>
         <span>{date.month}</span>

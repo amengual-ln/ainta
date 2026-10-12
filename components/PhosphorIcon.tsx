@@ -13,7 +13,6 @@ import {
   InstagramLogo,
   LinkedinLogo,
   WhatsappLogo,
-  MapPin,
 } from "@phosphor-icons/react";
 
 type IconComponent = typeof GraduationCap;
@@ -31,7 +30,6 @@ const iconRegistry: Record<string, IconComponent> = {
   InstagramLogo,
   LinkedinLogo,
   WhatsappLogo,
-  MapPin,
 };
 
 interface PhosphorIconProps {

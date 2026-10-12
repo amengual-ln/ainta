@@ -35,7 +35,7 @@ export default function Pillars() {
               <Link href={pillar.href} className="index-row">
                 <span className="index-term">{pillar.name}</span>
                 <span className="index-desc">{pillar.desc}</span>
-                <span className="index-path" aria-hidden="true">{pillar.href.replace("/#", "#")}</span>
+                <span className="index-arrow" aria-hidden="true">↗</span>
               </Link>
             </li>
           ))}

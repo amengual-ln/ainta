@@ -237,7 +237,31 @@ Sin glow exterior (`box-shadow`). Solo inner border vía `box-shadow: inset 0 0 
 ## Componentes
 
 ### Nav
-**Removido en v2.** El sitio es una sola landing. La función de los anchor links se pierde; no se compensa con nada en el footer (decisión de minimalismo). Las secciones son auto-explicativas por su posición.
+El sitio tiene home, agenda y biblioteca de recursos. El header compartido
+ofrece Eventos, Recursos y Sumate como enlaces discretos. En la home se usa
+la variante minimal: la marca se presenta en el hero y no se repite en el
+header. En móvil, un menú nativo con `details` contiene los mismos destinos.
+El footer es compacto: símbolo, redes oficiales y año.
+
+### Home
+
+Orden: hero, Qué hacemos, Próximos eventos, historia del nombre, Sumate.
+El hero explica para quién es la comunidad y tiene una acción principal:
+Explorar eventos. Los próximos eventos aparecen solamente en la agenda.
+Los tres ejes funcionan como enlaces; se presentan como filas con separadores
+sutiles, sin mostrar rutas de código ni agregar cajas independientes.
+La suscripción usa texto y formulario lado a lado; en móvil se apilan.
+
+### Retrato de Karen
+
+El retrato animado es una pieza de identidad. Usa WebGL2 nativo, sin librerías,
+con glifos agrupados en una textura y movimiento suave de cabeza y respiración.
+Se limita a 30 fps, se pausa fuera del viewport y al ocultar la pestaña.
+Con movimiento reducido se dibuja quieto. Una imagen estática de glifos
+permanece como respaldo sin JavaScript, sin WebGL2 o ante pérdida del contexto.
+La sección incluye un crédito discreto con fuente y licencia CC BY 2.5.
+No se añade la fórmula IDF: la historia explica el aporte sin duplicarlo.
+En móvil el orden es título, retrato y texto; coincide con el orden del DOM.
 
 ### Botones
 
@@ -311,13 +335,11 @@ Todos los containers siguen esta escala. No inventar radios nuevos sin actualiza
 
 ---
 
-## CTA único: "Unirme"
+## Acciones
 
-Una sola palabra para el intent de contacto, usada en:
-- Hero CTA (única instancia)
-- JoinSection heading ("Sumate a Spärck")
-
-Sin "Unirse" / "Unite" / "Sumate" / "Contact" como variantes. Mantener consistencia.
+El hero usa "Explorar eventos". El enlace a la comunidad se llama "Sumate",
+la sección final "Sumate a Spärck" y el formulario "Suscribirme".
+Son destinos distintos; no agregar variantes equivalentes en hero y footer.
 
 ---
 

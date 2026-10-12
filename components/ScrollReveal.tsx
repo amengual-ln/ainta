@@ -39,7 +39,11 @@ export default function ScrollReveal({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    el.classList.add("reveal-ready");
+    return () => {
+      observer.disconnect();
+      el.classList.remove("reveal-ready");
+    };
   }, [threshold]);
 
   const Component = Tag as React.ElementType;

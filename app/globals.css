@@ -449,11 +449,26 @@
   background: radial-gradient(circle, rgba(52, 168, 139, 0.12), transparent 68%);
 }
 
-.origin-glyph-canvas {
+.karen-portrait-image {
   display: block;
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+.karen-portrait-motion {
+  height: 100%;
+  transform-origin: 50% 75%;
+  animation: portraitBreathe 10s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.karen-portrait-motion.is-active { animation-play-state: running; }
+@keyframes portraitBreathe {
+  0%, 100% { transform: translateY(0) rotate(-0.25deg) scale(1); }
+  50% { transform: translateY(-3px) rotate(0.3deg) scale(1.008); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .karen-portrait-motion { animation: none; transform: none; }
 }
 
 .origin-copy {
@@ -956,8 +971,6 @@
 
 .portrait-credit { display: block; margin-top: 8px; font-family: var(--font-geist-sans), sans-serif; font-size: 11px; letter-spacing: 0; text-transform: none; }
 .portrait-credit a { text-decoration: underline; text-underline-offset: 3px; }
-.portrait-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.portrait-fallback[hidden] { display: none; }
 .title-static .char-wrap,
 .title-static .char-smooth { opacity: 1; transform: none; animation: none; }
 .title-static .char-glitch,

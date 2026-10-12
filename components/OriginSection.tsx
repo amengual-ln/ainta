@@ -1,5 +1,5 @@
 import CharTitle from "./CharTitle";
-import KarenGlyphPortrait from "./KarenGlyphPortrait";
+import KarenPortrait from "./KarenPortrait";
 import ScrollReveal from "./ScrollReveal";
 
 export default function OriginSection() {
@@ -12,15 +12,17 @@ export default function OriginSection() {
         <ScrollReveal as="div" className="origin-visual" threshold={0.16}>
           <figure className="origin-figure">
             <div className="origin-portrait">
-              <KarenGlyphPortrait />
+              <KarenPortrait />
             </div>
             <figcaption>
               Karen Spärck Jones · 1935–2007
               <span className="portrait-credit">
-                Adaptación en glifos de una{" "}
-                <a href="https://commons.wikimedia.org/wiki/File:Karen_Sp%C3%A4rck.jpg" target="_blank" rel="noopener noreferrer">foto de University of Cambridge</a>
+                Ilustración basada en fotos de{" "}
+                <a href="https://www.cl.cam.ac.uk/misc/obituaries/sparck-jones/photos/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>
                 {" · "}
-                <a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">CC BY 2.5</a>
+                <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+                {" / "}
+                <a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">2.5</a>
               </span>
             </figcaption>
           </figure>

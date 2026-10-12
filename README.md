@@ -44,7 +44,7 @@ components/
   Hero.tsx            ← h1 con animación per-char (glitch → smooth)
   Pillars.tsx         ← índice de los 3 ejes, con enlaces a sus destinos
   UpcomingEvents.tsx  ← próximos 4 eventos curados en la home
-  KarenGlyphPortrait.tsx ← retrato WebGL2 con respaldo estático de glifos
+  KarenPortrait.tsx    ← ilustración dither con movimiento suave en CSS
   SiteHeader.tsx      ← header sticky común + menú details en móvil
   EventGrid.tsx       ← grilla compacta y agrupación mensual
   ResourceGrid.tsx    ← grilla reutilizable de recursos
@@ -63,23 +63,22 @@ lib/
   sparck-events.ts    ← eventos propios de Spärck (vacío por ahora)
   events.ts           ← fechas y agrupación en timezone Buenos Aires
   resources.ts        ← catálogo estático tipado de recursos
-  glyph-portrait.ts   ← densidad, relieve y movimiento del retrato
-  karen-density.ts    ← mapas generados desde la foto con licencia
   resend.ts           ← template de welcome email
 ```
 
 ## Retrato de Karen
 
-La foto original, su atribución y licencia están en
+La ilustración, sus referencias y licencias están documentadas en
 [`public/portraits/ATTRIBUTION.md`](public/portraits/ATTRIBUTION.md).
-El retrato usa WebGL2 nativo; no incorpora una dependencia 3D.
-Se limita a 30 fps y pausa fuera de pantalla o con la pestaña oculta.
-Sin WebGL2 o JavaScript se muestra una versión estática de glifos.
+El dither Floyd–Steinberg se genera una vez con Pillow y el color
+`--accent-soft` de la web. El PNG transparente pesa aproximadamente 67 KB.
+Una animación CSS sutil se pausa fuera de pantalla o con la pestaña oculta.
+Sin JavaScript o con movimiento reducido, la misma imagen queda estática.
 
-Para regenerar los mapas y el respaldo (Python 3 y Pillow):
+Para regenerar el dither (Python 3 y Pillow):
 
 ```sh
-python3 scripts/karen-density.py
+python3 scripts/karen-portrait.py
 ```
 
 ## Newsletter (suscripciones → Notion DB)

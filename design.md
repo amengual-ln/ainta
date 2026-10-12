@@ -254,12 +254,15 @@ La suscripción usa texto y formulario lado a lado; en móvil se apilan.
 
 ### Retrato de Karen
 
-El retrato animado es una pieza de identidad. Usa WebGL2 nativo, sin librerías,
-con glifos agrupados en una textura y movimiento suave de cabeza y respiración.
-Se limita a 30 fps, se pausa fuera del viewport y al ocultar la pestaña.
-Con movimiento reducido se dibuja quieto. Una imagen estática de glifos
-permanece como respaldo sin JavaScript, sin WebGL2 o ante pérdida del contexto.
-La sección incluye un crédito discreto con fuente y licencia CC BY 2.5.
+El retrato es una ilustración de Karen en una pose casual de tres cuartos.
+El dither Floyd–Steinberg se genera una vez, en verde `--accent-soft`,
+sobre fondo transparente. Conservar la sonrisa, las gafas y el pelo suelto.
+El movimiento es CSS: balanceo menor a un grado y respiración de 3 px.
+Se pausa fuera del viewport y al ocultar la pestaña; sin JavaScript o con
+movimiento reducido, la misma imagen queda estática. No requiere canvas,
+WebGL ni una librería de animación.
+La sección acredita las fotografías de referencia de Cambridge y sus
+licencias CC BY 4.0 y 2.5.
 No se añade la fórmula IDF: la historia explica el aporte sin duplicarlo.
 En móvil el orden es título, retrato y texto; coincide con el orden del DOM.
 

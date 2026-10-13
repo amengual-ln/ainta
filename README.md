@@ -70,6 +70,11 @@ El hero selecciona un solo evento futuro curado: primero el próximo con
 `Fuente = Spärck`, luego el próximo externo con tag `Destacado`; sin candidatos,
 no muestra tarjeta ni reserva una segunda columna. La agenda completa vive
 en `/eventos`. La home mantiene ISR de una hora.
+Si el enlace elegido es de Luma, se consulta su portada pública con caché de
+una hora y un timeout de 4 s. Sólo se muestra en la tarjeta del hero: cubre el
+panel lateral en escritorio y se apila cuadrada en móvil, sin franjas.
+Ante errores o ausencia de portada, queda la tarjeta de
+texto. No requiere API key ni cambios en Notion.
 
 ## Retrato de Karen
 

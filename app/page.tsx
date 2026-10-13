@@ -8,6 +8,7 @@ import JoinSection from "@/components/JoinSection";
 import Footer from "@/components/Footer";
 import { fetchCuratedEvents } from "@/lib/sources/notion";
 import { selectHeroEvent } from "@/lib/events";
+import { fetchLumaCover } from "@/lib/luma-cover";
 
 export const metadata: Metadata = {
   title: { absolute: "Spärck | Comunidad de estudiantes de IA" },
@@ -20,12 +21,13 @@ export const revalidate = 3600;
 export default async function HomePage() {
   const events = await fetchCuratedEvents();
   const heroEvent = selectHeroEvent(events);
+  const coverUrl = heroEvent ? await fetchLumaCover(heroEvent.url) : null;
 
   return (
     <>
       <SiteHeader minimal />
       <main className="relative z-10 site-shell">
-        <Hero aside={heroEvent ? <NextEventCard event={heroEvent} /> : null} />
+        <Hero aside={heroEvent ? <NextEventCard event={heroEvent} coverUrl={coverUrl} /> : null} />
         <Pillars />
         <OriginSection />
         <JoinSection />

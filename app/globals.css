@@ -131,28 +131,32 @@
 
 .hero-event-slot { margin-top: 36px; }
 .next-event-card {
-  display: grid;
-  gap: 20px;
-  padding: 28px;
+  display: flex;
   border: 1px solid var(--border);
   border-radius: 16px;
+  overflow: hidden;
   background: var(--card-bg);
   transition: border-color 0.2s ease;
 }
 .next-event-card:hover { border-color: var(--border-strong); }
-.next-event-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.next-event-cover { position: relative; display: block; flex: 0 0 40%; aspect-ratio: 1; }
+.next-event-cover-image { object-fit: cover; }
+.next-event-info { display: flex; flex: 1; flex-direction: column; justify-content: center; gap: 10px; min-width: 0; padding: 20px 18px; }
+.next-event-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
 .next-event-eyebrow { color: var(--accent-soft); font-family: var(--font-geist-mono), monospace; font-size: 11px; }
 .next-event-cost { color: var(--muted); font-size: 12px; }
-.next-event-date { display: flex; align-items: baseline; gap: 12px; color: var(--muted); font-size: 14px; }
-.next-event-date strong { color: var(--white); font-size: 40px; font-weight: 500; line-height: 1; }
-.next-event-title { color: var(--white); font-size: 24px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.25; }
+.next-event-date { color: var(--muted); font-size: 16px; line-height: 1.4; }
+.next-event-title { color: var(--white); font-size: 18px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.25; }
 .next-event-place { display: flex; align-items: flex-start; gap: 8px; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .next-event-place svg { flex: none; margin-top: 2px; }
-.next-event-cta { display: flex; align-items: center; gap: 8px; color: var(--accent-soft); font-size: 14px; }
+@media (max-width: 599px) {
+  .next-event-card { flex-direction: column; }
+  .next-event-cover { flex: none; width: 100%; }
+}
 @media (min-width: 1024px) {
   .community-hero--with-event {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
     gap: clamp(40px, 6vw, 80px);
   }
@@ -1129,8 +1133,7 @@
   .index-row { grid-template-columns: minmax(0, 1fr) 24px; gap: 10px 16px; padding: 22px 16px; }
   .index-desc { grid-column: 1 / -1; grid-row: 2; }
   .index-arrow { grid-row: 1; grid-column: 2; }
-  .next-event-card { padding: 24px; }
-  .next-event-title { font-size: 22px; }
+  .next-event-info { padding: 20px 16px; }
   .join-section { padding: 48px 0 64px; }
   .join-layout { grid-template-columns: 1fr; gap: 28px; }
   .footer-layout { justify-content: center; text-align: center; }

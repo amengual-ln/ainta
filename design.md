@@ -254,6 +254,18 @@ próximo por fecha. La tarjeta diferencia el organizador de un destacado externo
 y no promete entradas gratis si no hay costo informado. Sin evento no se
 reserva una columna vacía. En móvil la tarjeta sigue a la presentación del
 hero. La agenda completa queda en `/eventos`, sin listado duplicado en la home.
+Sólo esta tarjeta puede incluir la portada de Luma: un panel integrado al
+lateral izquierdo, sin padding, que ocupa el 40% del ancho de la tarjeta.
+El panel tiene una proporción cuadrada de base y `object-fit: cover` para
+evitar franjas cuando el texto necesita más altura. Por debajo de 600 px,
+la portada se apila arriba, cuadrada, para no recortar caras en un lateral
+demasiado estrecho. La información agrupa organizador y costo, nombre del
+evento, fecha y ubicación, en ese orden; la fecha no compite con el título.
+No hay un CTA interno: toda la tarjeta es un enlace, con foco visible.
+Con evento, las dos columnas del hero tienen el mismo ancho para dar espacio
+al flyer y a los datos sin estrecharlos innecesariamente.
+Si falla la portada, el panel desaparece y la información ocupa todo el
+ancho, sin placeholders.
 Los tres ejes funcionan como enlaces; se presentan como filas con separadores
 sutiles y padding lateral de 24 px (16 px en móvil), sin mostrar rutas de
 código ni agregar cajas independientes. Orden: Radar del ecosistema,
@@ -372,7 +384,7 @@ Son destinos distintos; no agregar variantes equivalentes en hero y footer.
 ### Breakpoints
 - Mobile: `< 768px`
 - Desktop: `≥ 768px` (md)
-- Hero asymmetric grid: `≥ 1024px` (lg)
+- Hero con evento en dos columnas: `≥ 1024px` (lg)
 
 ### Mobile collapse
 - Hero: single column, sin slot-asset (oculto en `< lg`).

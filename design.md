@@ -270,7 +270,10 @@ Los tres ejes funcionan como enlaces; se presentan como filas con separadores
 sutiles y padding lateral de 24 px (16 px en móvil), sin mostrar rutas de
 código ni agregar cajas independientes. Orden: Radar del ecosistema,
 Red de pares y Aprendizaje real.
-La suscripción usa texto y formulario lado a lado; en móvil se apilan.
+La sección Sumate presenta dos caminos: newsletter como acción principal y
+la comunidad de WhatsApp como acción secundaria independiente. En desktop, el
+texto y WhatsApp acompañan al formulario en dos columnas; en móvil, WhatsApp va
+después del formulario y su botón para no interrumpir el flujo de suscripción.
 
 ### Retrato de Karen
 

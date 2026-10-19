@@ -13,18 +13,24 @@ export default function JoinSection() {
             Cada tanto te mandamos los eventos que vienen, recursos nuevos y
             novedades de la comunidad. Sin spam.
           </p>
+        </div>
+        <div id="newsletter" className="join-form">
+          <NewsletterForm />
+        </div>
+        <div className="join-community">
+          <p>
+            También podés sumarte a la comunidad de WhatsApp para compartir y
+            enterarte de todo.
+          </p>
           <a
             href="https://chat.whatsapp.com/FzOeQXKbnOrGfrVlgb41k1"
             target="_blank"
             rel="noopener noreferrer"
-            className="join-community-link"
+            className="btn-ghost join-community-link"
           >
             <PhosphorIcon name="WhatsappLogo" size={20} weight="bold" aria-hidden="true" />
-            O charlá con la comunidad en el grupo de WhatsApp
+            Sumarme a WhatsApp
           </a>
-        </div>
-        <div id="newsletter" className="join-form">
-          <NewsletterForm />
         </div>
       </ScrollReveal>
     </section>

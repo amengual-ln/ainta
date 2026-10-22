@@ -4,7 +4,13 @@ import {
   type SourceFetchResult,
 } from "@/lib/normalize";
 
-const LUMA_DISCOVERY_URL = "https://luma.com/buenos-aires";
+// Luma's city homepage is a curated subset. Category feeds surface events
+// that may be missing from the general listing, regardless of their titles.
+const LUMA_DISCOVERY_URLS = [
+  "https://luma.com/buenos-aires",
+  "https://luma.com/discover/buenos-aires/tech",
+  "https://luma.com/discover/buenos-aires/ai",
+] as const;
 
 interface LumaNextData {
   props?: {
@@ -29,33 +35,42 @@ interface LumaNextData {
 
 export async function fetchLuma(): Promise<SourceFetchResult> {
   const out: SourceFetchResult = { events: [], rejected: [], errors: [] };
-  try {
-    const res = await fetch(LUMA_DISCOVERY_URL, {
-      headers: {
-        accept: "text/html",
-        "user-agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      },
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) {
-      out.errors.push(`luma http ${res.status}`);
-      return out;
+  const seen = new Set<string>();
+
+  // A category feed failing should not block the other feeds.
+  const pages = await Promise.allSettled(
+    LUMA_DISCOVERY_URLS.map(async (url) => {
+      const res = await fetch(url, {
+        headers: {
+          accept: "text/html",
+          "user-agent":
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        },
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!res.ok) throw new Error(`http ${res.status}`);
+
+      const html = await res.text();
+      const match = html.match(
+        /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/
+      );
+      if (!match) throw new Error("__NEXT_DATA__ not found");
+      const data = JSON.parse(match[1]) as LumaNextData;
+      const events = data?.props?.pageProps?.initialData?.data?.events;
+      if (!Array.isArray(events)) throw new Error("event listing not found");
+      return events;
+    })
+  );
+
+  pages.forEach((page, index) => {
+    const feed = LUMA_DISCOVERY_URLS[index];
+    if (page.status === "rejected") {
+      out.errors.push(`luma ${feed}: ${(page.reason as Error).message}`);
+      return;
     }
 
-    const html = await res.text();
-    const match = html.match(
-      /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/
-    );
-    if (!match) {
-      out.errors.push("luma: __NEXT_DATA__ not found");
-      return out;
-    }
-
-    const data = JSON.parse(match[1]) as LumaNextData;
-    const events = data?.props?.pageProps?.initialData?.data?.events ?? [];
-
-    for (const e of events) {
+    for (const e of page.value) {
       const ev = e.event ?? {};
       const raw = lumaToRaw(ev);
       if (!raw) {
@@ -83,11 +98,13 @@ export async function fetchLuma(): Promise<SourceFetchResult> {
         });
         continue;
       }
+      // Repeated listings represent the same event, not new discoveries.
+      const key = ev.api_id ?? n.url;
+      if (seen.has(key)) continue;
+      seen.add(key);
       out.events.push(n);
     }
-    return out;
-  } catch (err) {
-    out.errors.push(`luma: ${(err as Error).message}`);
-    return out;
-  }
+  });
+
+  return out;
 }

@@ -198,7 +198,7 @@ revisa la tabla y cambia `Status` a `curado` para mostrar el evento en la web.
 ```
 cron-job.org (09:00 ART) ──→ POST /api/events/discover
                               │
-                              ├─ Luma (scrape __NEXT_DATA__)
+                              ├─ Luma (Buenos Aires general + Tech + IA; dedupe por evento)
                               ├─ Eventbrite (scrape __SERVER_DATA__)
                               └─ Meetup RSS + JSON-LD por evento
                                        │
@@ -279,7 +279,7 @@ original, solicita a Groq una clasificación estructurada y actualiza en Notion:
 - `Summary`: borrador en español, sólo si no había uno escrito manualmente.
 - `Tags`: suma las categorías sugeridas sin borrar las existentes.
 
-El endpoint nunca publica por sí solo: todos los registros quedan en `Nuevo` hasta
+El discover no aplica filtros por palabras clave ni descarta por temática: guarda los eventos futuros válidos y no duplicados para que el bot evalúe la relevancia usando título, descripción y contexto. Luma consulta varias páginas de descubrimiento; un error en una no impide procesar las otras y se registra en `sourceErrors`. La cobertura continúa limitada a los eventos que Luma incluye en esas páginas públicas.\n\nEl endpoint nunca publica por sí solo: todos los registros quedan en `Nuevo` hasta
 que el curador cambie manualmente `Status` a `Curado` o `Descartado`. Cada evento
 se envía a Groq por separado para impedir cruces de contenido. Si quedan más de
 3 candidatos, la respuesta incluye `hasMore: true` y el cron puede repetir la

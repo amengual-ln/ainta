@@ -3,6 +3,7 @@ import { fetchLuma } from "@/lib/sources/luma";
 import { fetchEventbrite } from "@/lib/sources/eventbrite";
 import { fetchMeetup } from "@/lib/sources/meetup";
 import { writeDiscoveredEvents } from "@/lib/sources/notion";
+import { fetchDiscoverySources } from "@/lib/sources/config";
 import type { RejectedEvent } from "@/lib/normalize";
 
 export const runtime = "nodejs";
@@ -17,10 +18,22 @@ export async function POST(_req: NextRequest) {
     );
   }
 
+  let configuration: Awaited<ReturnType<typeof fetchDiscoverySources>>;
+  try {
+    configuration = await fetchDiscoverySources();
+  } catch (error) {
+    return NextResponse.json(
+      { ok: false, error: `discovery sources: ${(error as Error).message}` },
+      { status: 502 }
+    );
+  }
+  const urls = (provider: "luma" | "eventbrite" | "meetup") =>
+    configuration.sources.filter((s) => s.provider === provider).map((s) => s.url);
+
   const [luma, eventbrite, meetup] = await Promise.all([
-    fetchLuma(),
-    fetchEventbrite(),
-    fetchMeetup(),
+    fetchLuma(urls("luma")),
+    fetchEventbrite(urls("eventbrite")),
+    fetchMeetup(urls("meetup")),
   ]);
 
   const all = [...luma.events, ...eventbrite.events, ...meetup.events];
@@ -30,6 +43,7 @@ export async function POST(_req: NextRequest) {
     ...meetup.rejected,
   ];
   const sourceErrors: string[] = [
+    ...configuration.errors,
     ...luma.errors,
     ...eventbrite.errors,
     ...meetup.errors,
@@ -39,6 +53,7 @@ export async function POST(_req: NextRequest) {
 
   return NextResponse.json({
     ok: true,
+    configuredSources: configuration.sources.length,
     sources: {
       luma: { scraped: luma.events.length, rejected: luma.rejected.length, errors: luma.errors },
       eventbrite: {

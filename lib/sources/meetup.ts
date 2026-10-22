@@ -1,5 +1,4 @@
 import Parser from "rss-parser";
-import { MEETUP_GROUPS } from "@/lib/meetup-groups";
 import {
   meetupToRaw,
   normalize,
@@ -58,7 +57,7 @@ function buildRawFromJsonLd(item: RssItem, ld: ReturnType<typeof parseMeetupEven
   };
 }
 
-export async function fetchMeetup(): Promise<SourceFetchResult> {
+export async function fetchMeetup(urls: string[]): Promise<SourceFetchResult> {
   const out: SourceFetchResult = { events: [], rejected: [], errors: [] };
 
   const parser = new Parser({
@@ -67,10 +66,8 @@ export async function fetchMeetup(): Promise<SourceFetchResult> {
   });
 
   const rssResults = await Promise.allSettled(
-    MEETUP_GROUPS.map(async (g) => {
-      const feed = await parser.parseURL(
-        `https://www.meetup.com/${g.slug}/events/rss/`
-      );
+    urls.map(async (url) => {
+      const feed = await parser.parseURL(url);
       return feed.items ?? [];
     })
   );

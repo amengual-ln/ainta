@@ -4,9 +4,6 @@ import {
   type SourceFetchResult,
 } from "@/lib/normalize";
 
-const EVENTBRITE_SSR_URL =
-  "https://www.eventbrite.com/d/argentina--buenos-aires/tech/";
-
 interface EventbriteServerData {
   search_data?: {
     events?: {
@@ -28,10 +25,12 @@ interface EventbriteServerData {
   };
 }
 
-export async function fetchEventbrite(): Promise<SourceFetchResult> {
+export async function fetchEventbrite(urls: string[]): Promise<SourceFetchResult> {
   const out: SourceFetchResult = { events: [], rejected: [], errors: [] };
+  const seen = new Set<string>();
+  for (const sourceUrl of urls) {
   try {
-    const res = await fetch(EVENTBRITE_SSR_URL, {
+    const res = await fetch(sourceUrl, {
       headers: {
         accept: "text/html",
         "user-agent":
@@ -40,15 +39,15 @@ export async function fetchEventbrite(): Promise<SourceFetchResult> {
       next: { revalidate: 3600 },
     });
     if (!res.ok) {
-      out.errors.push(`eventbrite http ${res.status}`);
-      return out;
+      out.errors.push(`eventbrite ${sourceUrl}: http ${res.status}`);
+      continue;
     }
 
     const html = await res.text();
     const match = html.match(/window\.__SERVER_DATA__ = (\{.*?\});/);
     if (!match) {
-      out.errors.push("eventbrite: __SERVER_DATA__ not found");
-      return out;
+      out.errors.push(`eventbrite ${sourceUrl}: __SERVER_DATA__ not found`);
+      continue;
     }
 
     const data = JSON.parse(match[1]) as EventbriteServerData;
@@ -81,11 +80,13 @@ export async function fetchEventbrite(): Promise<SourceFetchResult> {
         });
         continue;
       }
+      if (seen.has(n.url)) continue;
+      seen.add(n.url);
       out.events.push(n);
     }
-    return out;
   } catch (err) {
-    out.errors.push(`eventbrite: ${(err as Error).message}`);
-    return out;
+    out.errors.push(`eventbrite ${sourceUrl}: ${(err as Error).message}`);
   }
+  }
+  return out;
 }

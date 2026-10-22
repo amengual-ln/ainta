@@ -52,7 +52,7 @@ test("merges several Luma feeds and keeps processing after one fails", async () 
       status: 200,
     });
   };
-  const result = await fetchLuma();
+  const result = await fetchLuma(["https://luma.com/buenos-aires", "https://luma.com/discover/buenos-aires/tech", "https://luma.com/discover/buenos-aires/ai"]);
   assert.deepEqual(result.events.map((x) => x.title), ["Event old", "Event new"]);
   assert.equal(result.errors.length, 1);
   assert.match(result.errors[0], /tech/);

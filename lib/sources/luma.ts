@@ -12,25 +12,54 @@ const LUMA_DISCOVERY_URLS = [
   "https://luma.com/discover/buenos-aires/ai",
 ] as const;
 
-interface LumaNextData {
-  props?: {
-    pageProps?: {
-      initialData?: {
-        data?: {
-          events?: Array<{
-            event?: {
-              api_id?: string;
-              name?: string;
-              url?: string;
-              start_at?: string;
-              timezone?: string;
-              location_type?: string;
-            };
-          }>;
-        };
-      };
-    };
-  };
+export interface LumaEventRecord {
+  api_id?: string;
+  name?: string;
+  url?: string;
+  start_at?: string;
+  timezone?: string;
+  location_type?: string;
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+/**
+ * Luma's city homepage and category pages put event cards at different paths
+ * inside __NEXT_DATA__. Walk the serialized page state, rather than depending
+ * on initialData.data.events, and only keep objects with event-card fields.
+ */
+export function extractLumaEvents(data: unknown): LumaEventRecord[] {
+  const events: LumaEventRecord[] = [];
+  const visited = new Set<object>();
+  let remaining = 50_000;
+
+  function walk(value: unknown, depth: number): void {
+    if (depth > 25 || remaining-- <= 0 || !value || typeof value !== "object") return;
+    if (visited.has(value)) return;
+    visited.add(value);
+
+    if (Array.isArray(value)) {
+      for (const item of value) walk(item, depth + 1);
+      return;
+    }
+    if (!isObject(value)) return;
+
+    // Event cards can be bare objects or nested inside { event: ... }.
+    if (
+      typeof value.name === "string" &&
+      typeof value.url === "string" &&
+      typeof value.start_at === "string"
+    ) {
+      events.push(value as LumaEventRecord);
+      return;
+    }
+    for (const child of Object.values(value)) walk(child, depth + 1);
+  }
+
+  walk(data, 0);
+  return events;
 }
 
 export async function fetchLuma(): Promise<SourceFetchResult> {
@@ -56,9 +85,9 @@ export async function fetchLuma(): Promise<SourceFetchResult> {
         /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/
       );
       if (!match) throw new Error("__NEXT_DATA__ not found");
-      const data = JSON.parse(match[1]) as LumaNextData;
-      const events = data?.props?.pageProps?.initialData?.data?.events;
-      if (!Array.isArray(events)) throw new Error("event listing not found");
+      const data: unknown = JSON.parse(match[1]);
+      const events = extractLumaEvents(data);
+      if (events.length === 0) throw new Error("no event cards found in __NEXT_DATA__");
       return events;
     })
   );
@@ -71,7 +100,7 @@ export async function fetchLuma(): Promise<SourceFetchResult> {
     }
 
     for (const e of page.value) {
-      const ev = e.event ?? {};
+      const ev = e;
       const raw = lumaToRaw(ev);
       if (!raw) {
         out.rejected.push({

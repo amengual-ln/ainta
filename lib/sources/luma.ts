@@ -2,7 +2,7 @@ import {
   lumaToRaw,
   normalize,
   type SourceFetchResult,
-} from "@/lib/normalize";
+} from "../normalize.ts";
 
 // Luma's city homepage is a curated subset. Category feeds surface events
 // that may be missing from the general listing, regardless of their titles.

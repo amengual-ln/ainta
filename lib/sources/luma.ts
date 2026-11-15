@@ -4,14 +4,6 @@ import {
   type SourceFetchResult,
 } from "../normalize.ts";
 
-// Luma's city homepage is a curated subset. Category feeds surface events
-// that may be missing from the general listing, regardless of their titles.
-const LUMA_DISCOVERY_URLS = [
-  "https://luma.com/buenos-aires",
-  "https://luma.com/discover/buenos-aires/tech",
-  "https://luma.com/discover/buenos-aires/ai",
-] as const;
-
 export interface LumaEventRecord {
   api_id?: string;
   name?: string;
@@ -62,13 +54,13 @@ export function extractLumaEvents(data: unknown): LumaEventRecord[] {
   return events;
 }
 
-export async function fetchLuma(): Promise<SourceFetchResult> {
+export async function fetchLuma(urls: string[]): Promise<SourceFetchResult> {
   const out: SourceFetchResult = { events: [], rejected: [], errors: [] };
   const seen = new Set<string>();
 
   // A category feed failing should not block the other feeds.
   const pages = await Promise.allSettled(
-    LUMA_DISCOVERY_URLS.map(async (url) => {
+    urls.map(async (url) => {
       const res = await fetch(url, {
         headers: {
           accept: "text/html",
@@ -93,7 +85,7 @@ export async function fetchLuma(): Promise<SourceFetchResult> {
   );
 
   pages.forEach((page, index) => {
-    const feed = LUMA_DISCOVERY_URLS[index];
+    const feed = urls[index];
     if (page.status === "rejected") {
       out.errors.push(`luma ${feed}: ${(page.reason as Error).message}`);
       return;

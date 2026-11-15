@@ -190,7 +190,7 @@ editor rich-text. ImprovMX sigue siendo la capa de recepción y Resend la de env
 ## Eventos (Notion + cron-job.org)
 
 La agenda y el discover pipeline usan **una sola database** en Notion.
-Un cron diario scrapea 3 fuentes externas y crea filas con `Status = Nuevo`; el curador
+Un cron diario consulta las fuentes activas en la base **Event discovery sources** de Notion y crea filas con `Status = Nuevo`; el curador
 revisa la tabla y cambia `Status` a `curado` para mostrar el evento en la web.
 
 ### Flujo
@@ -251,6 +251,20 @@ GROQ_API_KEY=...
 GROQ_MODEL=qwen/qwen3.8-27b
 CURATION_SECRET=...
 ```
+
+### Catálogo de fuentes editable desde Notion
+
+El discover lee una segunda base, **Event discovery sources**, con las columnas:
+`Nombre` (title), `URL` (url), `Proveedor` (Luma/Meetup/Eventbrite), `Tipo` (select),
+`Activa` (checkbox), `Prioridad` (select) y `Notas` (text).
+
+- Fuente de verdad: https://app.notion.com/p/ea681957ea424e35bb660dae7feb5ca8
+- Compartir esta nueva base con **la misma integración de Notion del backend** (`NOTION_TOKEN`). Conectarla a ChatGPT no le concede acceso automáticamente al servidor.
+- Agregar `NOTION_EVENT_SOURCES_DB_ID=ea681957ea424e35bb660dae7feb5ca8` en Vercel y en el entorno local antes de integrar el PR. El endpoint devuelve error si falta la variable o si no puede leer la base; no hay fuentes hardcodeadas como fallback.
+- Cada ejecución lee los registros con `Activa = true`; agregar/desactivar fuentes no requiere deploy.
+- Meetup requiere una URL de RSS `https://www.meetup.com/{grupo}/events/rss/`. Los URL admitidos en otros proveedores deben pertenecer a sus dominios.
+- `Prioridad` y `Tipo` sirven por ahora para catalogar; todavía no modifican frecuencia ni scraping.
+- Esta migración **no amplía automáticamente los formatos de scraper**: una página nueva de organizador puede necesitar un extractor específico aunque su dominio sea Luma.
 
 ### Cron-job.org
 

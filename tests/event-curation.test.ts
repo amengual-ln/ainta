@@ -5,6 +5,8 @@ import {
   extractEventDescription,
   fetchEventDescription,
   isAllowedEventUrl,
+  statusForCuration,
+  type CurationResult,
   validateCurationResult,
 } from "../lib/event-curation.ts";
 
@@ -132,10 +134,11 @@ test("validates Groq results and removes a discarded summary", () => {
 
 test("rejects malformed curation fields and accepts the review range", () => {
   const validResult = {
-    score: 55,
+    score: 35,
     decision: "revisar",
     reason: "La propuesta es relevante pero faltan detalles.",
-    summary: "Una propuesta técnica para revisar antes de publicar.",
+    summary:
+      "Una propuesta técnica que reúne a la comunidad local para compartir experiencias y descubrir herramientas aplicables al trabajo cotidiano. Puede ser una buena oportunidad para aprender enfoques nuevos, conversar con otras personas del ecosistema y llevarse ideas concretas para próximos proyectos.",
     tags: ["Charla"],
   };
 
@@ -152,11 +155,74 @@ test("rejects malformed curation fields and accepts the review range", () => {
     [{ result: { ...validResult, tags: ["Destacado"] } }, /unsupported tag/],
     [{ result: { ...validResult, reason: "" } }, /omitted required editorial text/],
     [{ result: { ...validResult, summary: "" } }, /omitted required editorial text/],
+    [
+      {
+        result: {
+          ...validResult,
+          summary:
+            "El encuentro propone acercarse a la inteligencia artificial desde una perspectiva general y conocer a otras personas interesadas en el tema. Como no se detalla la agenda, conviene verificar si el contenido resulta útil antes de asistir al evento.",
+        },
+      },
+      /unsuitable public summary/,
+    ],
+    [
+      {
+        result: {
+          ...validResult,
+          summary:
+            "Una propuesta técnica que reúne a la comunidad local para compartir experiencias y descubrir herramientas aplicables al trabajo cotidiano, además de conversar con otras personas interesadas en tecnología y llevarse ideas para futuros proyectos",
+        },
+      },
+      /unsuitable public summary/,
+    ],
   ];
 
   for (const [value, message] of invalidCases) {
     assert.throws(() => validateCurationResult(value, "event-review"), message);
   }
+});
+
+test("maps curation thresholds to automatic statuses without requiring a location", () => {
+  const result = (
+    score: number,
+    decision: CurationResult["decision"]
+  ): CurationResult =>
+    validateCurationResult(
+      {
+        result: {
+          score,
+          decision,
+          reason: "Criterio editorial.",
+          summary:
+            decision === "descartar"
+              ? ""
+              : "Un encuentro pensado para aprender junto a la comunidad y conocer experiencias concretas sobre tecnología aplicada. La propuesta ofrece un espacio para intercambiar ideas, descubrir enfoques útiles y conectar con personas que trabajan en desafíos similares dentro del ecosistema local.",
+          tags: [],
+        },
+      },
+      "event-status"
+    );
+
+  assert.equal(
+    statusForCuration(result(24, "descartar"), ""),
+    "Descartado"
+  );
+  assert.equal(
+    statusForCuration(result(25, "revisar"), "Presencial"),
+    "Nuevo"
+  );
+  assert.equal(
+    statusForCuration(result(44, "revisar"), "Híbrido"),
+    "Nuevo"
+  );
+  assert.equal(
+    statusForCuration(result(45, "recomendar"), "Online"),
+    "Curado"
+  );
+  assert.equal(
+    statusForCuration(result(45, "recomendar"), ""),
+    "Nuevo"
+  );
 });
 
 test("calls Groq with structured output and preserves the local event id", async () => {
@@ -179,7 +245,8 @@ test("calls Groq with structured output and preserves the local event id", async
                 score: 82,
                 decision: "recomendar",
                 reason: "Contenido técnico práctico.",
-                summary: "Un encuentro práctico sobre IA y automatización.",
+                summary:
+                  "Un encuentro práctico para descubrir cómo aplicar inteligencia artificial y automatización en problemas reales. Vas a poder conocer herramientas concretas, intercambiar experiencias con la comunidad técnica y llevarte ideas accionables para mejorar procesos o impulsar tus próximos proyectos.",
                 tags: ["Taller", "Taller"],
               },
             }),

@@ -9,6 +9,7 @@ import type {
   CuratableSource,
   CurationResult,
 } from "@/lib/event-curation";
+import { statusForCuration } from "@/lib/event-curation";
 
 export type EventType = "taller" | "charla" | "externo" | "hackathon";
 
@@ -186,7 +187,7 @@ export async function fetchEventCurationCandidates(
         },
         {
           property: "Fecha",
-          date: { on_or_after: todayInBuenosAires() },
+          date: { after: new Date().toISOString() },
         },
         {
           property: "Score IA",
@@ -238,18 +239,23 @@ export async function updateEventCuration(
     descartar: "Descartar",
   };
   const tags = [...new Set([...candidate.tags, ...result.tags])];
+  const status = statusForCuration(result, candidate.modality);
+  const needsModality = result.decision === "recomendar" && status === "Nuevo";
+  const criterion = needsModality
+    ? `Revisar · Falta modalidad para publicar automáticamente. ${result.reason}`
+    : `${decisionLabels[result.decision]} · ${result.reason}`;
 
   await notion.pages.update({
     page_id: candidate.pageId,
     properties: {
-      Status: { status: { name: "Nuevo" } },
+      Status: { status: { name: status } },
       "Score IA": { number: result.score },
       "Criterio IA": {
         rich_text: [
           {
             type: "text",
             text: {
-              content: `${decisionLabels[result.decision]} · ${result.reason}`.slice(0, 2_000),
+              content: criterion.slice(0, 2_000),
             },
           },
         ],

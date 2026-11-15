@@ -228,7 +228,7 @@ cron-job.org (09:00 ART) ──→ POST /api/events/discover
 | `Costo` | Select | `Gratis` / `Pago` |
 | `Tags` | Multi-select | `Taller` / `Workshop` / `Charla` / `Meetup` / `Networking` / `Hackathon` / `Destacado` |
 | `Encontrado por` | Rich text | ej: `Auto · Luma` |
-| `Status` | Status | `Nuevo` → `Curado` |
+| `Status` | Status | `Nuevo` / `Curado` / `Descartado` |
 | `Summary` | Rich text | descripción editorial visible en la web |
 | `Score IA` | Number | prioridad sugerida por el copiloto |
 | `Criterio IA` | Rich text | recomendación y motivo breve |
@@ -238,7 +238,7 @@ cron-job.org (09:00 ART) ──→ POST /api/events/discover
 
 1. Crear **una sola database** en Notion con el schema de arriba.
 2. En el select `Fuente` agregar el valor `Spärck` (para eventos propios).
-3. En `Status` (tipo Status) crear al menos los valores `Nuevo` y `Curado`.
+3. En `Status` (tipo Status) crear los valores `Nuevo`, `Curado` y `Descartado`.
 4. Compartir la database con la integración.
 5. Copiar `.env.example` → `.env.local` y completar las variables necesarias.
 
@@ -293,8 +293,12 @@ original, solicita a Groq una clasificación estructurada y actualiza en Notion:
 - `Summary`: borrador en español, sólo si no había uno escrito manualmente.
 - `Tags`: suma las categorías sugeridas sin borrar las existentes.
 
-El discover no aplica filtros por palabras clave ni descarta por temática: guarda los eventos futuros válidos y no duplicados para que el bot evalúe la relevancia usando título, descripción y contexto. Luma consulta varias páginas de descubrimiento; un error en una no impide procesar las otras y se registra en `sourceErrors`. La cobertura continúa limitada a los eventos que Luma incluye en esas páginas públicas.\n\nEl endpoint nunca publica por sí solo: todos los registros quedan en `Nuevo` hasta
-que el curador cambie manualmente `Status` a `Curado` o `Descartado`. Cada evento
+El discover no aplica filtros por palabras clave ni descarta por temática: guarda los eventos futuros válidos y no duplicados para que el bot evalúe la relevancia usando título, descripción y contexto. Luma consulta varias páginas de descubrimiento; un error en una no impide procesar las otras y se registra en `sourceErrors`. La cobertura continúa limitada a los eventos que Luma incluye en esas páginas públicas.
+
+La curación automatiza el estado según el score: `0-24` pasa a `Descartado`,
+`25-44` queda en `Nuevo` para revisión y `45-100` pasa a `Curado` si tiene summary
+y modalidad. El lugar no es obligatorio porque algunos eventos lo informan luego
+de la inscripción. El tag `Destacado` sigue siendo exclusivamente manual. Cada evento
 se envía a Groq por separado para impedir cruces de contenido. Si quedan más de
 3 candidatos, la respuesta incluye `hasMore: true` y el cron puede repetir la
 llamada más tarde para mantenerse dentro de los límites gratuitos de Groq.
